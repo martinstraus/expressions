@@ -6,23 +6,26 @@
 package expressions.parser;
 
 import expressions.ast.Add;
-import expressions.ast.EqualTo;
+import expressions.ast.BooleanExpression;
 import expressions.ast.Exponentiation;
 import expressions.ast.Expression;
-import expressions.ast.GreaterThan;
-import expressions.ast.LessThan;
 import expressions.ast.Subtract;
 import expressions.ast.Variable;
 import expressions.parser.antlr4.FunctionBaseListener;
 import expressions.parser.antlr4.FunctionParser;
 import java.math.BigDecimal;
 import java.util.Stack;
+import java.util.function.BiFunction;
 
 /**
  *
  * @author martinstraus
  */
 public class ASTBuilder extends FunctionBaseListener {
+
+    private static final BiFunction<BigDecimal, BigDecimal, Boolean> BIG_DECIMAL_EQUALS = (a, b) -> a.compareTo(b) == 0;
+    private static final BiFunction<BigDecimal, BigDecimal, Boolean> BIG_DECIMAL_GREATER_TAHN = (a, b) -> a.compareTo(b) > 0;
+    private static final BiFunction<BigDecimal, BigDecimal, Boolean> BIG_DECIMAL_LESS_TAHN = (a, b) -> a.compareTo(b) < 0;
 
     private final Stack<Expression> stack;
 
@@ -47,11 +50,11 @@ public class ASTBuilder extends FunctionBaseListener {
         Expression right = stack.pop();
         Expression left = stack.pop();
         if (ctx.EQ() != null) {
-            stack.add(new EqualTo(left, right));
+            stack.add(new BooleanExpression(BIG_DECIMAL_EQUALS, left, right));
         } else if (ctx.GT() != null) {
-            stack.add(new GreaterThan(left, right));
+            stack.add(new BooleanExpression(BIG_DECIMAL_GREATER_TAHN, left, right));
         } else if (ctx.LT() != null) {
-            stack.add(new LessThan(left, right));
+            stack.add(new BooleanExpression(BIG_DECIMAL_LESS_TAHN, left, right));
         } else {
             throw new IllegalStateException("No relational operator.");
         }
