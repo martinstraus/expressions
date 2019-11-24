@@ -8,7 +8,6 @@ package expressions.ast;
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 /**
  *
@@ -16,11 +15,11 @@ import java.util.function.Function;
  */
 public class ArithmeticExpression implements Expression<BigDecimal> {
 
+    private final BiFunction<BigDecimal, BigDecimal, BigDecimal> function;
     private final Expression<BigDecimal> left;
     private final Expression<BigDecimal> right;
-    private final BiFunction<BigDecimal, BigDecimal, BigDecimal> function;
 
-    public ArithmeticExpression(Expression<BigDecimal> left, Expression<BigDecimal> right, BiFunction<BigDecimal, BigDecimal, BigDecimal> function) {
+    public ArithmeticExpression(BiFunction<BigDecimal, BigDecimal, BigDecimal> function, Expression<BigDecimal> left, Expression<BigDecimal> right) {
         this.left = left;
         this.right = right;
         this.function = function;

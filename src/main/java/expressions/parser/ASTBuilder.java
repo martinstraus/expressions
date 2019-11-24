@@ -5,11 +5,10 @@
  */
 package expressions.parser;
 
-import expressions.ast.Add;
+import expressions.ast.ArithmeticExpression;
 import expressions.ast.BooleanExpression;
 import expressions.ast.Exponentiation;
 import expressions.ast.Expression;
-import expressions.ast.Subtract;
 import expressions.ast.Variable;
 import expressions.parser.antlr4.FunctionBaseListener;
 import expressions.parser.antlr4.FunctionParser;
@@ -26,6 +25,10 @@ public class ASTBuilder extends FunctionBaseListener {
     private static final BiFunction<BigDecimal, BigDecimal, Boolean> BIG_DECIMAL_EQUALS = (a, b) -> a.compareTo(b) == 0;
     private static final BiFunction<BigDecimal, BigDecimal, Boolean> BIG_DECIMAL_GREATER_THAN = (a, b) -> a.compareTo(b) > 0;
     private static final BiFunction<BigDecimal, BigDecimal, Boolean> BIG_DECIMAL_LESS_THAN = (a, b) -> a.compareTo(b) < 0;
+    private static final BiFunction<BigDecimal, BigDecimal, BigDecimal> BIG_DECIMAL_ADD = (a, b) -> a.add(b);
+    private static final BiFunction<BigDecimal, BigDecimal, BigDecimal> BIG_DECIMAL_SUBTRACT = (a, b) -> a.subtract(b);
+    private static final BiFunction<BigDecimal, BigDecimal, BigDecimal> BIG_DECIMAL_MULTIPLY = (a, b) -> a.multiply(b);
+    private static final BiFunction<BigDecimal, BigDecimal, BigDecimal> BIG_DECIMAL_DIVIDE = (a, b) -> a.divide(b);
 
     private final Stack<Expression> stack;
 
@@ -64,10 +67,14 @@ public class ASTBuilder extends FunctionBaseListener {
     public void exitTimesOrDivision(FunctionParser.TimesOrDivisionContext ctx) {
         Expression<BigDecimal> right = stack.pop();
         Expression<BigDecimal> left = stack.pop();
+        stack.push(new ArithmeticExpression(arithmeticOperator(ctx), left, right));
+    }
+
+    private BiFunction<BigDecimal, BigDecimal, BigDecimal> arithmeticOperator(FunctionParser.TimesOrDivisionContext ctx) {
         if (ctx.DIV() != null) {
-            stack.push(new Subtract(left, right));
+            return BIG_DECIMAL_DIVIDE;
         } else if (ctx.TIMES() != null) {
-            stack.push(new Add(left, right));
+            return BIG_DECIMAL_MULTIPLY;
         } else {
             throw new IllegalStateException("No operator.");
         }
@@ -77,12 +84,16 @@ public class ASTBuilder extends FunctionBaseListener {
     public void exitPlusOrMinus(FunctionParser.PlusOrMinusContext ctx) {
         Expression<BigDecimal> right = stack.pop();
         Expression<BigDecimal> left = stack.pop();
-        if (ctx.MINUS() != null) {
-            stack.push(new Subtract(left, right));
-        } else if (ctx.PLUS() != null) {
-            stack.push(new Add(left, right));
+        stack.push(new ArithmeticExpression(arithmeticOperator(ctx), left, right));
+    }
+
+    private BiFunction<BigDecimal, BigDecimal, BigDecimal> arithmeticOperator(FunctionParser.PlusOrMinusContext ctx) {
+        if (ctx.PLUS() != null) {
+            return BIG_DECIMAL_ADD;
+        } else if (ctx.MINUS() != null) {
+            return BIG_DECIMAL_SUBTRACT;
         } else {
-            throw new IllegalStateException("No operantor.");
+            throw new IllegalStateException("No operator.");
         }
     }
 
