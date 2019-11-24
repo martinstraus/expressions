@@ -1,12 +1,9 @@
 grammar Function;
-file : equation* EOF;
-
-equation
-   : expression relop expression
-   ;
+file : expression* EOF;
 
 expression
-   :  expression  POW expression # Power
+   :  expression (EQ | GT | LT) expression # BooleanExpression
+   |  expression  POW expression # Power
    |  expression  (TIMES | DIV)  expression # TimesOrDivision
    |  expression  (PLUS | MINUS) expression # PlusOrMinus
    |  LPAREN expression RPAREN # ParenthesisExpression
@@ -22,9 +19,7 @@ variable
    ;
 
 relop
-   : EQ
-   | GT
-   | LT
+   : 
    ;
 
 

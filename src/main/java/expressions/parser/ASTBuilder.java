@@ -6,8 +6,11 @@
 package expressions.parser;
 
 import expressions.ast.Add;
+import expressions.ast.EqualTo;
 import expressions.ast.Exponentiation;
 import expressions.ast.Expression;
+import expressions.ast.GreaterThan;
+import expressions.ast.LessThan;
 import expressions.ast.Subtract;
 import expressions.ast.Variable;
 import expressions.parser.antlr4.FunctionBaseListener;
@@ -40,6 +43,21 @@ public class ASTBuilder extends FunctionBaseListener {
     }
 
     @Override
+    public void exitBooleanExpression(FunctionParser.BooleanExpressionContext ctx) {
+        Expression right = stack.pop();
+        Expression left = stack.pop();
+        if (ctx.EQ() != null) {
+            stack.add(new EqualTo(left, right));
+        } else if (ctx.GT() != null) {
+            stack.add(new GreaterThan(left, right));
+        } else if (ctx.LT() != null) {
+            stack.add(new LessThan(left, right));
+        } else {
+            throw new IllegalStateException("No relational operator.");
+        }
+    }
+
+    @Override
     public void exitTimesOrDivision(FunctionParser.TimesOrDivisionContext ctx) {
         Expression<BigDecimal> right = stack.pop();
         Expression<BigDecimal> left = stack.pop();
@@ -48,7 +66,7 @@ public class ASTBuilder extends FunctionBaseListener {
         } else if (ctx.TIMES() != null) {
             stack.push(new Add(left, right));
         } else {
-            throw new IllegalStateException("No operand.");
+            throw new IllegalStateException("No operator.");
         }
     }
 
@@ -61,7 +79,7 @@ public class ASTBuilder extends FunctionBaseListener {
         } else if (ctx.PLUS() != null) {
             stack.push(new Add(left, right));
         } else {
-            throw new IllegalStateException("No operand.");
+            throw new IllegalStateException("No operantor.");
         }
     }
 
