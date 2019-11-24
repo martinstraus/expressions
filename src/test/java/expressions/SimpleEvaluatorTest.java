@@ -1,0 +1,61 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package expressions;
+
+import java.math.BigDecimal;
+import static java.util.Arrays.asList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+/**
+ *
+ * @author martinstraus
+ */
+public class SimpleEvaluatorTest {
+
+    private static List<Arguments> testExpressions() {
+        return asList(
+                Arguments.of(
+                        "a+b",
+                        map("a", new BigDecimal(1), "b", new BigDecimal(2)),
+                        map("result", new BigDecimal(3))
+                ),
+                Arguments.of(
+                        "a-b",
+                        map("a", new BigDecimal(3), "b", new BigDecimal(2)),
+                        map("result", new BigDecimal(1))
+                )
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("testExressions")
+    public void evaluateReturnsExpectedResult(String expression, Map<String, Object> context, Map<String, Object> expectedResult) {
+        assertEquals(
+                expectedResult,
+                new SimpleEvaluator().evaluate(expression, context)
+        );
+    }
+
+    private static Map<String, Object> map(String key1, Object value1) {
+        Map<String, Object> map = new HashMap<>();
+        map.put(key1, value1);
+        return map;
+    }
+
+    private static Map<String, Object> map(String key1, Object value1, String key2, Object value2) {
+        Map<String, Object> map = new HashMap<>();
+        map.put(key1, value1);
+        map.put(key2, value2);
+        return map;
+    }
+
+}

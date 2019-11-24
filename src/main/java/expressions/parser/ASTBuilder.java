@@ -1,0 +1,69 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package expressions.parser;
+
+import expressions.ast.Add;
+import expressions.ast.Expression;
+import expressions.ast.Subtract;
+import expressions.ast.Variable;
+import expressions.parser.antlr4.FunctionBaseListener;
+import expressions.parser.antlr4.FunctionParser;
+import java.math.BigDecimal;
+import java.util.Stack;
+
+/**
+ *
+ * @author martinstraus
+ */
+public class ASTBuilder extends FunctionBaseListener {
+
+    private final Stack<Expression> stack;
+
+    public ASTBuilder() {
+        this.stack = new Stack<>();
+    }
+
+    @Override
+    public void exitRelop(FunctionParser.RelopContext ctx) {
+
+    }
+
+    @Override
+    public void exitTimesOrDivision(FunctionParser.TimesOrDivisionContext ctx) {
+        Expression<BigDecimal> right = stack.pop();
+        Expression<BigDecimal> left = stack.pop();
+        if (ctx.DIV() != null) {
+            stack.push(new Subtract(left, right));
+        } else if (ctx.TIMES() != null) {
+            stack.push(new Add(left, right));
+        } else {
+            throw new IllegalStateException("No operand.");
+        }
+    }
+
+    @Override
+    public void exitPlusOrMinus(FunctionParser.PlusOrMinusContext ctx) {
+        Expression<BigDecimal> right = stack.pop();
+        Expression<BigDecimal> left = stack.pop();
+        if (ctx.MINUS() != null) {
+            stack.push(new Subtract(left, right));
+        } else if (ctx.PLUS() != null) {
+            stack.push(new Add(left, right));
+        } else {
+            throw new IllegalStateException("No operand.");
+        }
+    }
+
+    @Override
+    public void exitVariable(FunctionParser.VariableContext ctx) {
+        stack.push(new Variable(ctx.VARIABLE().getText()));
+    }
+
+    public Expression currentExpression() {
+        return stack.peek();
+    }
+
+}
