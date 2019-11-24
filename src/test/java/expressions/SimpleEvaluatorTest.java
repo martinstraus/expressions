@@ -32,12 +32,17 @@ public class SimpleEvaluatorTest {
                         "a-b",
                         map("a", new BigDecimal(3), "b", new BigDecimal(2)),
                         map("result", new BigDecimal(1))
+                ),
+                Arguments.of(
+                        "a^b",
+                        map("a", new BigDecimal(2), "b", new BigDecimal(3)),
+                        map("result", new BigDecimal(8))
                 )
         );
     }
 
     @ParameterizedTest
-    @MethodSource("testExressions")
+    @MethodSource("testExpressions")
     public void evaluateReturnsExpectedResult(String expression, Map<String, Object> context, Map<String, Object> expectedResult) {
         assertEquals(
                 expectedResult,

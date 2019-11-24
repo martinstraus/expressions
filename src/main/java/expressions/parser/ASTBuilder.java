@@ -6,6 +6,7 @@
 package expressions.parser;
 
 import expressions.ast.Add;
+import expressions.ast.Exponentiation;
 import expressions.ast.Expression;
 import expressions.ast.Subtract;
 import expressions.ast.Variable;
@@ -29,6 +30,13 @@ public class ASTBuilder extends FunctionBaseListener {
     @Override
     public void exitRelop(FunctionParser.RelopContext ctx) {
 
+    }
+
+    @Override
+    public void exitPower(FunctionParser.PowerContext ctx) {
+        Expression<BigDecimal> exponent = stack.pop();
+        Expression<BigDecimal> base = stack.pop();
+        stack.push(new Exponentiation(base, exponent));
     }
 
     @Override
