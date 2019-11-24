@@ -24,8 +24,8 @@ import java.util.function.BiFunction;
 public class ASTBuilder extends FunctionBaseListener {
 
     private static final BiFunction<BigDecimal, BigDecimal, Boolean> BIG_DECIMAL_EQUALS = (a, b) -> a.compareTo(b) == 0;
-    private static final BiFunction<BigDecimal, BigDecimal, Boolean> BIG_DECIMAL_GREATER_TAHN = (a, b) -> a.compareTo(b) > 0;
-    private static final BiFunction<BigDecimal, BigDecimal, Boolean> BIG_DECIMAL_LESS_TAHN = (a, b) -> a.compareTo(b) < 0;
+    private static final BiFunction<BigDecimal, BigDecimal, Boolean> BIG_DECIMAL_GREATER_THAN = (a, b) -> a.compareTo(b) > 0;
+    private static final BiFunction<BigDecimal, BigDecimal, Boolean> BIG_DECIMAL_LESS_THAN = (a, b) -> a.compareTo(b) < 0;
 
     private final Stack<Expression> stack;
 
@@ -52,9 +52,9 @@ public class ASTBuilder extends FunctionBaseListener {
         if (ctx.EQ() != null) {
             stack.add(new BooleanExpression(BIG_DECIMAL_EQUALS, left, right));
         } else if (ctx.GT() != null) {
-            stack.add(new BooleanExpression(BIG_DECIMAL_GREATER_TAHN, left, right));
+            stack.add(new BooleanExpression(BIG_DECIMAL_GREATER_THAN, left, right));
         } else if (ctx.LT() != null) {
-            stack.add(new BooleanExpression(BIG_DECIMAL_LESS_TAHN, left, right));
+            stack.add(new BooleanExpression(BIG_DECIMAL_LESS_THAN, left, right));
         } else {
             throw new IllegalStateException("No relational operator.");
         }
