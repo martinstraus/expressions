@@ -42,6 +42,11 @@ public class SimpleEvaluatorTest {
                         "a > b",
                         map("a", new BigDecimal(10), "b", new BigDecimal(1)),
                         map("result", true)
+                ),
+                Arguments.of(
+                        "a ^ b",
+                        map("a", new BigDecimal(2), "b", new BigDecimal(3)),
+                        map("result", new BigDecimal(8))
                 )
         );
     }

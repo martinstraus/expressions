@@ -7,7 +7,6 @@ package expressions.parser;
 
 import expressions.ast.ArithmeticExpression;
 import expressions.ast.BooleanExpression;
-import expressions.ast.Exponentiation;
 import expressions.ast.Expression;
 import expressions.ast.Variable;
 import expressions.parser.antlr4.FunctionBaseListener;
@@ -29,6 +28,7 @@ public class ASTBuilder extends FunctionBaseListener {
     private static final BiFunction<BigDecimal, BigDecimal, BigDecimal> BIG_DECIMAL_SUBTRACT = (a, b) -> a.subtract(b);
     private static final BiFunction<BigDecimal, BigDecimal, BigDecimal> BIG_DECIMAL_MULTIPLY = (a, b) -> a.multiply(b);
     private static final BiFunction<BigDecimal, BigDecimal, BigDecimal> BIG_DECIMAL_DIVIDE = (a, b) -> a.divide(b);
+    private static final BiFunction<BigDecimal, BigDecimal, BigDecimal> BIG_DECIMAL_POWER = (a, b) -> a.pow(b.intValue());
 
     private final Stack<Expression> stack;
 
@@ -45,7 +45,7 @@ public class ASTBuilder extends FunctionBaseListener {
     public void exitPower(FunctionParser.PowerContext ctx) {
         Expression<BigDecimal> exponent = stack.pop();
         Expression<BigDecimal> base = stack.pop();
-        stack.push(new Exponentiation(base, exponent));
+        stack.push(new ArithmeticExpression(BIG_DECIMAL_POWER, base, exponent));
     }
 
     @Override
