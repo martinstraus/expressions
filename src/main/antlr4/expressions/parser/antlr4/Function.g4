@@ -18,11 +18,6 @@ variable
    : VARIABLE
    ;
 
-relop
-   : 
-   ;
-
-
 VARIABLE
    : VALID_ID_START VALID_ID_CHAR*
    ;

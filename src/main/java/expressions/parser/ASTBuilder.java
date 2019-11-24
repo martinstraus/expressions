@@ -37,11 +37,6 @@ public class ASTBuilder extends FunctionBaseListener {
     }
 
     @Override
-    public void exitRelop(FunctionParser.RelopContext ctx) {
-
-    }
-
-    @Override
     public void exitPower(FunctionParser.PowerContext ctx) {
         Expression<BigDecimal> exponent = stack.pop();
         Expression<BigDecimal> base = stack.pop();
