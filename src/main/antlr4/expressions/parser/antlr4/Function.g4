@@ -2,20 +2,25 @@ grammar Function;
 file : expression* EOF;
 
 expression
-   :  expression (EQ | GT | LT) expression # BooleanExpression
-   |  expression  POW expression # Power
-   |  expression  (TIMES | DIV)  expression # TimesOrDivision
-   |  expression  (PLUS | MINUS) expression # PlusOrMinus
-   |  LPAREN expression RPAREN # ParenthesisExpression
-   |  (PLUS | MINUS)* atom # Unary
+   :  prefix=(PLUS | MINUS)? atom # Unary
+   |  expression POW expression # Power
+   |  expression (TIMES | DIV)  expression # TimesOrDivision
+   |  expression (PLUS | MINUS) expression # PlusOrMinus
+   |  expression (EQ | GT | LT) expression # BooleanExpression
+   |  LPAREN expression RPAREN # ParenthesisExpression  
    ;
 
 atom
    : variable
+   | literal
    ;
 
 variable
    : VARIABLE
+   ;
+
+literal
+   : NUMBER
    ;
 
 VARIABLE

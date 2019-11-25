@@ -8,8 +8,11 @@ package expressions.parser;
 import expressions.ast.ArithmeticExpression;
 import expressions.ast.BooleanExpression;
 import expressions.ast.Expression;
+import expressions.ast.Literal;
+import expressions.ast.Negate;
 import expressions.ast.Variable;
 import expressions.parser.antlr4.FunctionBaseListener;
+import expressions.parser.antlr4.FunctionLexer;
 import expressions.parser.antlr4.FunctionParser;
 import java.math.BigDecimal;
 import java.util.Stack;
@@ -93,8 +96,20 @@ public class ASTBuilder extends FunctionBaseListener {
     }
 
     @Override
+    public void exitLiteral(FunctionParser.LiteralContext ctx) {
+        stack.push(new Literal<BigDecimal>(new BigDecimal(ctx.NUMBER().getText())));
+    }
+
+    @Override
     public void exitVariable(FunctionParser.VariableContext ctx) {
         stack.push(new Variable(ctx.VARIABLE().getText()));
+    }
+
+    @Override
+    public void exitUnary(FunctionParser.UnaryContext ctx) {
+        if (ctx.prefix != null && ctx.prefix.getType() == FunctionLexer.MINUS) {
+            stack.push(new Negate(stack.pop()));
+        }
     }
 
     public Expression currentExpression() {

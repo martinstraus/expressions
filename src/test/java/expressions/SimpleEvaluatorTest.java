@@ -7,6 +7,7 @@ package expressions;
 
 import java.math.BigDecimal;
 import static java.util.Arrays.asList;
+import static java.util.Collections.EMPTY_MAP;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +48,21 @@ public class SimpleEvaluatorTest {
                         "a ^ b",
                         map("a", new BigDecimal(2), "b", new BigDecimal(3)),
                         map("result", new BigDecimal(8))
+                ),
+                Arguments.of(
+                        "a",
+                        map("a", new BigDecimal(4)),
+                        map("result", new BigDecimal(4))
+                ),
+                Arguments.of(
+                        "-a",
+                        map("a", new BigDecimal(4)),
+                        map("result", new BigDecimal(-4))
+                ),
+                Arguments.of(
+                        "(-a) + b",
+                        map("a", new BigDecimal(3), "b", new BigDecimal(5)),
+                        map("result", new BigDecimal(2))
                 )
         );
     }
@@ -57,6 +73,7 @@ public class SimpleEvaluatorTest {
         assertEquals(
                 expectedResult,
                 new SimpleEvaluator().evaluate(expression, context)
+                
         );
     }
 
