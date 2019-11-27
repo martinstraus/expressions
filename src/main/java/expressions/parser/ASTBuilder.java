@@ -124,7 +124,7 @@ public class ASTBuilder extends FunctionBaseListener {
         Expression value = stack.pop();
         stack.push(new In(value, set));
     }
-    
+
     @Override
     public void exitUnary(FunctionParser.UnaryContext ctx) {
         if (ctx.prefix != null && ctx.prefix.getType() == FunctionLexer.MINUS) {
@@ -135,6 +135,23 @@ public class ASTBuilder extends FunctionBaseListener {
     @Override
     public void exitNot(FunctionParser.NotContext ctx) {
         stack.push(new Not(stack.pop()));
+    }
+
+    @Override
+    public void exitAndOr(FunctionParser.AndOrContext ctx) {
+        Expression<Boolean> right = stack.pop();
+        Expression<Boolean> left = stack.pop();
+        stack.push(new BooleanExpression<Boolean>(operator(ctx), left, right));
+    }
+    
+    private BiFunction<Boolean, Boolean, Boolean> operator(FunctionParser.AndOrContext ctx) {
+        if (ctx.AND() != null) {
+            return (Boolean a, Boolean b) -> a && b;
+        } else if (ctx.OR() != null) {
+            return (Boolean a, Boolean b) -> a || b;
+        } else {
+            throw new IllegalStateException("No boolean operator.");
+        }
     }
 
     public Expression currentExpression() {

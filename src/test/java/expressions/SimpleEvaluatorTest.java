@@ -93,6 +93,31 @@ public class SimpleEvaluatorTest {
                         "not (a > b)",
                         map("a", new BigDecimal(4), "b", new BigDecimal(8)),
                         map("result", true)
+                ),
+                Arguments.of(
+                        "a and b",
+                        map("a", true, "b", true),
+                        map("result", true)
+                ),
+                Arguments.of(
+                        "a and b",
+                        map("a", false, "b", true),
+                        map("result", false)
+                ),
+                Arguments.of(
+                        "a or b",
+                        map("a", false, "b", true),
+                        map("result", true)
+                ),
+                Arguments.of(
+                        "a or b",
+                        map("a", true, "b", false),
+                        map("result", false)
+                ),
+                Arguments.of(
+                        "(a > 1) and (b > 2)",
+                        map("a", new BigDecimal(2), "b", new BigDecimal(3)),
+                        map("result", true)
                 )
         );
     }

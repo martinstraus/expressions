@@ -4,6 +4,7 @@ file : expression* EOF;
 expression
    :  prefix=(PLUS | MINUS)? atom # Unary
    |  NOT expression # Not
+   |  expression (AND | OR) expression # AndOr
    |  expression POW expression # Power
    |  expression (TIMES | DIV)  expression # TimesOrDivision
    |  expression (PLUS | MINUS) expression # PlusOrMinus
@@ -15,6 +16,8 @@ expression
 IN: 'in';
 
 NOT: 'not';
+
+AND: 'and';
 
 atom
    : variable
