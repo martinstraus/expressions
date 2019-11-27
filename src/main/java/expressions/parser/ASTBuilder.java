@@ -11,6 +11,7 @@ import expressions.ast.Expression;
 import expressions.ast.In;
 import expressions.ast.Literal;
 import expressions.ast.Negate;
+import expressions.ast.Not;
 import expressions.ast.Set;
 import expressions.ast.Variable;
 import expressions.parser.antlr4.FunctionBaseListener;
@@ -129,6 +130,11 @@ public class ASTBuilder extends FunctionBaseListener {
         if (ctx.prefix != null && ctx.prefix.getType() == FunctionLexer.MINUS) {
             stack.push(new Negate(stack.pop()));
         }
+    }
+
+    @Override
+    public void exitNot(FunctionParser.NotContext ctx) {
+        stack.push(new Not(stack.pop()));
     }
 
     public Expression currentExpression() {
