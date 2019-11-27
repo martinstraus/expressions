@@ -37,8 +37,8 @@ fragment VALID_ID_CHAR
    : VALID_ID_START | ('0' .. '9')
    ;
 
-fragment NUMBER
-   : ('0' .. '9') + ('.' ('0' .. '9') +)?
+NUMBER
+   : ('0' .. '9')+ ('.' ('0' .. '9')+)?
    ;
 
 fragment UNSIGNED_INTEGER
