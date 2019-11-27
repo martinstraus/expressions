@@ -7,8 +7,11 @@ expression
    |  expression (TIMES | DIV)  expression # TimesOrDivision
    |  expression (PLUS | MINUS) expression # PlusOrMinus
    |  expression (EQ | GT | LT) expression # BooleanExpression
+   |  expression IN set # In 
    |  LPAREN expression RPAREN # ParenthesisExpression  
    ;
+
+IN: 'in';
 
 atom
    : variable
@@ -22,6 +25,11 @@ variable
 literal
    : NUMBER
    ;
+
+set
+   : LBRACKET expression (COMMA expression)* RBRACKET
+   ;
+
 
 VARIABLE
    : VALID_ID_START VALID_ID_CHAR*
@@ -109,6 +117,17 @@ POW
    : '^'
    ;
 
+LBRACKET
+   : '['
+   ;
+
+RBRACKET
+   : ']'
+   ;
+
+COMMA
+   : ','
+   ;
 
 WS
    : [ \r\n\t] + -> skip

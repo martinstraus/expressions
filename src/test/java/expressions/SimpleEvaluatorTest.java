@@ -78,6 +78,16 @@ public class SimpleEvaluatorTest {
                         "a / b - 4",
                         map("a", new BigDecimal(100), "b", new BigDecimal(50)),
                         map("result", new BigDecimal(-2))
+                ),
+                Arguments.of(
+                        "a in [1,2,3]",
+                        map("a", new BigDecimal(1)),
+                        map("result", true)
+                ),
+                Arguments.of(
+                        "a in [1,2,3]",
+                        map("a", new BigDecimal(4)),
+                        map("result", false)
                 )
         );
     }

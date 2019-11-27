@@ -8,13 +8,16 @@ package expressions.parser;
 import expressions.ast.ArithmeticExpression;
 import expressions.ast.BooleanExpression;
 import expressions.ast.Expression;
+import expressions.ast.In;
 import expressions.ast.Literal;
 import expressions.ast.Negate;
+import expressions.ast.Set;
 import expressions.ast.Variable;
 import expressions.parser.antlr4.FunctionBaseListener;
 import expressions.parser.antlr4.FunctionLexer;
 import expressions.parser.antlr4.FunctionParser;
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Stack;
 import java.util.function.BiFunction;
 
@@ -105,6 +108,22 @@ public class ASTBuilder extends FunctionBaseListener {
         stack.push(new Variable(ctx.VARIABLE().getText()));
     }
 
+    @Override
+    public void exitSet(FunctionParser.SetContext ctx) {
+        java.util.Set<Expression> set = new HashSet<>();
+        for (int i = 0; i < ctx.expression().size(); i++) {
+            set.add(stack.pop());
+        }
+        stack.push(new Set(set));
+    }
+
+    @Override
+    public void exitIn(FunctionParser.InContext ctx) {
+        Expression set = stack.pop();
+        Expression value = stack.pop();
+        stack.push(new In(value, set));
+    }
+    
     @Override
     public void exitUnary(FunctionParser.UnaryContext ctx) {
         if (ctx.prefix != null && ctx.prefix.getType() == FunctionLexer.MINUS) {
