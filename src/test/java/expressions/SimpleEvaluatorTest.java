@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -122,15 +123,6 @@ public class SimpleEvaluatorTest {
         );
     }
 
-    @ParameterizedTest
-    @MethodSource("testExpressions")
-    public void evaluateReturnsExpectedResult(String expression, Map<String, Object> context, Map<String, Object> expectedResult) {
-        assertEquals(
-                expectedResult,
-                new SimpleEvaluator().evaluate(expression, context)
-        );
-    }
-
     private static Map<String, Object> map(String key1, Object value1) {
         Map<String, Object> map = new HashMap<>();
         map.put(key1, value1);
@@ -144,4 +136,20 @@ public class SimpleEvaluatorTest {
         return map;
     }
 
+    @ParameterizedTest
+    @MethodSource("testExpressions")
+    public void evaluateReturnsExpectedResult(String expression, Map<String, Object> context, Map<String, Object> expectedResult) {
+        assertEquals(
+                expectedResult,
+                new SimpleEvaluator().evaluate(expression, context)
+        );
+    }
+
+    @Test
+    public void convertsIntegersCorrectly() {
+        assertEquals(
+                map("result", new BigDecimal(3)),
+                new SimpleEvaluator().evaluate("a+b", map("a", 1, "b", 2))
+        );
+    }
 }
