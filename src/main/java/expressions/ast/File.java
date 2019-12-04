@@ -13,9 +13,11 @@ import java.util.Map;
  */
 public class File {
 
+    private final Map<String, FunctionDefinition> functions;
     private final Expression expression;
 
-    public File(Expression expression) {
+    public File(Map<String, FunctionDefinition> functions, Expression expression) {
+        this.functions = functions;
         this.expression = expression;
     }
 
