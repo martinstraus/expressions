@@ -5,15 +5,10 @@
  */
 package expressions.ast;
 
-import java.util.Map;
-
 /**
  *
  * @author martinstraus
  */
-public interface Expression<T> {
+public interface Type {
     
-    Type type();
-    
-    T evaluate(Map<String, Object> context);
 }

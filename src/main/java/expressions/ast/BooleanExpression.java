@@ -29,4 +29,9 @@ public class BooleanExpression<T> implements Expression<Boolean> {
         return comparator.apply(left.evaluate(context), right.evaluate(context));
     }
 
+    @Override
+    public Type type() {
+        return Types.BOOLEAN;
+    }
+
 }

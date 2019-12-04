@@ -14,6 +14,7 @@ import expressions.ast.Literal;
 import expressions.ast.Negate;
 import expressions.ast.Not;
 import expressions.ast.Set;
+import expressions.ast.Types;
 import expressions.ast.Variable;
 import expressions.parser.antlr4.FunctionBaseListener;
 import expressions.parser.antlr4.FunctionLexer;
@@ -103,12 +104,12 @@ public class ASTBuilder extends FunctionBaseListener {
 
     @Override
     public void exitLiteral(FunctionParser.LiteralContext ctx) {
-        stack.push(new Literal<BigDecimal>(new BigDecimal(ctx.NUMBER().getText())));
+        stack.push(new Literal<BigDecimal>(Types.NUMBER, new BigDecimal(ctx.NUMBER().getText())));
     }
 
     @Override
     public void exitVariable(FunctionParser.VariableContext ctx) {
-        stack.push(new Variable(ctx.VARIABLE().getText()));
+        stack.push(new Variable(Types.UNKNOWN, ctx.VARIABLE().getText()));
     }
 
     @Override

@@ -30,4 +30,9 @@ public class ArithmeticExpression implements Expression<BigDecimal> {
         return function.apply(left.evaluate(context), right.evaluate(context));
     }
 
+    @Override
+    public Type type() {
+        return Types.NUMBER;
+    }
+
 }

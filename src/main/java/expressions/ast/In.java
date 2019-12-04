@@ -27,4 +27,8 @@ public class In implements Expression<Boolean> {
         return set.evaluate(context).contains(value.evaluate(context));
     }
 
+    @Override
+    public Type type() {
+        return Types.BOOLEAN;
+    }
 }

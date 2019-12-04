@@ -5,15 +5,15 @@
  */
 package expressions.ast;
 
-import java.util.Map;
-
 /**
  *
  * @author martinstraus
  */
-public interface Expression<T> {
+public class Types {
     
-    Type type();
-    
-    T evaluate(Map<String, Object> context);
+    public static final Type BOOLEAN = new Type() {};
+    public static final Type NUMBER = new Type() {};
+    public static final Type SET = new Type() {};
+    public static final Type UNKNOWN = new Type() {};
+
 }

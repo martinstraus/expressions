@@ -24,4 +24,8 @@ public class Not implements Expression<Boolean> {
         return !value.evaluate(context);
     }
 
+    @Override
+    public Type type() {
+        return Types.BOOLEAN;
+    }
 }

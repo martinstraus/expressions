@@ -13,15 +13,22 @@ import java.util.Map;
  */
 public class Literal<T> implements Expression<T> {
 
+    private final Type type;
     private final T value;
 
-    public Literal(T value) {
+    public Literal(Type type, T value) {
+        this.type = type;
         this.value = value;
     }
 
     @Override
     public T evaluate(Map<String, Object> context) {
         return value;
+    }
+
+    @Override
+    public Type type() {
+        return type;
     }
 
 }

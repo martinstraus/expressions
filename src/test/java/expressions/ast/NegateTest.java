@@ -32,9 +32,7 @@ public class NegateTest {
     public void evaluateReturnsCorrectResult(int a, int result) {
         assertEquals(
                 new BigDecimal(result),
-                new Negate(
-                        (context) -> new BigDecimal(a)
-                ).evaluate(Collections.EMPTY_MAP)
+                new Negate(new Literal(Types.NUMBER, new BigDecimal(a))).evaluate(Collections.EMPTY_MAP)
         );
     }
 }
