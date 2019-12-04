@@ -9,19 +9,27 @@ import expressions.ast.ArithmeticExpression;
 import expressions.ast.BooleanExpression;
 import expressions.ast.Expression;
 import expressions.ast.File;
+import expressions.ast.FunctionCall;
+import expressions.ast.FunctionDefinition;
 import expressions.ast.In;
 import expressions.ast.Literal;
 import expressions.ast.Negate;
 import expressions.ast.Not;
+import expressions.ast.ParameterDefinition;
 import expressions.ast.Set;
 import expressions.ast.Variable;
 import expressions.parser.antlr4.FunctionBaseListener;
 import expressions.parser.antlr4.FunctionLexer;
 import expressions.parser.antlr4.FunctionParser;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 import java.util.function.BiFunction;
+import static java.util.stream.Collectors.toList;
 
 /**
  *
@@ -39,10 +47,12 @@ public class ASTBuilder extends FunctionBaseListener {
     private static final BiFunction<BigDecimal, BigDecimal, BigDecimal> BIG_DECIMAL_POWER = (a, b) -> a.pow(b.intValue());
 
     private final Stack<Expression> stack;
+    private final Map<String, FunctionDefinition> functions;
     private File file;
 
     public ASTBuilder() {
         this.stack = new Stack<>();
+        this.functions = new HashMap<>();
     }
 
     @Override
@@ -157,6 +167,34 @@ public class ASTBuilder extends FunctionBaseListener {
     }
 
     @Override
+    public void exitFunctionCallExpr(FunctionParser.FunctionCallExprContext ctx) {
+        stack.push(new FunctionCall(ctx.functionName.getText(), pop(ctx.parameters.size()), functions));
+    }
+
+    private List<Expression> pop(int count) {
+        List<Expression> list = new ArrayList(count);
+        for (int i = 0; i < count; i++) {
+            list.set(count - 1 - i, stack.pop());
+        }
+        return list;
+    }
+
+    @Override
+    public void exitFunction(FunctionParser.FunctionContext ctx) {
+        String functionName = ctx.functionName.getText();
+        List<ParameterDefinition> parameters = ctx.parameters.stream().map((p) -> new ParameterDefinition(p.getText())).collect(toList());
+        functions.put(
+                functionName,
+                new FunctionDefinition(functionName, parameters, stack.pop())
+        );
+    }
+
+    @Override
+    public void exitFile(FunctionParser.FileContext ctx) {
+        file = new File(functions, stack.pop());
+    }
+
+    public File file() {
     public void exitFile(FunctionParser.FileContext ctx) {
         this.file = new File(stack.pop());
     }

@@ -32,7 +32,7 @@ public class AntlrParser implements Parser {
             );
             ASTBuilder extractor = new ASTBuilder();
             ParseTreeWalker.DEFAULT.walk(extractor, parser.file());
-            return extractor.currentFile();
+            return extractor.file();
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
