@@ -194,11 +194,6 @@ public class ASTBuilder extends FunctionBaseListener {
         file = new File(functions, stack.pop());
     }
 
-    public File file() {
-    public void exitFile(FunctionParser.FileContext ctx) {
-        this.file = new File(stack.pop());
-    }
-
     public File currentFile() {
         return file;
     }
