@@ -5,7 +5,7 @@
  */
 package expressions.parser;
 
-import expressions.ast.Expression;
+import expressions.ast.File;
 
 /**
  *
@@ -13,5 +13,5 @@ import expressions.ast.Expression;
  */
 public interface Parser {
     
-    Expression parse(String expression);
+    File parse(String expression);
 }

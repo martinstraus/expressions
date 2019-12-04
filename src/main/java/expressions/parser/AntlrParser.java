@@ -5,7 +5,7 @@
  */
 package expressions.parser;
 
-import expressions.ast.Expression;
+import expressions.ast.File;
 import expressions.parser.antlr4.FunctionLexer;
 import expressions.parser.antlr4.FunctionParser;
 import java.io.IOException;
@@ -21,7 +21,7 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 public class AntlrParser implements Parser {
 
     @Override
-    public Expression parse(String expression) {
+    public File parse(String expression) {
         try {
             FunctionParser parser = new FunctionParser(
                     new CommonTokenStream(
@@ -32,7 +32,7 @@ public class AntlrParser implements Parser {
             );
             ASTBuilder extractor = new ASTBuilder();
             ParseTreeWalker.DEFAULT.walk(extractor, parser.file());
-            return extractor.currentExpression();
+            return extractor.currentFile();
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }

@@ -8,6 +8,7 @@ package expressions.parser;
 import expressions.ast.ArithmeticExpression;
 import expressions.ast.BooleanExpression;
 import expressions.ast.Expression;
+import expressions.ast.File;
 import expressions.ast.In;
 import expressions.ast.Literal;
 import expressions.ast.Negate;
@@ -38,6 +39,7 @@ public class ASTBuilder extends FunctionBaseListener {
     private static final BiFunction<BigDecimal, BigDecimal, BigDecimal> BIG_DECIMAL_POWER = (a, b) -> a.pow(b.intValue());
 
     private final Stack<Expression> stack;
+    private File file;
 
     public ASTBuilder() {
         this.stack = new Stack<>();
@@ -143,7 +145,7 @@ public class ASTBuilder extends FunctionBaseListener {
         Expression<Boolean> left = stack.pop();
         stack.push(new BooleanExpression<Boolean>(operator(ctx), left, right));
     }
-    
+
     private BiFunction<Boolean, Boolean, Boolean> operator(FunctionParser.AndOrContext ctx) {
         if (ctx.AND() != null) {
             return (Boolean a, Boolean b) -> a && b;
@@ -154,8 +156,13 @@ public class ASTBuilder extends FunctionBaseListener {
         }
     }
 
-    public Expression currentExpression() {
-        return stack.peek();
+    @Override
+    public void exitFile(FunctionParser.FileContext ctx) {
+        this.file = new File(stack.pop());
+    }
+
+    public File currentFile() {
+        return file;
     }
 
 }
