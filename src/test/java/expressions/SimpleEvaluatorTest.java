@@ -124,6 +124,16 @@ public class SimpleEvaluatorTest {
                         "a = \"abc\"",
                         map("a", "abc"),
                         map("result", true)
+                ),
+                Arguments.of(
+                        "a in [\"abc\", \"def\"]",
+                        map("a", "abc"),
+                        map("result", true)
+                ),
+                Arguments.of(
+                        "a in [\"abc\", \"def\"]",
+                        map("a", "x"),
+                        map("result", false)
                 )
         );
     }
