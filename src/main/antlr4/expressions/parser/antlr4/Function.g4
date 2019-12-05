@@ -34,7 +34,7 @@ literal
    ;
 
 set
-   : LBRACKET expression (COMMA expression)* RBRACKET
+   : LBRACKET (expression | expression (COMMA expression)*) RBRACKET
    ;
 
 

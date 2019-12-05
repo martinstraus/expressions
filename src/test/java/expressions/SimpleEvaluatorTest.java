@@ -91,6 +91,11 @@ public class SimpleEvaluatorTest {
                         map("result", false)
                 ),
                 Arguments.of(
+                        "a in []",
+                        map("a", new BigDecimal(4)),
+                        map("result", false)
+                ),
+                Arguments.of(
                         "not (a > b)",
                         map("a", new BigDecimal(4), "b", new BigDecimal(8)),
                         map("result", true)
