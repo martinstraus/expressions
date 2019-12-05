@@ -30,6 +30,7 @@ variable
 
 literal
    : NUMBER
+   | STRING 
    ;
 
 set
@@ -54,6 +55,9 @@ fragment VALID_ID_CHAR
 NUMBER
    : ('0' .. '9')+ ('.' ('0' .. '9')+)?
    ;
+
+STRING: '"' (.|ESC)*? '"';
+fragment ESC: '\\"' | '\\\\';
 
 fragment UNSIGNED_INTEGER
    : ('0' .. '9')+
