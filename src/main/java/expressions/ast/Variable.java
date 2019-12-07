@@ -14,15 +14,22 @@ import java.util.Map;
  */
 public class Variable<T> implements Expression<T> {
 
+    private final Type type;
     private final String name;
 
-    public Variable(String name) {
+    public Variable(Type type, String name) {
+        this.type = type;
         this.name = name;
     }
 
     @Override
     public T evaluate(Map<String, Object> context) {
         return (T) context.get(name);
+    }
+
+    @Override
+    public Type type() {
+        return type;
     }
 
 }

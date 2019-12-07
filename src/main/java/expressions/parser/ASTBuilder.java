@@ -6,7 +6,9 @@
 package expressions.parser;
 
 import expressions.ast.ArithmeticExpression;
+import expressions.ast.BooleanComparison;
 import expressions.ast.BooleanExpression;
+import expressions.ast.Equals;
 import expressions.ast.Expression;
 import expressions.ast.File;
 import expressions.ast.FunctionCall;
@@ -17,6 +19,7 @@ import expressions.ast.Negate;
 import expressions.ast.Not;
 import expressions.ast.ParameterDefinition;
 import expressions.ast.Set;
+import expressions.ast.Types;
 import expressions.ast.Variable;
 import expressions.parser.antlr4.FunctionBaseListener;
 import expressions.parser.antlr4.FunctionLexer;
@@ -37,9 +40,6 @@ import static java.util.stream.Collectors.toList;
  */
 public class ASTBuilder extends FunctionBaseListener {
 
-    private static final BiFunction<BigDecimal, BigDecimal, Boolean> BIG_DECIMAL_EQUALS = (a, b) -> a.compareTo(b) == 0;
-    private static final BiFunction<BigDecimal, BigDecimal, Boolean> BIG_DECIMAL_GREATER_THAN = (a, b) -> a.compareTo(b) > 0;
-    private static final BiFunction<BigDecimal, BigDecimal, Boolean> BIG_DECIMAL_LESS_THAN = (a, b) -> a.compareTo(b) < 0;
     private static final BiFunction<BigDecimal, BigDecimal, BigDecimal> BIG_DECIMAL_ADD = (a, b) -> a.add(b);
     private static final BiFunction<BigDecimal, BigDecimal, BigDecimal> BIG_DECIMAL_SUBTRACT = (a, b) -> a.subtract(b);
     private static final BiFunction<BigDecimal, BigDecimal, BigDecimal> BIG_DECIMAL_MULTIPLY = (a, b) -> a.multiply(b);
@@ -67,11 +67,11 @@ public class ASTBuilder extends FunctionBaseListener {
         Expression right = stack.pop();
         Expression left = stack.pop();
         if (ctx.EQ() != null) {
-            stack.add(new BooleanExpression(BIG_DECIMAL_EQUALS, left, right));
+            stack.add(new BooleanExpression(new Equals(), left, right));
         } else if (ctx.GT() != null) {
-            stack.add(new BooleanExpression(BIG_DECIMAL_GREATER_THAN, left, right));
+            stack.add(new BooleanComparison((l, r) -> l.compareTo(r) > 0, left, right));
         } else if (ctx.LT() != null) {
-            stack.add(new BooleanExpression(BIG_DECIMAL_LESS_THAN, left, right));
+            stack.add(new BooleanComparison((l, r) -> l.compareTo(r) < 0, left, right));
         } else {
             throw new IllegalStateException("No relational operator.");
         }
@@ -113,12 +113,26 @@ public class ASTBuilder extends FunctionBaseListener {
 
     @Override
     public void exitLiteral(FunctionParser.LiteralContext ctx) {
-        stack.push(new Literal<BigDecimal>(new BigDecimal(ctx.NUMBER().getText())));
+        stack.push(interpretLiteral(ctx));
+    }
+
+    private Expression interpretLiteral(FunctionParser.LiteralContext ctx) {
+        if (ctx.NUMBER() != null) {
+            return new Literal<BigDecimal>(Types.NUMBER, new BigDecimal(ctx.NUMBER().getText()));
+        } else if (ctx.STRING() != null) {
+            return new Literal<String>(Types.STRING, removeQuotations(ctx.STRING().getText()));
+        } else {
+            throw new IllegalStateException("Unsupported literal.");
+        }
+    }
+
+    private String removeQuotations(String text) {
+        return text.substring(1, text.length() - 1);
     }
 
     @Override
     public void exitVariable(FunctionParser.VariableContext ctx) {
-        stack.push(new Variable(ctx.VARIABLE().getText()));
+        stack.push(new Variable(Types.UNKNOWN, ctx.VARIABLE().getText()));
     }
 
     @Override

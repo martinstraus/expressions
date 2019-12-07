@@ -25,4 +25,10 @@ public class Set<T> implements Expression<java.util.Set<T>> {
         return values.stream().map((e) -> e.evaluate(context)).collect(toSet());
     }
 
+    @Override
+    public Type type() {
+        return Types.SET;
+    }
+
+    
 }

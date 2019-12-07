@@ -25,4 +25,9 @@ public class Negate implements Expression<BigDecimal> {
         return value.evaluate(context).negate();
     }
 
+    @Override
+    public Type type() {
+        return Types.NUMBER;
+    }
+
 }

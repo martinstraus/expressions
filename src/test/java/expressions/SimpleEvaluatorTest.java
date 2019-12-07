@@ -91,6 +91,11 @@ public class SimpleEvaluatorTest {
                         map("result", false)
                 ),
                 Arguments.of(
+                        "a in []",
+                        map("a", new BigDecimal(4)),
+                        map("result", false)
+                ),
+                Arguments.of(
                         "not (a > b)",
                         map("a", new BigDecimal(4), "b", new BigDecimal(8)),
                         map("result", true)
@@ -119,7 +124,29 @@ public class SimpleEvaluatorTest {
                         "(a > 1) and (b > 2)",
                         map("a", new BigDecimal(2), "b", new BigDecimal(3)),
                         map("result", true)
+                ),
+                Arguments.of(
+                        "a = \"abc\"",
+                        map("a", "abc"),
+                        map("result", true)
+                ),
+                Arguments.of(
+                        "a in [\"abc\", \"def\"]",
+                        map("a", "abc"),
+                        map("result", true)
+                ),
+                Arguments.of(
+                        "a in [\"abc\", \"def\"]",
+                        map("a", "x"),
+                        map("result", false)
                 )
+        );
+    }
+
+    private static List<Arguments> evaluationExceptionExpressions() {
+        return asList(
+                Arguments.of("a>b", map("a", new BigDecimal(1), "b", "b")),
+                Arguments.of("a<b", map("a", new BigDecimal(1), "b", "b"))
         );
     }
 
@@ -142,6 +169,15 @@ public class SimpleEvaluatorTest {
         assertEquals(
                 expectedResult,
                 new SimpleEvaluator().evaluate(expression, context)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("evaluationExceptionExpressions")
+    public void throwsEvaluationExceptionIfExpressionIsInvalid(String expression, Map<String, Object> context) {
+        assertThrows(
+                EvaluationException.class,
+                () -> new SimpleEvaluator().evaluate(expression, context)
         );
     }
 
