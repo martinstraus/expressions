@@ -159,6 +159,11 @@ public class SimpleEvaluatorTest {
                         "matches(x, \"[abc]\")",
                         map("x", "a"),
                         map("result", true)
+                ),
+                Arguments.of(
+                        "length(x)",
+                        map("x", "abc"),
+                        map("result", new BigDecimal(3))
                 )
         );
     }

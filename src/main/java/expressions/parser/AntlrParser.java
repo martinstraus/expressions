@@ -7,6 +7,7 @@ package expressions.parser;
 
 import expressions.ast.File;
 import expressions.ast.FunctionDefinition;
+import expressions.evaluator.Length;
 import expressions.evaluator.Matches;
 import expressions.parser.antlr4.FunctionLexer;
 import expressions.parser.antlr4.FunctionParser;
@@ -36,6 +37,7 @@ public class AntlrParser implements Parser {
             );
             Map<String, FunctionDefinition> functions = new HashMap<>();
             functions.put("matches", new Matches());
+            functions.put("length", new Length());
             ASTBuilder extractor = new ASTBuilder(functions);
             ParseTreeWalker.DEFAULT.walk(extractor, parser.file());
             return extractor.currentFile();
