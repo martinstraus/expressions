@@ -5,6 +5,7 @@
  */
 package expressions.ast;
 
+import expressions.EvaluationException;
 import java.util.List;
 import java.util.Map;
 import static java.util.stream.Collectors.toList;
@@ -27,7 +28,11 @@ public class FunctionCall<T> implements Expression<T> {
 
     @Override
     public T evaluate(Map<String, Object> context) {
-        return (T) functions.get(name).evaluate(context, evaluatedParameters(context));
+        FunctionDefinition<String> function = functions.get(name);
+        if (function == null) {
+            throw new EvaluationException(String.format("Function %s not defined.", name));
+        }
+        return (T) function.evaluate(context, evaluatedParameters(context));
     }
 
     private List<Object> evaluatedParameters(Map<String, Object> context) {

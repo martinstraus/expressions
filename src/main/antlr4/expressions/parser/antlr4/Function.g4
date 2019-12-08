@@ -2,7 +2,7 @@ grammar Function;
 file : function? expression EOF;
 
 function
-   : DEF name=VARIABLE LPAREN parameters+=expression RPAREN ASSIGN expression SEMICOLON;
+   : DEF name=VARIABLE LPAREN parameters+=VARIABLE (COMMA parameters+=VARIABLE)* RPAREN ASSIGN expression SEMICOLON;
 
 expression
    :  NOT expression # Not
@@ -13,7 +13,7 @@ expression
    |  expression (TIMES | DIV)  expression # TimesOrDivision
    |  expression (PLUS | MINUS) expression # PlusOrMinus
    |  prefix=(PLUS | MINUS)? atom # Unary
-   |  functionName=VARIABLE LPAREN parameters+=expression RPAREN # FunctionCall
+   |  functionName=VARIABLE LPAREN parameters+=expression (COMMA parameters+=expression)* RPAREN # FunctionCall
    |  LPAREN expression RPAREN # ParenthesisExpression  
    ;
 

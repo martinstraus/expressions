@@ -12,6 +12,7 @@ import expressions.ast.Equals;
 import expressions.ast.Expression;
 import expressions.ast.File;
 import expressions.ast.FunctionCall;
+import expressions.ast.FunctionDefinition;
 import expressions.ast.SimpleFunctionDefinition;
 import expressions.ast.In;
 import expressions.ast.Literal;
@@ -26,6 +27,7 @@ import expressions.parser.antlr4.FunctionLexer;
 import expressions.parser.antlr4.FunctionParser;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import static java.util.Collections.EMPTY_MAP;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -47,12 +49,16 @@ public class ASTBuilder extends FunctionBaseListener {
     private static final BiFunction<BigDecimal, BigDecimal, BigDecimal> BIG_DECIMAL_POWER = (a, b) -> a.pow(b.intValue());
 
     private final Stack<Expression> stack;
-    private final Map<String, SimpleFunctionDefinition> functions;
+    private final Map<String, FunctionDefinition> functions;
     private File file;
 
     public ASTBuilder() {
+        this(EMPTY_MAP);
+    }
+
+    public ASTBuilder(Map<String, FunctionDefinition> functions) {
         this.stack = new Stack<>();
-        this.functions = new HashMap<>();
+        this.functions = new HashMap<>(functions);
     }
 
     @Override

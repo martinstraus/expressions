@@ -154,6 +154,11 @@ public class SimpleEvaluatorTest {
                         "def f(x) <- x+1; f(a)",
                         map("a", new BigDecimal(2)),
                         map("result", new BigDecimal(3))
+                ),
+                Arguments.of(
+                        "matches(x, \"[abc]\")",
+                        map("x", "a"),
+                        map("result", true)
                 )
         );
     }
@@ -182,9 +187,9 @@ public class SimpleEvaluatorTest {
     @MethodSource("testExpressions")
     public void evaluateReturnsExpectedResult(String expression, Map<String, Object> context, Map<String, Object> expectedResult) {
         System.out.printf(
-                "Expression \"%s\" for context %s should have result %s.\n", 
-                expression, 
-                context.toString(), 
+                "Expression \"%s\" for context %s should have result %s.\n",
+                expression,
+                context.toString(),
                 expectedResult.toString()
         );
         assertEquals(
@@ -207,6 +212,14 @@ public class SimpleEvaluatorTest {
         assertEquals(
                 map("result", new BigDecimal(3)),
                 new SimpleEvaluator().evaluate("a+b", map("a", 1, "b", 2))
+        );
+    }
+
+    @Test
+    public void throwsEvaluationExceptionIfFunctionNotDefined() {
+        assertThrows(
+                EvaluationException.class,
+                () -> new SimpleEvaluator().evaluate("f(a)", EMPTY_MAP)
         );
     }
 }

@@ -6,10 +6,14 @@
 package expressions.parser;
 
 import expressions.ast.File;
+import expressions.ast.FunctionDefinition;
+import expressions.evaluator.Matches;
 import expressions.parser.antlr4.FunctionLexer;
 import expressions.parser.antlr4.FunctionParser;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.HashMap;
+import java.util.Map;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
@@ -30,7 +34,9 @@ public class AntlrParser implements Parser {
                             )
                     )
             );
-            ASTBuilder extractor = new ASTBuilder();
+            Map<String, FunctionDefinition> functions = new HashMap<>();
+            functions.put("matches", new Matches());
+            ASTBuilder extractor = new ASTBuilder(functions);
             ParseTreeWalker.DEFAULT.walk(extractor, parser.file());
             return extractor.currentFile();
         } catch (IOException ex) {
