@@ -9,6 +9,7 @@ import expressions.ast.File;
 import expressions.ast.FunctionDefinition;
 import expressions.evaluator.Length;
 import expressions.evaluator.Matches;
+import expressions.evaluator.Split;
 import expressions.parser.antlr4.FunctionLexer;
 import expressions.parser.antlr4.FunctionParser;
 import java.io.IOException;
@@ -38,6 +39,7 @@ public class AntlrParser implements Parser {
             Map<String, FunctionDefinition> functions = new HashMap<>();
             functions.put("matches", new Matches());
             functions.put("length", new Length());
+            functions.put("split", new Split());
             ASTBuilder extractor = new ASTBuilder(functions);
             ParseTreeWalker.DEFAULT.walk(extractor, parser.file());
             return extractor.currentFile();

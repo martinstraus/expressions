@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import static java.util.Arrays.asList;
 import static java.util.Collections.EMPTY_MAP;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
@@ -164,6 +165,11 @@ public class SimpleEvaluatorTest {
                         "length(x)",
                         map("x", "abc"),
                         map("result", new BigDecimal(3))
+                ),
+                Arguments.of(
+                        "split(text, regexp)",
+                        map("text", "a b c", "regexp", " "),
+                        map("result", asList("a", "b", "c"))
                 )
         );
     }
