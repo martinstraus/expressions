@@ -5,8 +5,8 @@
  */
 package expressions.ast;
 
+import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
 
 /**
  *
@@ -15,9 +15,9 @@ import java.util.Set;
 public class In implements Expression<Boolean> {
 
     private final Expression value;
-    private final Expression<java.util.Set> set;
+    private final Expression<Collection> set;
 
-    public In(Expression value, Expression<Set> set) {
+    public In(Expression value, Expression<Collection> set) {
         this.value = value;
         this.set = set;
     }

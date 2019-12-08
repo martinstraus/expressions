@@ -8,13 +8,14 @@ expression
    :  NOT expression # Not
    |  expression (EQ | GT | LT) expression # BooleanExpression
    |  expression (AND | OR) expression # AndOr
-   |  expression IN set # In 
+   |  expression IN set=expression # In 
    |  expression POW expression # Power
    |  expression (TIMES | DIV)  expression # TimesOrDivision
    |  expression (PLUS | MINUS) expression # PlusOrMinus
+   |  LBRACKET (expression (COMMA expression)*)? RBRACKET # Set
    |  prefix=(PLUS | MINUS)? atom # Unary
    |  functionName=VARIABLE LPAREN parameters+=expression (COMMA parameters+=expression)* RPAREN # FunctionCall
-   |  LPAREN expression RPAREN # ParenthesisExpression  
+   |  LPAREN expression RPAREN # ParenthesisExpression
    ;
 
 DEF: 'def';
@@ -44,10 +45,6 @@ variable
 literal
    : NUMBER
    | STRING 
-   ;
-
-set
-   : LBRACKET (expression (COMMA expression)*)? RBRACKET
    ;
 
 fragment VALID_ID_START

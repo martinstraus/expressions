@@ -170,6 +170,11 @@ public class SimpleEvaluatorTest {
                         "split(text, regexp)",
                         map("text", "a b c", "regexp", " "),
                         map("result", asList("a", "b", "c"))
+                ),
+                Arguments.of(
+                        "tag in split(tags, \",\")",
+                        map("tags", "tag1,tag2,tag3", "tag", "tag2"),
+                        map("result", true)
                 )
         );
     }
