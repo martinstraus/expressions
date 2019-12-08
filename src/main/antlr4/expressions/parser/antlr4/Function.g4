@@ -1,23 +1,36 @@
 grammar Function;
-file : expression* EOF;
+file : function? expression EOF;
+
+function
+   : DEF name=VARIABLE LPAREN parameters+=expression RPAREN ASSIGN expression SEMICOLON;
 
 expression
-   :  prefix=(PLUS | MINUS)? atom # Unary
-   |  NOT expression # Not
+   :  NOT expression # Not
+   |  expression (EQ | GT | LT) expression # BooleanExpression
    |  expression (AND | OR) expression # AndOr
+   |  expression IN set # In 
    |  expression POW expression # Power
    |  expression (TIMES | DIV)  expression # TimesOrDivision
    |  expression (PLUS | MINUS) expression # PlusOrMinus
-   |  expression (EQ | GT | LT) expression # BooleanExpression
-   |  expression IN set # In 
+   |  prefix=(PLUS | MINUS)? atom # Unary
+   |  functionName=VARIABLE LPAREN parameters+=expression RPAREN # FunctionCall
    |  LPAREN expression RPAREN # ParenthesisExpression  
    ;
+
+DEF: 'def';
+FUNCTION: 'function';
+
+ASSIGN: '<-';
+
+SEMICOLON: ';';
 
 IN: 'in';
 
 NOT: 'not';
 
 AND: 'and';
+
+OR: 'or';
 
 atom
    : variable
@@ -34,14 +47,8 @@ literal
    ;
 
 set
-   : LBRACKET (expression | expression (COMMA expression)*) RBRACKET
+   : LBRACKET (expression (COMMA expression)*)? RBRACKET
    ;
-
-
-VARIABLE
-   : VALID_ID_START VALID_ID_CHAR*
-   ;
-
 
 fragment VALID_ID_START
    : ('a' .. 'z') | ('A' .. 'Z') | '_'
@@ -50,6 +57,10 @@ fragment VALID_ID_START
 
 fragment VALID_ID_CHAR
    : VALID_ID_START | ('0' .. '9')
+   ;
+
+VARIABLE
+   : VALID_ID_START VALID_ID_CHAR*
    ;
 
 NUMBER

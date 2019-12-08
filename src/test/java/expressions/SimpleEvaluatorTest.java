@@ -112,13 +112,23 @@ public class SimpleEvaluatorTest {
                 ),
                 Arguments.of(
                         "a or b",
+                        map("a", false, "b", false),
+                        map("result", false)
+                ),
+                Arguments.of(
+                        "a or b",
                         map("a", false, "b", true),
                         map("result", true)
                 ),
                 Arguments.of(
                         "a or b",
                         map("a", true, "b", false),
-                        map("result", false)
+                        map("result", true)
+                ),
+                Arguments.of(
+                        "a or b",
+                        map("a", true, "b", true),
+                        map("result", true)
                 ),
                 Arguments.of(
                         "(a > 1) and (b > 2)",
@@ -139,6 +149,11 @@ public class SimpleEvaluatorTest {
                         "a in [\"abc\", \"def\"]",
                         map("a", "x"),
                         map("result", false)
+                ),
+                Arguments.of(
+                        "def f(x) <- x+1; f(a)",
+                        map("a", new BigDecimal(2)),
+                        map("result", new BigDecimal(3))
                 )
         );
     }
@@ -166,6 +181,12 @@ public class SimpleEvaluatorTest {
     @ParameterizedTest
     @MethodSource("testExpressions")
     public void evaluateReturnsExpectedResult(String expression, Map<String, Object> context, Map<String, Object> expectedResult) {
+        System.out.printf(
+                "Expression \"%s\" for context %s should have result %s.\n", 
+                expression, 
+                context.toString(), 
+                expectedResult.toString()
+        );
         assertEquals(
                 expectedResult,
                 new SimpleEvaluator().evaluate(expression, context)

@@ -34,4 +34,9 @@ public class FunctionCall<T> implements Expression<T> {
         return parameters.stream().map((p) -> p.evaluate(context)).collect(toList());
     }
 
+    @Override
+    public Type type() {
+        return Types.UNKNOWN;
+    }
+
 }

@@ -12,7 +12,7 @@ import expressions.ast.Equals;
 import expressions.ast.Expression;
 import expressions.ast.File;
 import expressions.ast.FunctionCall;
-import expressions.ast.FunctionDefinition;
+import expressions.ast.SimpleFunctionDefinition;
 import expressions.ast.In;
 import expressions.ast.Literal;
 import expressions.ast.Negate;
@@ -47,7 +47,7 @@ public class ASTBuilder extends FunctionBaseListener {
     private static final BiFunction<BigDecimal, BigDecimal, BigDecimal> BIG_DECIMAL_POWER = (a, b) -> a.pow(b.intValue());
 
     private final Stack<Expression> stack;
-    private final Map<String, FunctionDefinition> functions;
+    private final Map<String, SimpleFunctionDefinition> functions;
     private File file;
 
     public ASTBuilder() {
@@ -181,25 +181,24 @@ public class ASTBuilder extends FunctionBaseListener {
     }
 
     @Override
-    public void exitFunctionCallExpr(FunctionParser.FunctionCallExprContext ctx) {
+    public void exitFunctionCall(FunctionParser.FunctionCallContext ctx) {
         stack.push(new FunctionCall(ctx.functionName.getText(), pop(ctx.parameters.size()), functions));
     }
 
     private List<Expression> pop(int count) {
         List<Expression> list = new ArrayList(count);
         for (int i = 0; i < count; i++) {
-            list.set(count - 1 - i, stack.pop());
+            list.add(0, stack.pop()); // We add in index 0 to reverse the order of the popped elements.
         }
         return list;
     }
 
     @Override
     public void exitFunction(FunctionParser.FunctionContext ctx) {
-        String functionName = ctx.functionName.getText();
+        String functionName = ctx.name.getText();
         List<ParameterDefinition> parameters = ctx.parameters.stream().map((p) -> new ParameterDefinition(p.getText())).collect(toList());
-        functions.put(
-                functionName,
-                new FunctionDefinition(functionName, parameters, stack.pop())
+        functions.put(functionName,
+                new SimpleFunctionDefinition(functionName, parameters, stack.pop())
         );
     }
 
