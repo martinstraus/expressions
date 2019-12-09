@@ -11,6 +11,7 @@ import expressions.evaluator.Length;
 import expressions.evaluator.Lowercase;
 import expressions.evaluator.Matches;
 import expressions.evaluator.Split;
+import expressions.evaluator.Uppercase;
 import expressions.parser.antlr4.FunctionLexer;
 import expressions.parser.antlr4.FunctionParser;
 import java.io.IOException;
@@ -42,6 +43,7 @@ public class AntlrParser implements Parser {
             functions.put("length", new Length());
             functions.put("split", new Split());
             functions.put("lowercase", new Lowercase());
+            functions.put("uppercase", new Uppercase());
             ASTBuilder extractor = new ASTBuilder(functions);
             ParseTreeWalker.DEFAULT.walk(extractor, parser.file());
             return extractor.currentFile();

@@ -180,6 +180,11 @@ public class SimpleEvaluatorTest {
                         "lowercase(a) = \"abc\"",
                         map("a", "aBc"),
                         map("result", true)
+                ),
+                Arguments.of(
+                        "uppercase(a) = \"ABC\"",
+                        map("a", "aBc"),
+                        map("result", true)
                 )
         );
     }
