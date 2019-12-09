@@ -195,6 +195,11 @@ public class SimpleEvaluatorTest {
                         "add(date(\"2019-01-01\"), period(1, days)) = date(\"2019-01-02\")",
                         EMPTY_MAP,
                         map("result", true)
+                ),
+                Arguments.of(
+                        "subtract(date(\"2019-01-01\"), period(1, months)) = date(\"2018-12-01\")",
+                        EMPTY_MAP,
+                        map("result", true)
                 )
         );
     }

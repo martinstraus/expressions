@@ -9,6 +9,7 @@ import expressions.ast.File;
 import expressions.ast.FunctionDefinition;
 import expressions.evaluator.Date;
 import expressions.evaluator.DateAdd;
+import expressions.evaluator.DateSubtract;
 import expressions.evaluator.Period;
 import expressions.evaluator.Length;
 import expressions.evaluator.Lowercase;
@@ -50,6 +51,7 @@ public class AntlrParser implements Parser {
             functions.put("date", new Date());
             functions.put("period", new Period());
             functions.put("add", new DateAdd());
+            functions.put("subtract", new DateSubtract());
             ASTBuilder extractor = new ASTBuilder(functions);
             ParseTreeWalker.DEFAULT.walk(extractor, parser.file());
             return extractor.currentFile();
