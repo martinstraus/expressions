@@ -7,6 +7,7 @@ package expressions.parser;
 
 import expressions.ast.File;
 import expressions.ast.FunctionDefinition;
+import expressions.evaluator.Date;
 import expressions.evaluator.Length;
 import expressions.evaluator.Lowercase;
 import expressions.evaluator.Matches;
@@ -44,6 +45,7 @@ public class AntlrParser implements Parser {
             functions.put("split", new Split());
             functions.put("lowercase", new Lowercase());
             functions.put("uppercase", new Uppercase());
+            functions.put("date", new Date());
             ASTBuilder extractor = new ASTBuilder(functions);
             ParseTreeWalker.DEFAULT.walk(extractor, parser.file());
             return extractor.currentFile();

@@ -185,6 +185,11 @@ public class SimpleEvaluatorTest {
                         "uppercase(a) = \"ABC\"",
                         map("a", "aBc"),
                         map("result", true)
+                ),
+                Arguments.of(
+                        "date(a) = date(\"2019-01-01\")",
+                        map("a", "2019-01-01"),
+                        map("result", true)
                 )
         );
     }
