@@ -8,6 +8,8 @@ package expressions.parser;
 import expressions.ast.File;
 import expressions.ast.FunctionDefinition;
 import expressions.evaluator.Date;
+import expressions.evaluator.DateAdd;
+import expressions.evaluator.Period;
 import expressions.evaluator.Length;
 import expressions.evaluator.Lowercase;
 import expressions.evaluator.Matches;
@@ -46,6 +48,8 @@ public class AntlrParser implements Parser {
             functions.put("lowercase", new Lowercase());
             functions.put("uppercase", new Uppercase());
             functions.put("date", new Date());
+            functions.put("period", new Period());
+            functions.put("add", new DateAdd());
             ASTBuilder extractor = new ASTBuilder(functions);
             ParseTreeWalker.DEFAULT.walk(extractor, parser.file());
             return extractor.currentFile();

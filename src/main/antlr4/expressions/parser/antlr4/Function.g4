@@ -1,4 +1,8 @@
 grammar Function;
+@header {
+import  expressions.evaluator.DateUnit;
+import  expressions.evaluator.DateUnits;
+}
 file : function? expression EOF;
 
 function
@@ -33,6 +37,12 @@ AND: 'and';
 
 OR: 'or';
 
+DAYS: 'days';
+
+MONTHS: 'months';
+
+YEARS: 'years';
+
 atom
    : variable
    | literal
@@ -45,7 +55,17 @@ variable
 literal
    : NUMBER
    | STRING 
+   | dateUnit
    ;
+
+dateUnit
+    locals [
+        DateUnit unit=null;
+    ]
+    : DAYS   {$unit=DateUnits.DAYS;} 
+    | MONTHS {$unit=DateUnits.MONTHS;} 
+    | YEARS  {$unit=DateUnits.YEARS;}
+    ;
 
 fragment VALID_ID_START
    : ('a' .. 'z') | ('A' .. 'Z') | '_'

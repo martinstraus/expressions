@@ -22,6 +22,7 @@ import expressions.ast.ParameterDefinition;
 import expressions.ast.Set;
 import expressions.ast.Types;
 import expressions.ast.Variable;
+import expressions.evaluator.DateUnit;
 import expressions.parser.antlr4.FunctionBaseListener;
 import expressions.parser.antlr4.FunctionLexer;
 import expressions.parser.antlr4.FunctionParser;
@@ -127,6 +128,8 @@ public class ASTBuilder extends FunctionBaseListener {
             return new Literal<BigDecimal>(Types.NUMBER, new BigDecimal(ctx.NUMBER().getText()));
         } else if (ctx.STRING() != null) {
             return new Literal<String>(Types.STRING, removeQuotations(ctx.STRING().getText()));
+        } else if (ctx.dateUnit()!= null) {
+            return new Literal<DateUnit>(Types.DATE_UNIT, ctx.dateUnit().unit);
         } else {
             throw new IllegalStateException("Unsupported literal.");
         }

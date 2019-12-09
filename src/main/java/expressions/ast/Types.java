@@ -58,6 +58,7 @@ public class Types {
     public static final Type SET = new DefaultType("set");
     public static final Type STRING = new DefaultType("string");
     public static final Type DATE = new DefaultType("date");
+    public static final Type DATE_UNIT = new DefaultType("date_unit");
     public static final Type UNKNOWN = new DefaultType("unknown");
 
     public static boolean ofType(Type type, Expression... expressions) {

@@ -190,6 +190,11 @@ public class SimpleEvaluatorTest {
                         "date(a) = date(\"2019-01-01\")",
                         map("a", "2019-01-01"),
                         map("result", true)
+                ),
+                Arguments.of(
+                        "add(date(\"2019-01-01\"), period(1, days)) = date(\"2019-01-02\")",
+                        EMPTY_MAP,
+                        map("result", true)
                 )
         );
     }
