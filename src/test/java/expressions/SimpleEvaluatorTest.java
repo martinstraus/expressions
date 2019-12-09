@@ -175,6 +175,11 @@ public class SimpleEvaluatorTest {
                         "tag in split(tags, \",\")",
                         map("tags", "tag1,tag2,tag3", "tag", "tag2"),
                         map("result", true)
+                ),
+                Arguments.of(
+                        "lowercase(a) = \"abc\"",
+                        map("a", "aBc"),
+                        map("result", true)
                 )
         );
     }

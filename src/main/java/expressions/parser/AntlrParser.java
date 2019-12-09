@@ -8,6 +8,7 @@ package expressions.parser;
 import expressions.ast.File;
 import expressions.ast.FunctionDefinition;
 import expressions.evaluator.Length;
+import expressions.evaluator.Lowercase;
 import expressions.evaluator.Matches;
 import expressions.evaluator.Split;
 import expressions.parser.antlr4.FunctionLexer;
@@ -40,6 +41,7 @@ public class AntlrParser implements Parser {
             functions.put("matches", new Matches());
             functions.put("length", new Length());
             functions.put("split", new Split());
+            functions.put("lowercase", new Lowercase());
             ASTBuilder extractor = new ASTBuilder(functions);
             ParseTreeWalker.DEFAULT.walk(extractor, parser.file());
             return extractor.currentFile();

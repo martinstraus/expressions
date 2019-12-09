@@ -38,6 +38,5 @@ public class LengthTest {
                 new Length().evaluate(EMPTY_MAP, asList(value)),
                 new BigDecimal(expectedLength)
         );
-
     }
 }
