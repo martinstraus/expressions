@@ -1,7 +1,7 @@
 grammar Function;
 @header {
-import  expressions.evaluator.DateUnit;
-import  expressions.evaluator.DateUnits;
+import  expressions.evaluator.date.Unit;
+import  expressions.evaluator.date.Units;
 }
 file : function? expression EOF;
 
@@ -60,11 +60,11 @@ literal
 
 dateUnit
     locals [
-        DateUnit unit=null;
+        Unit unit=null;
     ]
-    : DAYS   {$unit=DateUnits.DAYS;} 
-    | MONTHS {$unit=DateUnits.MONTHS;} 
-    | YEARS  {$unit=DateUnits.YEARS;}
+    : DAYS   {$unit=Units.DAYS;} 
+    | MONTHS {$unit=Units.MONTHS;} 
+    | YEARS  {$unit=Units.YEARS;}
     ;
 
 fragment VALID_ID_START
