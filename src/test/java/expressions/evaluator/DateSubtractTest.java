@@ -5,6 +5,7 @@
  */
 package expressions.evaluator;
 
+import expressions.evaluator.date.Subtract;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import static java.time.Month.*;
@@ -42,18 +43,16 @@ public class DateSubtractTest {
     @ParameterizedTest
     @MethodSource("values")
     public void evaluateReturnsExpectedValue(LocalDate date, Period period, LocalDate result) {
-        assertEquals(
-                result,
-                new DateSubtract().evaluate(EMPTY_MAP, asList(date, period))
+        assertEquals(result,
+                new Subtract().evaluate(EMPTY_MAP, asList(date, period))
         );
     }
 
     @ParameterizedTest
     @MethodSource("invalidParameters")
     public void throwsEvaluationExceptionIfInvalidParameters(List parameters) {
-        assertThrows(
-                EvaluationException.class,
-                () -> new DateSubtract().evaluate(EMPTY_MAP, parameters)
+        assertThrows(EvaluationException.class,
+                () -> new Subtract().evaluate(EMPTY_MAP, parameters)
         );
     }
 }

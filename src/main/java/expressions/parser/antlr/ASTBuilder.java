@@ -22,7 +22,6 @@ import expressions.ast.ParameterDefinition;
 import expressions.ast.Set;
 import expressions.ast.Types;
 import expressions.ast.Variable;
-import expressions.evaluator.DateUnit;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import static java.util.Collections.EMPTY_MAP;
@@ -33,6 +32,7 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.function.BiFunction;
 import static java.util.stream.Collectors.toList;
+import expressions.evaluator.date.Unit;
 
 /**
  *
@@ -126,7 +126,7 @@ public class ASTBuilder extends FunctionBaseListener {
         } else if (ctx.STRING() != null) {
             return new Literal<String>(Types.STRING, removeQuotations(ctx.STRING().getText()));
         } else if (ctx.dateUnit()!= null) {
-            return new Literal<DateUnit>(Types.DATE_UNIT, ctx.dateUnit().unit);
+            return new Literal<Unit>(Types.DATE_UNIT, ctx.dateUnit().unit);
         } else {
             throw new IllegalStateException("Unsupported literal.");
         }

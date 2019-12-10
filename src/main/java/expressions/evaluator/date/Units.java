@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package expressions.evaluator;
+package expressions.evaluator.date;
 
 import java.math.BigDecimal;
 import java.time.Period;
@@ -12,21 +12,21 @@ import java.time.Period;
  *
  * @author martinstraus
  */
-public class DateUnits {
+public class Units {
 
-    public static final DateUnit DAYS = new DateUnit() {
+    public static final Unit DAYS = new Unit() {
         @Override
         public Period period(BigDecimal amount) {
             return Period.ofDays(amount.intValue());
         }
     };
-    public static final DateUnit MONTHS = new DateUnit() {
+    public static final Unit MONTHS = new Unit() {
         @Override
         public Period period(BigDecimal amount) {
             return Period.ofMonths(amount.intValue());
         }
     };
-    public static final DateUnit YEARS = new DateUnit() {
+    public static final Unit YEARS = new Unit() {
         @Override
         public Period period(BigDecimal amount) {
             return Period.ofYears(amount.intValue());

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package expressions.evaluator;
+package expressions.evaluator.date;
 
 import java.math.BigDecimal;
 
@@ -11,7 +11,7 @@ import java.math.BigDecimal;
  *
  * @author martinstraus
  */
-public interface DateUnit {
+public interface Unit {
     
     java.time.Period period(BigDecimal amount);
 }

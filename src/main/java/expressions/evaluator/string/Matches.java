@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package expressions.evaluator;
+package expressions.evaluator.string;
 
 import expressions.ast.Expression;
 import expressions.ast.FunctionDefinition;
+import expressions.evaluator.EvaluationException;
 import java.util.List;
 import java.util.Map;
 

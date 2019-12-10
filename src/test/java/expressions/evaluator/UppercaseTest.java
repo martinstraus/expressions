@@ -5,6 +5,7 @@
  */
 package expressions.evaluator;
 
+import expressions.evaluator.string.Uppercase;
 import java.math.BigDecimal;
 import static java.util.Arrays.asList;
 import static java.util.Collections.EMPTY_LIST;

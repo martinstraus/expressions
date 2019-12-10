@@ -5,6 +5,8 @@
  */
 package expressions.evaluator;
 
+import expressions.evaluator.date.Period;
+import expressions.evaluator.date.Units;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import static java.time.Month.FEBRUARY;
@@ -21,6 +23,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import expressions.evaluator.date.Unit;
 
 /**
  *
@@ -29,10 +32,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 public class PeriodTest {
 
     public static List<Arguments> values() {
-        return asList(
-                Arguments.of(new BigDecimal(1), DateUnits.DAYS, java.time.Period.ofDays(1)),
-                Arguments.of(new BigDecimal(1), DateUnits.MONTHS, java.time.Period.ofMonths(1)),
-                Arguments.of(new BigDecimal(1), DateUnits.YEARS, java.time.Period.ofYears(1))
+        return asList(Arguments.of(new BigDecimal(1), Units.DAYS, java.time.Period.ofDays(1)),
+                Arguments.of(new BigDecimal(1), Units.MONTHS, java.time.Period.ofMonths(1)),
+                Arguments.of(new BigDecimal(1), Units.YEARS, java.time.Period.ofYears(1))
         );
     }
 
@@ -45,7 +47,7 @@ public class PeriodTest {
 
     @ParameterizedTest
     @MethodSource("values")
-    public void evaluateReturnsExpectedValue(BigDecimal amount, DateUnit unit, java.time.Period result) {
+    public void evaluateReturnsExpectedValue(BigDecimal amount, Unit unit, java.time.Period result) {
         assertEquals(
                 result,
                 new Period().evaluate(EMPTY_MAP, asList(amount, unit))

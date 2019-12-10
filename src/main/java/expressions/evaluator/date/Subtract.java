@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package expressions.evaluator;
+package expressions.evaluator.date;
 
 import expressions.ast.FunctionDefinition;
+import expressions.evaluator.EvaluationException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.Map;
  *
  * @author martinstraus
  */
-public class DateAdd implements FunctionDefinition<LocalDate> {
+public class Subtract implements FunctionDefinition<LocalDate> {
 
     @Override
     public LocalDate evaluate(Map<String, Object> context, List<Object> parametersValues) {
@@ -26,7 +27,7 @@ public class DateAdd implements FunctionDefinition<LocalDate> {
         }
         LocalDate date = (LocalDate) parametersValues.get(0);
         Period period = (Period) parametersValues.get(1);
-        return date.plus(period);
+        return date.minus(period);
     }
 
 }

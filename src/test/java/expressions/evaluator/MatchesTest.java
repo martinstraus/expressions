@@ -5,6 +5,7 @@
  */
 package expressions.evaluator;
 
+import expressions.evaluator.string.Matches;
 import expressions.ast.Expression;
 import expressions.ast.Literal;
 import expressions.ast.Types;

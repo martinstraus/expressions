@@ -5,6 +5,7 @@
  */
 package expressions.evaluator;
 
+import expressions.evaluator.string.Length;
 import expressions.ast.Literal;
 import expressions.ast.Types;
 import java.math.BigDecimal;
