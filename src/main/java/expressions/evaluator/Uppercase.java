@@ -5,7 +5,6 @@
  */
 package expressions.evaluator;
 
-import expressions.EvaluationException;
 import expressions.ast.FunctionDefinition;
 import java.util.List;
 import java.util.Map;

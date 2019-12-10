@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package expressions.parser;
+package expressions.parser.antlr;
 
 import expressions.ast.File;
 import expressions.ast.FunctionDefinition;
@@ -16,8 +16,7 @@ import expressions.evaluator.Lowercase;
 import expressions.evaluator.Matches;
 import expressions.evaluator.Split;
 import expressions.evaluator.Uppercase;
-import expressions.parser.antlr4.FunctionLexer;
-import expressions.parser.antlr4.FunctionParser;
+import expressions.parser.Parser;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.HashMap;

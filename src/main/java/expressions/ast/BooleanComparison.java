@@ -5,7 +5,7 @@
  */
 package expressions.ast;
 
-import expressions.EvaluationException;
+import expressions.evaluator.EvaluationException;
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.function.BiFunction;

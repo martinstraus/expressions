@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package expressions;
+package expressions.evaluator;
 
-import expressions.parser.AntlrParser;
+import expressions.parser.antlr.AntlrParser;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;

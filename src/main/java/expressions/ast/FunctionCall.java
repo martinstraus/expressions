@@ -5,7 +5,7 @@
  */
 package expressions.ast;
 
-import expressions.EvaluationException;
+import expressions.evaluator.EvaluationException;
 import java.util.List;
 import java.util.Map;
 import static java.util.stream.Collectors.toList;

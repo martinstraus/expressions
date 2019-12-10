@@ -5,7 +5,6 @@
  */
 package expressions.evaluator;
 
-import expressions.EvaluationException;
 import expressions.ast.FunctionDefinition;
 import java.math.BigDecimal;
 import java.time.Duration;

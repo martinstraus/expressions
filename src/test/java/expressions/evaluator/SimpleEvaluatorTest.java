@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package expressions;
+package expressions.evaluator;
 
+import expressions.evaluator.EvaluationException;
+import expressions.evaluator.SimpleEvaluator;
 import java.math.BigDecimal;
 import static java.util.Arrays.asList;
 import static java.util.Collections.EMPTY_MAP;
