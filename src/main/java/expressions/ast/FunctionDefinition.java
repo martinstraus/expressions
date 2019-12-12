@@ -12,8 +12,9 @@ import java.util.Map;
  *
  * @author martinstraus
  */
-@FunctionalInterface
 public interface FunctionDefinition<T> {
+    
+    String name();
 
     T evaluate(Map<String, Object> context, List<Object> parametersValues);
     

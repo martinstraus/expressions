@@ -8,12 +8,8 @@ package expressions.evaluator.date;
 import expressions.ast.FunctionDefinition;
 import expressions.evaluator.EvaluationException;
 import java.math.BigDecimal;
-import java.time.Duration;
-import java.time.temporal.TemporalAmount;
-import java.time.temporal.TemporalUnit;
 import java.util.List;
 import java.util.Map;
-import expressions.evaluator.date.Unit;
 
 /**
  *
@@ -31,6 +27,11 @@ public class Period implements FunctionDefinition<java.time.Period> {
         BigDecimal amount = (BigDecimal) parametersValues.get(0);
         Unit unit = (Unit) parametersValues.get(1);
         return unit.period(amount);
+    }
+
+    @Override
+    public String name() {
+        return "period";
     }
 
 }

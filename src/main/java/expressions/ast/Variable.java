@@ -32,4 +32,7 @@ public class Variable<T> implements Expression<T> {
         return type;
     }
 
+    public String name() {
+        return name;
+    }
 }

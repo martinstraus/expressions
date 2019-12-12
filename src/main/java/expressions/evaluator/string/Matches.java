@@ -27,4 +27,9 @@ public class Matches implements FunctionDefinition<Boolean> {
         return valueToTest.matches(regexp);
     }
 
+    @Override
+    public String name() {
+        return "matches";
+    }
+
 }

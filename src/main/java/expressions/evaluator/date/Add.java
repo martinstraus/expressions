@@ -30,4 +30,9 @@ public class Add implements FunctionDefinition<LocalDate> {
         return date.plus(period);
     }
 
+    @Override
+    public String name() {
+        return "add";
+    }
+
 }

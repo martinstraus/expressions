@@ -34,7 +34,17 @@ public class FunctionCallTest {
         BigDecimal result = new FunctionCall<BigDecimal>(
                 "f",
                 asList(new Literal<BigDecimal>(Types.NUMBER, new BigDecimal(1))),
-                functions("f", (context, parameters) -> value)
+                functions("f", new FunctionDefinition() {
+                    @Override
+                    public String name() {
+                        return "f";
+                    }
+
+                    @Override
+                    public Object evaluate(Map context, List parametersValues) {
+                        return value;
+                    }
+                })
         ).evaluate(EMPTY_MAP);
         assertEquals(value, result);
     }

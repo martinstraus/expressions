@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package expressions.evaluator.string;
+package expressions.evaluator;
 
 import expressions.ast.FunctionDefinition;
 import java.math.BigDecimal;
@@ -14,16 +14,18 @@ import java.util.Map;
  *
  * @author martinstraus
  */
-public class Length implements FunctionDefinition<BigDecimal> {
+public class Random implements FunctionDefinition<BigDecimal> {
+
+    private final java.util.Random random = new java.util.Random();
 
     @Override
     public BigDecimal evaluate(Map<String, Object> context, List<Object> parametersValues) {
-        return new BigDecimal(((String) parametersValues.get(0)).length());
+        return new BigDecimal(random.nextDouble());
     }
 
     @Override
     public String name() {
-        return "length";
+        return "random";
     }
 
 }

@@ -23,4 +23,9 @@ public class Split implements FunctionDefinition<List<String>> {
         return asList(valueToSplit.split(regexp));
     }
 
+    @Override
+    public String name() {
+        return "split";
+    }
+
 }

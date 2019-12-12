@@ -30,4 +30,9 @@ public class Subtract implements FunctionDefinition<LocalDate> {
         return date.minus(period);
     }
 
+    @Override
+    public String name() {
+        return "subtract";
+    }
+
 }

@@ -26,6 +26,11 @@ public class SimpleFunctionDefinition<T> implements FunctionDefinition<T> {
     }
 
     @Override
+    public String name() {
+        return name;
+    }
+
+    @Override
     public T evaluate(Map<String, Object> context, List<Object> parametersValues) {
         return expression.evaluate(newContext(context, parametersValues));
     }

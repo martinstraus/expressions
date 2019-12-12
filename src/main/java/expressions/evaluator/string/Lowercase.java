@@ -24,4 +24,9 @@ public class Lowercase implements FunctionDefinition<String> {
         return ((String) parametersValues.get(0)).toLowerCase();
     }
 
+    @Override
+    public String name() {
+        return "lowercase";
+    }
+
 }

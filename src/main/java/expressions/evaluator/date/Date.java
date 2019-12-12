@@ -34,4 +34,9 @@ public class Date implements FunctionDefinition<LocalDate> {
         }
     }
 
+    @Override
+    public String name() {
+        return "date";
+    }
+
 }

@@ -24,4 +24,9 @@ public class Uppercase implements FunctionDefinition<String> {
         return ((String) parametersValues.get(0)).toUpperCase();
     }
 
+    @Override
+    public String name() {
+        return "uppercase";
+    }
+
 }
