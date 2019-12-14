@@ -25,7 +25,7 @@ The library provides:
 * A parser: ```expressions.AntlrParser```.
 * An evaluator: ```expressions.SimpleEvaluator```.
 
-## How to use the ```expressions.SimpleEvaluator```
+## How to use the ```expressions.evaluator.SimpleEvaluator```
 
     Map<String, Object> context = new HashMap<>();
     context.put("a", 1);
