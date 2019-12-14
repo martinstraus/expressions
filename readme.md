@@ -18,6 +18,9 @@ This will evaluate to ```4```.
 
 This will evaluate to ```false```.
 
+    def f(x, y) <- lenth(x) > y;
+    f("abcde", 10)
+
 ## Components
 
 The library provides:
