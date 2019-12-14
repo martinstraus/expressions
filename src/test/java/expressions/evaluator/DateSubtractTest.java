@@ -48,7 +48,7 @@ public class DateSubtractTest {
     
     
     private SymbolsTable symbolsTable(LocalDate date, Period period) {
-        return new SymbolsTable(Maps.of("a", date, "b", period));
+        return new SymbolsTable(Maps.of("date", date, "period", period));
     }
 
     @ParameterizedTest

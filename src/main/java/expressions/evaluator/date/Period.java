@@ -15,14 +15,17 @@ import java.math.BigDecimal;
  */
 public class Period extends BinaryFunction<java.time.Period> {
 
+    private static final String UNIT = "unit";
+    private static final String AMOUNT = "amount";
+
     public Period() {
-        super("period");
+        super("period", AMOUNT, UNIT);
     }
 
     @Override
     public java.time.Period evaluate(SymbolsTable symbolsTable) {
-        BigDecimal amount = a(symbolsTable, BigDecimal.class);
-        Unit unit = b(symbolsTable,Unit.class);
+        BigDecimal amount = valueOrException(symbolsTable, AMOUNT, BigDecimal.class);
+        Unit unit = valueOrException(symbolsTable, UNIT, Unit.class);
         return unit.period(amount);
     }
 

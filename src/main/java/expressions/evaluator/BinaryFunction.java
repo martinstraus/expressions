@@ -19,13 +19,11 @@ import java.util.Optional;
 public abstract class BinaryFunction<T> implements FunctionDefinition<T> {
 
     private final String name;
-    private List<ParameterDefinition> parameters = asList(
-            new ParameterDefinition("a"),
-            new ParameterDefinition("b")
-    );
+    private final List<ParameterDefinition> parameters;
 
-    public BinaryFunction(String name) {
+    public BinaryFunction(String name, String param1, String param2) {
         this.name = name;
+        parameters = asList(new ParameterDefinition(param1), new ParameterDefinition(param2));
     }
 
     @Override
@@ -36,14 +34,6 @@ public abstract class BinaryFunction<T> implements FunctionDefinition<T> {
     @Override
     public List<ParameterDefinition> parameters() {
         return Collections.unmodifiableList(parameters);
-    }
-
-    protected <T> T a(SymbolsTable symbolsTable, Class<T> type) {
-        return valueOrException(symbolsTable, "a", type);
-    }
-
-    protected <T> T b(SymbolsTable symbolsTable, Class<T> type) {
-        return valueOrException(symbolsTable, "b", type);
     }
 
     protected <T> T valueOrException(SymbolsTable symbolsTable, String name, Class<T> expectedType) {

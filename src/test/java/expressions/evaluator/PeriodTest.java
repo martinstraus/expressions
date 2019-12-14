@@ -44,7 +44,7 @@ public class PeriodTest {
     public void evaluateReturnsExpectedValue(BigDecimal amount, Unit unit, java.time.Period result) {
         assertEquals(
                 result,
-                new Period().evaluate(new SymbolsTable(Maps.of("a", amount, "b", unit)))
+                new Period().evaluate(new SymbolsTable(Maps.of("amount", amount, "unit", unit)))
         );
     }
 

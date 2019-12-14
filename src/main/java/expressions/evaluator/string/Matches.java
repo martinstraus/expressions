@@ -6,9 +6,7 @@
 package expressions.evaluator.string;
 
 import expressions.evaluator.BinaryFunction;
-import expressions.evaluator.EvaluationException;
 import expressions.evaluator.SymbolsTable;
-import java.util.List;
 
 /**
  *
@@ -16,14 +14,17 @@ import java.util.List;
  */
 public class Matches extends BinaryFunction<Boolean> {
 
+    private static final String REGEXP = "regexp";
+    private static final String VALUE = "value";
+
     public Matches() {
-        super("matches");
+        super("matches", VALUE, REGEXP);
     }
 
     @Override
     public Boolean evaluate(SymbolsTable symbolsTable) {
-        String valueToTest = a(symbolsTable, String.class);
-        String regexp = b(symbolsTable, String.class);
+        String valueToTest = valueOrException(symbolsTable, VALUE, String.class);
+        String regexp = valueOrException(symbolsTable, REGEXP, String.class);
         return valueToTest.matches(regexp);
     }
 

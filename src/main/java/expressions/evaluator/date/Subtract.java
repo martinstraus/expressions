@@ -16,14 +16,17 @@ import java.time.Period;
  */
 public class Subtract extends BinaryFunction<LocalDate> {
 
+    private static final String PERIOD = "period";
+    private static final String DATE = "date";
+
     public Subtract() {
-        super("subtract");
+        super("subtract", DATE, PERIOD);
     }
 
     @Override
     public LocalDate evaluate(SymbolsTable symbolsTable) {
-        LocalDate date = a(symbolsTable, LocalDate.class);
-        Period period = b(symbolsTable, Period.class);
+        LocalDate date = valueOrException(symbolsTable, DATE, LocalDate.class);
+        Period period = valueOrException(symbolsTable, PERIOD, Period.class);
         return date.minus(period);
     }
 

@@ -30,7 +30,7 @@ public class SplitTest {
     @MethodSource("values")
     public void evaluateReturnsExpectedValue(String value, String regexp, List<String> expectedParts) {
         assertEquals(
-                new Split().evaluate(new SymbolsTable(Maps.of("a", value, "b", regexp))),
+                new Split().evaluate(new SymbolsTable(Maps.of("value", value, "regexp", regexp))),
                 expectedParts
         );
 

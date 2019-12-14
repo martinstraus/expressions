@@ -6,26 +6,26 @@
 package expressions.evaluator.date;
 
 import expressions.evaluator.BinaryFunction;
-import expressions.evaluator.EvaluationException;
 import expressions.evaluator.SymbolsTable;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.List;
 
 /**
  *
  * @author martinstraus
  */
 public class Add extends BinaryFunction<LocalDate> {
+    private static final String PERIOD = "period";
+    private static final String DATE = "date";
 
     public Add() {
-        super("add");
+        super("add", DATE, PERIOD);
     }
 
     @Override
     public LocalDate evaluate(SymbolsTable symbolsTable) {
-        LocalDate date = a(symbolsTable, LocalDate.class);
-        Period period = b(symbolsTable, Period.class);
+        LocalDate date = valueOrException(symbolsTable, DATE, LocalDate.class);
+        Period period = valueOrException(symbolsTable, PERIOD, Period.class);
         return date.plus(period);
     }
 }

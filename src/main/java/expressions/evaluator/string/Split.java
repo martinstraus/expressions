@@ -16,14 +16,17 @@ import java.util.List;
  */
 public class Split extends BinaryFunction<List<String>> {
 
+    private static final String REGEXP = "regexp";
+    private static final String VALUE = "value";
+
     public Split() {
-        super("split");
+        super("split", VALUE, REGEXP);
     }
 
     @Override
     public List<String> evaluate(SymbolsTable symbolsTable) {
-        String valueToSplit = a(symbolsTable, String.class);
-        String regexp = b(symbolsTable, String.class);
+        String valueToSplit = valueOrException(symbolsTable, VALUE, String.class);
+        String regexp = valueOrException(symbolsTable, REGEXP, String.class);
         return asList(valueToSplit.split(regexp));
     }
 }
