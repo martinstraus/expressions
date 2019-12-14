@@ -1,7 +1,9 @@
 package expressions.evaluator;
 
+import expressions.evaluator.numbers.Random;
 import expressions.ast.Types;
 import expressions.ast.Variable;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +20,7 @@ public class SymbolsTableTest {
         child.put(new Variable(Types.STRING, "a"));
         assertTrue(parent.function("random").isPresent());
         assertTrue(child.function("random").isPresent());
-        assertTrue(parent.value("a").isEmpty());
+        assertFalse(parent.value("a").isPresent());
         assertTrue(child.value("a").isPresent());
     }
 }

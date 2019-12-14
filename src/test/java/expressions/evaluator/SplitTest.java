@@ -5,9 +5,9 @@
  */
 package expressions.evaluator;
 
+import expressions.Maps;
 import expressions.evaluator.string.Split;
 import static java.util.Arrays.asList;
-import static java.util.Collections.EMPTY_MAP;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -30,7 +30,7 @@ public class SplitTest {
     @MethodSource("values")
     public void evaluateReturnsExpectedValue(String value, String regexp, List<String> expectedParts) {
         assertEquals(
-                new Split().evaluate(EMPTY_MAP, asList(value, regexp)),
+                new Split().evaluate(new SymbolsTable(Maps.of("a", value, "b", regexp))),
                 expectedParts
         );
 

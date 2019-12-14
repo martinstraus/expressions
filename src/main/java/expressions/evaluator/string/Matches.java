@@ -5,31 +5,26 @@
  */
 package expressions.evaluator.string;
 
-import expressions.ast.Expression;
-import expressions.ast.FunctionDefinition;
+import expressions.evaluator.BinaryFunction;
 import expressions.evaluator.EvaluationException;
+import expressions.evaluator.SymbolsTable;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
  * @author martinstraus
  */
-public class Matches implements FunctionDefinition<Boolean> {
+public class Matches extends BinaryFunction<Boolean> {
 
-    @Override
-    public Boolean evaluate(Map<String, Object> context, List<Object> parametersValues) {
-        if (parametersValues.size() != 2) {
-            throw new EvaluationException("\"contains\" expects two parameters");
-        }
-        String valueToTest = (String) parametersValues.get(0);
-        String regexp = (String) parametersValues.get(1);
-        return valueToTest.matches(regexp);
+    public Matches() {
+        super("matches");
     }
 
     @Override
-    public String name() {
-        return "matches";
+    public Boolean evaluate(SymbolsTable symbolsTable) {
+        String valueToTest = a(symbolsTable, String.class);
+        String regexp = b(symbolsTable, String.class);
+        return valueToTest.matches(regexp);
     }
 
 }

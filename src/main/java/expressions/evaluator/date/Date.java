@@ -5,26 +5,26 @@
  */
 package expressions.evaluator.date;
 
-import expressions.ast.FunctionDefinition;
 import expressions.evaluator.EvaluationException;
+import expressions.evaluator.SymbolsTable;
+import expressions.evaluator.UnaryFunction;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.List;
-import java.util.Map;
 
 /**
  *
  * @author martinstraus
  */
-public class Date implements FunctionDefinition<LocalDate> {
+public class Date extends UnaryFunction<LocalDate> {
+
+    public Date() {
+        super("date");
+    }
 
     @Override
-    public LocalDate evaluate(Map<String, Object> context, List<Object> parametersValues) {
-        if (parametersValues.size() != 1 || !(parametersValues.get(0) instanceof String)) {
-            throw new EvaluationException("'date' expects one parameter of type string.");
-        }
-        String value = (String) parametersValues.get(0);
+    public LocalDate evaluate(SymbolsTable symbolsTable) {
+        String value = valueOrException(symbolsTable, String.class);
         try {
             return LocalDate.from(DateTimeFormatter.ISO_LOCAL_DATE.parse(value));
         } catch (DateTimeParseException ex) {
@@ -32,11 +32,6 @@ public class Date implements FunctionDefinition<LocalDate> {
                     String.format("Invalid format for date \"%s\". It should be \"yyyy-mm-dd\".", value)
             );
         }
-    }
-
-    @Override
-    public String name() {
-        return "date";
     }
 
 }

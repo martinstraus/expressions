@@ -5,7 +5,8 @@
  */
 package expressions.ast;
 
-import java.util.Map;
+import expressions.evaluator.EvaluationException;
+import expressions.evaluator.SymbolsTable;
 
 /**
  *
@@ -23,8 +24,10 @@ public class Variable<T> implements Expression<T> {
     }
 
     @Override
-    public T evaluate(Map<String, Object> context) {
-        return (T) context.get(name);
+    public T evaluate(SymbolsTable symbolsTable) {
+        return (T) symbolsTable
+                .value(name)
+                .orElseThrow(() -> new EvaluationException(String.format("Could not find variable %s.", name)));
     }
 
     @Override

@@ -5,9 +5,9 @@
  */
 package expressions.ast;
 
-import java.util.HashMap;
+import expressions.evaluator.SymbolsTable;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -31,19 +31,14 @@ public class SimpleFunctionDefinition<T> implements FunctionDefinition<T> {
     }
 
     @Override
-    public T evaluate(Map<String, Object> context, List<Object> parametersValues) {
-        return expression.evaluate(newContext(context, parametersValues));
+    public List<ParameterDefinition> parameters() {
+        return Collections.unmodifiableList(parameters);
     }
 
-    private Map<String, Object> newContext(Map<String, Object> context, List<Object> parametersValues) {
-        Map<String, Object> newContext = new HashMap<>();
-        newContext.putAll(context);
-        int i = 0;
-        for (ParameterDefinition parameter : this.parameters) {
-            newContext.put(parameter.name(), parametersValues.get(i));
-            i++;
-        }
-        return newContext;
+    @Override
+    public T evaluate(SymbolsTable symbolsTable) {
+        return expression.evaluate(symbolsTable);
     }
+
 
 }

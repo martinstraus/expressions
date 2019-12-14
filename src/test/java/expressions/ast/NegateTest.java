@@ -5,6 +5,7 @@
  */
 package expressions.ast;
 
+import expressions.evaluator.SymbolsTable;
 import java.math.BigDecimal;
 import static java.util.Arrays.asList;
 import java.util.Collections;
@@ -32,7 +33,7 @@ public class NegateTest {
     public void evaluateReturnsCorrectResult(int a, int result) {
         assertEquals(
                 new BigDecimal(result),
-                new Negate(new Literal(Types.NUMBER, new BigDecimal(a))).evaluate(Collections.EMPTY_MAP)
+                new Negate(new Literal(Types.NUMBER, new BigDecimal(a))).evaluate(new SymbolsTable())
         );
     }
 }

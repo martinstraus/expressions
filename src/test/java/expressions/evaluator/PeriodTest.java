@@ -5,21 +5,15 @@
  */
 package expressions.evaluator;
 
+import expressions.Maps;
 import expressions.evaluator.date.Period;
 import expressions.evaluator.date.Units;
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import static java.time.Month.FEBRUARY;
-import static java.time.Month.JANUARY;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import static java.util.Arrays.asList;
 import static java.util.Collections.EMPTY_LIST;
-import static java.util.Collections.EMPTY_MAP;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -41,7 +35,7 @@ public class PeriodTest {
     public static List<Arguments> invalidParameters() {
         return asList(
                 Arguments.of(EMPTY_LIST),
-                Arguments.of(asList(BigDecimal.ONE))
+                Arguments.of(BigDecimal.ONE)
         );
     }
 
@@ -50,16 +44,16 @@ public class PeriodTest {
     public void evaluateReturnsExpectedValue(BigDecimal amount, Unit unit, java.time.Period result) {
         assertEquals(
                 result,
-                new Period().evaluate(EMPTY_MAP, asList(amount, unit))
+                new Period().evaluate(new SymbolsTable(Maps.of("a", amount, "b", unit)))
         );
     }
 
     @ParameterizedTest
     @MethodSource("invalidParameters")
-    public void throwsEvaluationExceptionIfInvalidParameters(List parameters) {
+    public void throwsEvaluationExceptionIfInvalidParameters(Object parameter) {
         assertThrows(
                 EvaluationException.class,
-                () -> new Period().evaluate(EMPTY_MAP, parameters)
+                () -> new Period().evaluate(new SymbolsTable(Maps.of("value", parameter)))
         );
     }
 }

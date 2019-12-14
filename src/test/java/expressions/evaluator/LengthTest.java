@@ -5,13 +5,10 @@
  */
 package expressions.evaluator;
 
+import expressions.Maps;
 import expressions.evaluator.string.Length;
-import expressions.ast.Literal;
-import expressions.ast.Types;
 import java.math.BigDecimal;
 import static java.util.Arrays.asList;
-import static java.util.Collections.EMPTY_LIST;
-import static java.util.Collections.EMPTY_MAP;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -36,7 +33,7 @@ public class LengthTest {
     @MethodSource("values")
     public void evaluateReturnsExpectedValue(String value, int expectedLength) {
         assertEquals(
-                new Length().evaluate(EMPTY_MAP, asList(value)),
+                new Length().evaluate(new SymbolsTable(Maps.of("value", value))),
                 new BigDecimal(expectedLength)
         );
     }

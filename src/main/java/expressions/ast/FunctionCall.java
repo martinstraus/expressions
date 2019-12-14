@@ -6,9 +6,11 @@
 package expressions.ast;
 
 import expressions.evaluator.EvaluationException;
+import expressions.evaluator.SymbolsTable;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import static java.util.stream.Collectors.toList;
 
 /**
  *
@@ -18,25 +20,29 @@ public class FunctionCall<T> implements Expression<T> {
 
     private final String name;
     private final List<Expression> parameters;
-    private final Map<String, FunctionDefinition> functions;
 
-    public FunctionCall(String name, List<Expression> parameters, Map<String, FunctionDefinition> functions) {
+    public FunctionCall(String name, List<Expression> parameters) {
         this.name = name;
         this.parameters = parameters;
-        this.functions = functions;
     }
 
     @Override
-    public T evaluate(Map<String, Object> context) {
-        FunctionDefinition<String> function = functions.get(name);
-        if (function == null) {
-            throw new EvaluationException(String.format("Function %s not defined.", name));
-        }
-        return (T) function.evaluate(context, evaluatedParameters(context));
+    public T evaluate(SymbolsTable symbolsTable) {
+        FunctionDefinition<T> function = symbolsTable
+                .function(name)
+                .orElseThrow(() -> new EvaluationException(String.format("Function %s not defined.", name)));
+        return (T) function.evaluate(newSymbolsTable(function, symbolsTable));
     }
 
-    private List<Object> evaluatedParameters(Map<String, Object> context) {
-        return parameters.stream().map((p) -> p.evaluate(context)).collect(toList());
+    private SymbolsTable newSymbolsTable(FunctionDefinition function, SymbolsTable symbolsTable) {
+        List<ParameterDefinition> parameters = function.parameters();
+        Map<String, Object> values = new HashMap<>();
+        for (int i = 0; i < parameters.size(); i++) {
+            values.put(parameters.get(i).name(), this.parameters.get(i).evaluate(symbolsTable));
+        }
+        SymbolsTable newSymbolsTable = symbolsTable.push();
+        newSymbolsTable.putValues(values);
+        return newSymbolsTable;
     }
 
     @Override

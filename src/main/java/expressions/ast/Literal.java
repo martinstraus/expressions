@@ -5,6 +5,7 @@
  */
 package expressions.ast;
 
+import expressions.evaluator.SymbolsTable;
 import java.util.Map;
 
 /**
@@ -22,7 +23,7 @@ public class Literal<T> implements Expression<T> {
     }
 
     @Override
-    public T evaluate(Map<String, Object> context) {
+    public T evaluate(SymbolsTable symbolsTable) {
         return value;
     }
 

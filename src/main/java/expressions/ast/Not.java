@@ -5,6 +5,7 @@
  */
 package expressions.ast;
 
+import expressions.evaluator.SymbolsTable;
 import java.util.Map;
 
 /**
@@ -20,8 +21,8 @@ public class Not implements Expression<Boolean> {
     }
 
     @Override
-    public Boolean evaluate(Map<String, Object> context) {
-        return !value.evaluate(context);
+    public Boolean evaluate(SymbolsTable symbolsTable) {
+        return !value.evaluate(symbolsTable);
     }
 
     @Override

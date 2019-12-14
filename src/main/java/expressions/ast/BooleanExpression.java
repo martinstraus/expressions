@@ -5,6 +5,7 @@
  */
 package expressions.ast;
 
+import expressions.evaluator.SymbolsTable;
 import java.util.Map;
 import java.util.function.BiFunction;
 
@@ -25,8 +26,8 @@ public class BooleanExpression<T> implements Expression<Boolean> {
     }
 
     @Override
-    public Boolean evaluate(Map<String, Object> context) {
-        return comparator.apply(left.evaluate(context), right.evaluate(context));
+    public Boolean evaluate(SymbolsTable symbolsTable) {
+        return comparator.apply(left.evaluate(symbolsTable), right.evaluate(symbolsTable));
     }
 
     @Override

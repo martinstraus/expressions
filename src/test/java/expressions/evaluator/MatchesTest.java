@@ -7,15 +7,9 @@ package expressions.evaluator;
 
 import expressions.evaluator.string.Matches;
 import expressions.ast.Expression;
-import expressions.ast.Literal;
-import expressions.ast.Types;
-import static java.util.Arrays.asList;
-import static java.util.Collections.*;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.api.Test;
 
 /**
  *
@@ -23,21 +17,12 @@ import org.junit.jupiter.params.provider.MethodSource;
  */
 public class MatchesTest {
 
-    public static List<Arguments> wrongParametersCount() {
-        return asList(
-                Arguments.of(EMPTY_LIST),
-                Arguments.of(asList(new Literal<String>(Types.STRING, "a"))),
-                Arguments.of(asList(
-                        new Literal<String>(Types.STRING, "a"),
-                        new Literal<String>(Types.STRING, "b"),
-                        new Literal<String>(Types.STRING, "c")
-                ))
+    
+    @Test
+    public void throwsEvaluationExceptionIfItDoesntReceiveTwoParameters() {
+        assertThrows(
+                EvaluationException.class, 
+                () -> new Matches().evaluate(new SymbolsTable())
         );
-    }
-
-    @ParameterizedTest
-    @MethodSource("wrongParametersCount")
-    public void throwsEvaluationExceptionIfItDoesntReceiveTwoParameters(List<Expression> parameters) {
-        assertThrows(EvaluationException.class, () -> new Matches().evaluate(EMPTY_MAP, EMPTY_LIST));
     }
 }

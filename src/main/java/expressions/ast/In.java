@@ -5,6 +5,7 @@
  */
 package expressions.ast;
 
+import expressions.evaluator.SymbolsTable;
 import java.util.Collection;
 import java.util.Map;
 
@@ -23,8 +24,8 @@ public class In implements Expression<Boolean> {
     }
 
     @Override
-    public Boolean evaluate(Map<String, Object> context) {
-        return set.evaluate(context).contains(value.evaluate(context));
+    public Boolean evaluate(SymbolsTable symbolsTable) {
+        return set.evaluate(symbolsTable).contains(value.evaluate(symbolsTable));
     }
 
     @Override

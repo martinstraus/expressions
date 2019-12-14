@@ -5,6 +5,7 @@
  */
 package expressions.evaluator;
 
+import expressions.Maps;
 import expressions.evaluator.date.Subtract;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -12,7 +13,6 @@ import static java.time.Month.*;
 import java.time.Period;
 import static java.util.Arrays.asList;
 import static java.util.Collections.EMPTY_LIST;
-import static java.util.Collections.EMPTY_MAP;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -43,16 +43,17 @@ public class DateSubtractTest {
     @ParameterizedTest
     @MethodSource("values")
     public void evaluateReturnsExpectedValue(LocalDate date, Period period, LocalDate result) {
-        assertEquals(result,
-                new Subtract().evaluate(EMPTY_MAP, asList(date, period))
-        );
+        assertEquals(result, new Subtract().evaluate(symbolsTable(date, period)));
+    }
+    
+    
+    private SymbolsTable symbolsTable(LocalDate date, Period period) {
+        return new SymbolsTable(Maps.of("a", date, "b", period));
     }
 
     @ParameterizedTest
     @MethodSource("invalidParameters")
     public void throwsEvaluationExceptionIfInvalidParameters(List parameters) {
-        assertThrows(EvaluationException.class,
-                () -> new Subtract().evaluate(EMPTY_MAP, parameters)
-        );
+        assertThrows(EvaluationException.class, () -> new Subtract().evaluate(new SymbolsTable()));
     }
 }

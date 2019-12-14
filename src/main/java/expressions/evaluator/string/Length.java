@@ -5,25 +5,22 @@
  */
 package expressions.evaluator.string;
 
-import expressions.ast.FunctionDefinition;
+import expressions.evaluator.SymbolsTable;
+import expressions.evaluator.UnaryFunction;
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Map;
 
 /**
  *
  * @author martinstraus
  */
-public class Length implements FunctionDefinition<BigDecimal> {
+public class Length extends UnaryFunction<BigDecimal> {
 
-    @Override
-    public BigDecimal evaluate(Map<String, Object> context, List<Object> parametersValues) {
-        return new BigDecimal(((String) parametersValues.get(0)).length());
+    public Length() {
+        super("length");
     }
 
     @Override
-    public String name() {
-        return "length";
+    public BigDecimal evaluate(SymbolsTable symbolsTable) {
+        return new BigDecimal(valueOrException(symbolsTable, String.class).length());
     }
-
 }

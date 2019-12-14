@@ -5,27 +5,25 @@
  */
 package expressions.evaluator.string;
 
-import expressions.ast.FunctionDefinition;
+import expressions.evaluator.BinaryFunction;
+import expressions.evaluator.SymbolsTable;
 import static java.util.Arrays.asList;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
  * @author martinstraus
  */
-public class Split implements FunctionDefinition<List<String>> {
+public class Split extends BinaryFunction<List<String>> {
+
+    public Split() {
+        super("split");
+    }
 
     @Override
-    public List<String> evaluate(Map<String, Object> context, List<Object> parametersValues) {
-        String valueToSplit = (String) parametersValues.get(0);
-        String regexp = (String) parametersValues.get(1);
+    public List<String> evaluate(SymbolsTable symbolsTable) {
+        String valueToSplit = a(symbolsTable, String.class);
+        String regexp = b(symbolsTable, String.class);
         return asList(valueToSplit.split(regexp));
     }
-
-    @Override
-    public String name() {
-        return "split";
-    }
-
 }

@@ -5,7 +5,9 @@
  */
 package expressions.ast;
 
-import java.util.Map;
+import expressions.evaluator.SymbolsTable;
+import java.util.Collections;
+import java.util.List;
 
 /**
  *
@@ -13,16 +15,20 @@ import java.util.Map;
  */
 public class File {
 
-    private final Map<String, FunctionDefinition> functions;
+    private final List<FunctionDefinition> functions;
     private final Expression expression;
 
-    public File(Map<String, FunctionDefinition> functions, Expression expression) {
+    public File(List<FunctionDefinition> functions, Expression expression) {
         this.functions = functions;
         this.expression = expression;
     }
+    
+    public List<FunctionDefinition> functions() {
+        return Collections.unmodifiableList(functions);
+    }
 
-    public Object evaluate(Map<String, Object> context) {
-        return expression.evaluate(context);
+    public Object evaluate(SymbolsTable SymbolsTable) {
+        return expression.evaluate(SymbolsTable);
     }
 
 }

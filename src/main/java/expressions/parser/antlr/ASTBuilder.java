@@ -24,11 +24,8 @@ import expressions.ast.Types;
 import expressions.ast.Variable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import static java.util.Collections.EMPTY_MAP;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Stack;
 import java.util.function.BiFunction;
 import static java.util.stream.Collectors.toList;
@@ -47,16 +44,12 @@ public class ASTBuilder extends FunctionBaseListener {
     private static final BiFunction<BigDecimal, BigDecimal, BigDecimal> BIG_DECIMAL_POWER = (a, b) -> a.pow(b.intValue());
 
     private final Stack<Expression> stack;
-    private final Map<String, FunctionDefinition> functions;
+    private final List<FunctionDefinition> functions;
     private File file;
 
     public ASTBuilder() {
-        this(EMPTY_MAP);
-    }
-
-    public ASTBuilder(Map<String, FunctionDefinition> functions) {
         this.stack = new Stack<>();
-        this.functions = new HashMap<>(functions);
+        this.functions = new ArrayList<>();
     }
 
     @Override
@@ -125,7 +118,7 @@ public class ASTBuilder extends FunctionBaseListener {
             return new Literal<BigDecimal>(Types.NUMBER, new BigDecimal(ctx.NUMBER().getText()));
         } else if (ctx.STRING() != null) {
             return new Literal<String>(Types.STRING, removeQuotations(ctx.STRING().getText()));
-        } else if (ctx.dateUnit()!= null) {
+        } else if (ctx.dateUnit() != null) {
             return new Literal<Unit>(Types.DATE_UNIT, ctx.dateUnit().unit);
         } else {
             throw new IllegalStateException("Unsupported literal.");
@@ -188,7 +181,7 @@ public class ASTBuilder extends FunctionBaseListener {
 
     @Override
     public void exitFunctionCall(FunctionParser.FunctionCallContext ctx) {
-        stack.push(new FunctionCall(ctx.functionName.getText(), pop(ctx.parameters.size()), functions));
+        stack.push(new FunctionCall(ctx.functionName.getText(), pop(ctx.parameters.size())));
     }
 
     private List<Expression> pop(int count) {
@@ -203,9 +196,7 @@ public class ASTBuilder extends FunctionBaseListener {
     public void exitFunction(FunctionParser.FunctionContext ctx) {
         String functionName = ctx.name.getText();
         List<ParameterDefinition> parameters = ctx.parameters.stream().map((p) -> new ParameterDefinition(p.getText())).collect(toList());
-        functions.put(functionName,
-                new SimpleFunctionDefinition(functionName, parameters, stack.pop())
-        );
+        functions.add(new SimpleFunctionDefinition(functionName, parameters, stack.pop()));
     }
 
     @Override

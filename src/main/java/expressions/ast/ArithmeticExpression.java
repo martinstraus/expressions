@@ -5,6 +5,7 @@
  */
 package expressions.ast;
 
+import expressions.evaluator.SymbolsTable;
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -26,8 +27,8 @@ public class ArithmeticExpression implements Expression<BigDecimal> {
     }
 
     @Override
-    public BigDecimal evaluate(Map<String, Object> context) {
-        return function.apply(left.evaluate(context), right.evaluate(context));
+    public BigDecimal evaluate(SymbolsTable symbolsTable) {
+        return function.apply(left.evaluate(symbolsTable), right.evaluate(symbolsTable));
     }
 
     @Override

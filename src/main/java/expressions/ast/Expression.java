@@ -5,7 +5,7 @@
  */
 package expressions.ast;
 
-import java.util.Map;
+import expressions.evaluator.SymbolsTable;
 
 /**
  *
@@ -15,5 +15,5 @@ public interface Expression<T> {
     
     Type type();
     
-    T evaluate(Map<String, Object> context);
+    T evaluate(SymbolsTable symbolsTable);
 }

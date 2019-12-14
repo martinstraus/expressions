@@ -5,8 +5,8 @@
  */
 package expressions.ast;
 
+import expressions.evaluator.SymbolsTable;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -15,7 +15,9 @@ import java.util.Map;
 public interface FunctionDefinition<T> {
     
     String name();
+    
+    List<ParameterDefinition> parameters();
 
-    T evaluate(Map<String, Object> context, List<Object> parametersValues);
+    T evaluate(SymbolsTable symbolsTable);
     
 }

@@ -4,6 +4,7 @@ import expressions.ast.FunctionDefinition;
 import expressions.ast.Variable;
 import static java.util.Collections.EMPTY_MAP;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -14,7 +15,7 @@ import java.util.Optional;
  */
 public class SymbolsTable {
 
-    private Map<String, Variable> values;
+    private Map<String, Object> values;
     private Map<String, FunctionDefinition> functions;
     private Optional<SymbolsTable> parent;
 
@@ -22,14 +23,14 @@ public class SymbolsTable {
         this(Optional.empty(), EMPTY_MAP, EMPTY_MAP);
     }
 
-    public SymbolsTable(SymbolsTable parent) {
-        this(Optional.of(parent), EMPTY_MAP, EMPTY_MAP);
+    public SymbolsTable(Map<String, Object> values) {
+        this(Optional.empty(), EMPTY_MAP, values);
     }
 
-    public SymbolsTable(Optional<SymbolsTable> parent, Map<String, FunctionDefinition> functions, Map<String, Variable> values) {
+    public SymbolsTable(Optional<SymbolsTable> parent, Map<String, FunctionDefinition> functions, Map<String, Object> values) {
         this.parent = parent;
-        this.values = new HashMap<>(values);
         this.functions = new HashMap<>(functions);
+        this.values = new HashMap<>(values);
     }
 
     public Optional<FunctionDefinition> function(String name) {
@@ -39,11 +40,8 @@ public class SymbolsTable {
                 : Optional.ofNullable(function);
     }
 
-    public Optional<Variable> value(String name) {
-        Variable value = values.get(name);
-        return (value == null && parent.isPresent())
-                ? parent.get().value(name)
-                : Optional.ofNullable(value);
+    public Optional<Object> value(String name) {
+        return Optional.ofNullable(values.get(name));
     }
 
     public void put(FunctionDefinition function) {
@@ -54,8 +52,16 @@ public class SymbolsTable {
         values.put(value.name(), value);
     }
 
+    public void putValues(Map<String, Object> values) {
+        this.values.putAll(values);
+    }
+
+    public void add(List<FunctionDefinition> functions) {
+        functions.forEach((f) -> this.functions.put(f.name(), f));
+    }
+
     public SymbolsTable push() {
-        return new SymbolsTable(parent, functions, values);
+        return new SymbolsTable(parent, functions, EMPTY_MAP);
     }
 
     public Optional<SymbolsTable> pop() {

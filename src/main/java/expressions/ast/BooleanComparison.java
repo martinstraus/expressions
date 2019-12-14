@@ -6,6 +6,7 @@
 package expressions.ast;
 
 import expressions.evaluator.EvaluationException;
+import expressions.evaluator.SymbolsTable;
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -32,9 +33,9 @@ public class BooleanComparison implements Expression<Boolean> {
     }
 
     @Override
-    public Boolean evaluate(Map<String, Object> context) {
-        Object leftValue = left.evaluate(context);
-        Object rightValue = right.evaluate(context);
+    public Boolean evaluate(SymbolsTable symbolsTable) {
+        Object leftValue = left.evaluate(symbolsTable);
+        Object rightValue = right.evaluate(symbolsTable);
         if (!Types.ofClass(BigDecimal.class, leftValue, rightValue)) {
             throw new EvaluationException(
                     String.format("Expected number operands. Got %s and %s", left.type(), right.type())

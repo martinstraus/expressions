@@ -5,11 +5,12 @@
  */
 package expressions.evaluator;
 
+import expressions.Maps;
 import expressions.evaluator.string.Lowercase;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import static java.util.Arrays.asList;
 import static java.util.Collections.EMPTY_LIST;
-import static java.util.Collections.EMPTY_MAP;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -34,8 +35,8 @@ public class LowercaseTest {
     public static List<Arguments> invalidParameters() {
         return asList(
                 Arguments.of(EMPTY_LIST),
-                Arguments.of(asList("", "")),
-                Arguments.of(asList(BigDecimal.ONE))
+                Arguments.of(LocalDate.now()),
+                Arguments.of(BigDecimal.ONE)
         );
     }
 
@@ -43,17 +44,17 @@ public class LowercaseTest {
     @MethodSource("values")
     public void evaluateReturnsExpectedValue(String value, String result) {
         assertEquals(
-                new Lowercase().evaluate(EMPTY_MAP, asList(value)),
+                new Lowercase().evaluate(new SymbolsTable(Maps.of("value", value))),
                 result
         );
     }
 
     @ParameterizedTest
     @MethodSource("invalidParameters")
-    public void throwsEvaluationExceptionIfInvalidParameters(List parameters) {
+    public void throwsEvaluationExceptionIfInvalidParameters(Object parameter) {
         assertThrows(
                 EvaluationException.class,
-                () -> new Lowercase().evaluate(EMPTY_MAP, parameters)
+                () -> new Lowercase().evaluate(new SymbolsTable(Maps.of("value", parameter)))
         );
     }
 }

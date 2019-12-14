@@ -3,12 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package expressions.evaluator;
+package expressions.evaluator.numbers;
 
 import expressions.ast.FunctionDefinition;
+import expressions.ast.ParameterDefinition;
+import expressions.evaluator.SymbolsTable;
+import expressions.evaluator.SymbolsTable;
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -19,13 +22,18 @@ public class Random implements FunctionDefinition<BigDecimal> {
     private final java.util.Random random = new java.util.Random();
 
     @Override
-    public BigDecimal evaluate(Map<String, Object> context, List<Object> parametersValues) {
+    public BigDecimal evaluate(SymbolsTable symbolsTable) {
         return new BigDecimal(random.nextDouble());
     }
 
     @Override
     public String name() {
         return "random";
+    }
+
+    @Override
+    public List<ParameterDefinition> parameters() {
+        return Collections.EMPTY_LIST;
     }
 
 }

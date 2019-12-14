@@ -5,6 +5,16 @@
  */
 package expressions.evaluator;
 
+import expressions.ast.File;
+import expressions.evaluator.date.Add;
+import expressions.evaluator.date.Date;
+import expressions.evaluator.date.Period;
+import expressions.evaluator.date.Subtract;
+import expressions.evaluator.string.Length;
+import expressions.evaluator.string.Lowercase;
+import expressions.evaluator.string.Matches;
+import expressions.evaluator.string.Split;
+import expressions.evaluator.string.Uppercase;
 import expressions.parser.antlr.AntlrParser;
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -16,30 +26,46 @@ import java.util.stream.Collectors;
  * @author martinstraus
  */
 public class SimpleEvaluator implements Evaluator {
-    
+
+    private final SymbolsTable symbolsTableTemplate;
+
+    public SimpleEvaluator() {
+        symbolsTableTemplate = new SymbolsTable();
+        symbolsTableTemplate.put(new Matches());
+        symbolsTableTemplate.put(new Length());
+        symbolsTableTemplate.put(new Split());
+        symbolsTableTemplate.put(new Lowercase());
+        symbolsTableTemplate.put(new Uppercase());
+        symbolsTableTemplate.put(new Date());
+        symbolsTableTemplate.put(new Period());
+        symbolsTableTemplate.put(new Add());
+        symbolsTableTemplate.put(new Subtract());
+    }
+
     @Override
     public Map<String, Object> evaluate(String expression, Map<String, Object> context) {
-        return mapWith(
-                "result",
-                new AntlrParser().parse(expression).evaluate(withNumbersTransformedToBigDecimal(context))
-        );
+        File file = new AntlrParser().parse(expression);
+        SymbolsTable symbolsTable = symbolsTableTemplate.push();
+        symbolsTable.putValues(withNumbersTransformedToBigDecimal(context));
+        symbolsTable.add(file.functions());
+        return mapWith("result", file.evaluate(symbolsTable));
     }
-    
+
     private Map<String, Object> withNumbersTransformedToBigDecimal(Map<String, Object> context) {
         return context.entrySet().stream().collect(Collectors.toMap(
                 (e) -> e.getKey(),
                 (e) -> valueAsBigDecimalIfInteger(e.getValue())
         ));
     }
-    
+
     private Object valueAsBigDecimalIfInteger(Object value) {
         return value instanceof Integer ? new BigDecimal((Integer) value) : value;
     }
-    
+
     private Map<String, Object> mapWith(String key, Object value) {
         Map<String, Object> map = new HashMap<>();
         map.put(key, value);
         return map;
     }
-    
+
 }

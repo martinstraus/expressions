@@ -5,28 +5,24 @@
  */
 package expressions.evaluator.string;
 
-import expressions.ast.FunctionDefinition;
 import expressions.evaluator.EvaluationException;
+import expressions.evaluator.SymbolsTable;
+import expressions.evaluator.UnaryFunction;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
  * @author martinstraus
  */
-public class Lowercase implements FunctionDefinition<String> {
+public class Lowercase extends UnaryFunction<String> {
 
-    @Override
-    public String evaluate(Map<String, Object> context, List<Object> parametersValues) {
-        if (parametersValues.size() != 1 || !(parametersValues.get(0) instanceof String)) {
-            throw new EvaluationException("'lowercase' expects 1 parameter of type string.");
-        }
-        return ((String) parametersValues.get(0)).toLowerCase();
+    public Lowercase() {
+        super("lowercase");
     }
 
     @Override
-    public String name() {
-        return "lowercase";
+    public String evaluate(SymbolsTable symbolsTable) {
+        return valueOrException(symbolsTable, String.class).toLowerCase();
     }
 
 }

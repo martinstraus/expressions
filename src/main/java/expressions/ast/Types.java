@@ -5,7 +5,11 @@
  */
 package expressions.ast;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import static java.util.Arrays.asList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -61,11 +65,27 @@ public class Types {
     public static final Type DATE_UNIT = new DefaultType("date_unit");
     public static final Type UNKNOWN = new DefaultType("unknown");
 
+    private static Map<Class, Type> TYPES_BY_CLASS = new HashMap<>();
+
+    static {
+        TYPES_BY_CLASS.put(Boolean.class, BOOLEAN);
+        TYPES_BY_CLASS.put(BigDecimal.class, NUMBER);
+        TYPES_BY_CLASS.put(Integer.class, NUMBER);
+        TYPES_BY_CLASS.put(Set.class, SET);
+        TYPES_BY_CLASS.put(String.class, STRING);
+        TYPES_BY_CLASS.put(LocalDate.class, DATE);
+    }
+
     public static boolean ofType(Type type, Expression... expressions) {
         return asList(expressions).stream().anyMatch((e) -> !e.type().equals(type));
     }
 
     public static boolean ofClass(Class type, Object... values) {
         return asList(values).stream().allMatch((value) -> type.isAssignableFrom(value.getClass()));
+    }
+
+    public static Type forClass(Class aClass) {
+        Type type = TYPES_BY_CLASS.get(aClass);
+        return type != null ? type : UNKNOWN;
     }
 }

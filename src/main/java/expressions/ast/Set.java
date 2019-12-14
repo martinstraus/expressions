@@ -5,6 +5,7 @@
  */
 package expressions.ast;
 
+import expressions.evaluator.SymbolsTable;
 import java.util.Map;
 import static java.util.stream.Collectors.toSet;
 
@@ -21,8 +22,8 @@ public class Set<T> implements Expression<java.util.Set<T>> {
     }
 
     @Override
-    public java.util.Set<T> evaluate(Map<String, Object> context) {
-        return values.stream().map((e) -> e.evaluate(context)).collect(toSet());
+    public java.util.Set<T> evaluate(SymbolsTable symbolsTable) {
+        return values.stream().map((e) -> e.evaluate(symbolsTable)).collect(toSet());
     }
 
     @Override

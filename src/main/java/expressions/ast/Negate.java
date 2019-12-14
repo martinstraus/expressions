@@ -5,6 +5,7 @@
  */
 package expressions.ast;
 
+import expressions.evaluator.SymbolsTable;
 import java.math.BigDecimal;
 import java.util.Map;
 
@@ -21,8 +22,8 @@ public class Negate implements Expression<BigDecimal> {
     }
 
     @Override
-    public BigDecimal evaluate(Map<String, Object> context) {
-        return value.evaluate(context).negate();
+    public BigDecimal evaluate(SymbolsTable symbolsTable) {
+        return value.evaluate(symbolsTable).negate();
     }
 
     @Override
