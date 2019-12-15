@@ -18,7 +18,7 @@ Each program is composed of a set of functions, and then the expression.
 
 * string: `"this is a string"`
 * number: `100.23`
-* date: `date("2019-01-01")`; the format is the always sensible `yyyy-mm-dd`.
+* date: `date("2019-01-01")`
 
 ### Operators
 
@@ -43,6 +43,27 @@ You can use operators, values, and function calls to create expressions. Here ar
 * `a = b` evaluates to `true` or `false`.
 * `3 + 10 / 2` evaluates to `8` and is equivalent to `3+(10/2)`.
 * `def f(x) <- x+1; f(2+2)` evaluates to `5`
+
+### Standard functions
+
+#### Numeric functions
+
+* `random()`: returns a random number.
+
+#### Date functions
+
+* `date(value)`: creates a date. The format is the always sensible `yyyy-mm-dd`. Example: `date("2019-12-31")`.
+* `period(amount, unit)`: creates a time period. Unit can be `days`, `months`, or `years`. Example: `period(1, months)`.
+* `add(date, period)`: adds a period to a date. Example: `add(date("2019-12-31"), period(1, month))`.
+* `subtract(date, period)`: subtracts a period to a date. Example: `subtract(date("2019-12-31"), period(1, month))`.
+
+#### String functions
+
+* `length(value)`: returns the length of a string.
+* `lowercase(value)`: converts a string to lowecase.
+* `uppercase(value)`: converts a string to uppercase.
+* `matches(value, regexp)`: determines if a string matches a regular expression.
+* `split(value, regexp)`: splits a string with a regular expression.
 
 ## Usage
 
