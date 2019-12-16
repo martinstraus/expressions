@@ -6,12 +6,18 @@
 package expressions.parser;
 
 import expressions.ast.File;
+import java.nio.file.Path;
+import org.antlr.v4.runtime.CharStream;
 
 /**
  *
  * @author martinstraus
  */
 public interface Parser {
-    
+
     File parse(String expression);
+
+    File parse(CharStream charStream);
+
+    File parse(Path path);
 }

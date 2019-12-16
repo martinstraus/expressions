@@ -17,6 +17,7 @@ import expressions.evaluator.string.Split;
 import expressions.evaluator.string.Uppercase;
 import expressions.parser.antlr.AntlrParser;
 import java.math.BigDecimal;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -44,7 +45,15 @@ public class SimpleEvaluator implements Evaluator {
 
     @Override
     public Map<String, Object> evaluate(String expression, Map<String, Object> context) {
-        File file = new AntlrParser().parse(expression);
+        return evaluate(new AntlrParser().parse(expression), context);
+    }
+
+    @Override
+    public Map<String, Object> evaluate(Path path, Map<String, Object> context) {
+        return evaluate(new AntlrParser().parse(path), context);
+    }
+
+    public Map<String, Object> evaluate(File file, Map<String, Object> context) {
         SymbolsTable symbolsTable = symbolsTableTemplate.push();
         symbolsTable.putValues(withNumbersTransformedToBigDecimal(context));
         symbolsTable.add(file.functions());
@@ -53,8 +62,8 @@ public class SimpleEvaluator implements Evaluator {
 
     private Map<String, Object> withNumbersTransformedToBigDecimal(Map<String, Object> context) {
         return context.entrySet().stream().collect(Collectors.toMap(
-                (e) -> e.getKey(),
-                (e) -> valueAsBigDecimalIfInteger(e.getValue())
+            (e) -> e.getKey(),
+            (e) -> valueAsBigDecimalIfInteger(e.getValue())
         ));
     }
 

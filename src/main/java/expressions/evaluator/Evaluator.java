@@ -5,6 +5,7 @@
  */
 package expressions.evaluator;
 
+import java.nio.file.Path;
 import java.util.Map;
 
 /**
@@ -12,6 +13,8 @@ import java.util.Map;
  * @author martinstraus
  */
 public interface Evaluator {
-    
+
     Map<String, Object> evaluate(String expression, Map<String, Object> context);
+
+    Map<String, Object> evaluate(Path path, Map<String, Object> context);
 }
