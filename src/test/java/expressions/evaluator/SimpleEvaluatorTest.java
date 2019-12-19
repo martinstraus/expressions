@@ -202,6 +202,11 @@ public class SimpleEvaluatorTest {
                         "subtract(date(\"2019-01-01\"), period(1, months)) = date(\"2018-12-01\")",
                         EMPTY_MAP,
                         map("result", true)
+                ),
+                Arguments.of(
+                        "def f(x)<-x+1; def g(x)<-f(x)+2; g(a)",
+                        map("a", 1),
+                        map("result", new BigDecimal(4))
                 )
         );
     }

@@ -3,7 +3,7 @@ grammar Function;
 import  expressions.evaluator.date.Unit;
 import  expressions.evaluator.date.Units;
 }
-file : function? expression EOF;
+file : function* expression EOF;
 
 function
    : DEF name=VARIABLE LPAREN parameters+=VARIABLE (COMMA parameters+=VARIABLE)* RPAREN ASSIGN expression SEMICOLON;
