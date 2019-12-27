@@ -53,14 +53,7 @@ public class ASTBuilder extends FunctionBaseListener {
     }
 
     @Override
-    public void exitPower(FunctionParser.PowerContext ctx) {
-        Expression<BigDecimal> exponent = stack.pop();
-        Expression<BigDecimal> base = stack.pop();
-        stack.push(new ArithmeticExpression(BIG_DECIMAL_POWER, base, exponent));
-    }
-
-    @Override
-    public void exitBooleanExpression(FunctionParser.BooleanExpressionContext ctx) {
+    public void exitBinaryOperation(FunctionParser.BinaryOperationContext ctx) {
         Expression right = stack.pop();
         Expression left = stack.pop();
         if (ctx.EQ() != null) {
@@ -69,42 +62,24 @@ public class ASTBuilder extends FunctionBaseListener {
             stack.add(new BooleanComparison((l, r) -> l.compareTo(r) > 0, left, right));
         } else if (ctx.LT() != null) {
             stack.add(new BooleanComparison((l, r) -> l.compareTo(r) < 0, left, right));
+        } else if (ctx.AND() != null) {
+            stack.push(new BooleanExpression<Boolean>((Boolean a, Boolean b) ->a && b, left, right));
+        } else if (ctx.OR() != null) {
+            stack.push(new BooleanExpression<Boolean>((Boolean a, Boolean b) ->a || b, left, right));
+        } else if (ctx.IN() != null) {
+            stack.push(new In(left, right));
+        } else if (ctx.POW() != null) {
+            stack.push(new ArithmeticExpression(BIG_DECIMAL_POWER, left, right));
+        }else if (ctx.DIV() != null) {
+            stack.push(new ArithmeticExpression(BIG_DECIMAL_DIVIDE, left, right));
+        } else if (ctx.TIMES() != null) {
+            stack.push(new ArithmeticExpression(BIG_DECIMAL_MULTIPLY, left, right));
+        } else if (ctx.PLUS() != null) {
+            stack.push(new ArithmeticExpression(BIG_DECIMAL_ADD, left, right));
+        } else if (ctx.MINUS() != null) {
+            stack.push(new ArithmeticExpression(BIG_DECIMAL_SUBTRACT, left, right));
         } else {
             throw new IllegalStateException("No relational operator.");
-        }
-    }
-
-    @Override
-    public void exitTimesOrDivision(FunctionParser.TimesOrDivisionContext ctx) {
-        Expression<BigDecimal> right = stack.pop();
-        Expression<BigDecimal> left = stack.pop();
-        stack.push(new ArithmeticExpression(arithmeticOperator(ctx), left, right));
-    }
-
-    private BiFunction<BigDecimal, BigDecimal, BigDecimal> arithmeticOperator(FunctionParser.TimesOrDivisionContext ctx) {
-        if (ctx.DIV() != null) {
-            return BIG_DECIMAL_DIVIDE;
-        } else if (ctx.TIMES() != null) {
-            return BIG_DECIMAL_MULTIPLY;
-        } else {
-            throw new IllegalStateException("No operator.");
-        }
-    }
-
-    @Override
-    public void exitPlusOrMinus(FunctionParser.PlusOrMinusContext ctx) {
-        Expression<BigDecimal> right = stack.pop();
-        Expression<BigDecimal> left = stack.pop();
-        stack.push(new ArithmeticExpression(arithmeticOperator(ctx), left, right));
-    }
-
-    private BiFunction<BigDecimal, BigDecimal, BigDecimal> arithmeticOperator(FunctionParser.PlusOrMinusContext ctx) {
-        if (ctx.PLUS() != null) {
-            return BIG_DECIMAL_ADD;
-        } else if (ctx.MINUS() != null) {
-            return BIG_DECIMAL_SUBTRACT;
-        } else {
-            throw new IllegalStateException("No operator.");
         }
     }
 
@@ -142,13 +117,6 @@ public class ASTBuilder extends FunctionBaseListener {
     }
 
     @Override
-    public void exitIn(FunctionParser.InContext ctx) {
-        Expression set = stack.pop();
-        Expression value = stack.pop();
-        stack.push(new In(value, set));
-    }
-
-    @Override
     public void exitUnary(FunctionParser.UnaryContext ctx) {
         if (ctx.prefix != null && ctx.prefix.getType() == FunctionLexer.MINUS) {
             stack.push(new Negate(stack.pop()));
@@ -158,23 +126,6 @@ public class ASTBuilder extends FunctionBaseListener {
     @Override
     public void exitNot(FunctionParser.NotContext ctx) {
         stack.push(new Not(stack.pop()));
-    }
-
-    @Override
-    public void exitAndOr(FunctionParser.AndOrContext ctx) {
-        Expression<Boolean> right = stack.pop();
-        Expression<Boolean> left = stack.pop();
-        stack.push(new BooleanExpression<Boolean>(operator(ctx), left, right));
-    }
-
-    private BiFunction<Boolean, Boolean, Boolean> operator(FunctionParser.AndOrContext ctx) {
-        if (ctx.AND() != null) {
-            return (Boolean a, Boolean b) -> a && b;
-        } else if (ctx.OR() != null) {
-            return (Boolean a, Boolean b) -> a || b;
-        } else {
-            throw new IllegalStateException("No boolean operator.");
-        }
     }
 
     @Override

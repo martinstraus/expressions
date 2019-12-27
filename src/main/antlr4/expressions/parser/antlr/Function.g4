@@ -10,12 +10,12 @@ function
 
 expression
    :  NOT expression # Not
-   |  left=expression (EQ | GT | LT) right=expression # BooleanExpression
-   |  left=expression (AND | OR) right=expression # AndOr
-   |  left=expression IN right=expression # In
-   |  left=expression POW right=expression # Power
-   |  left=expression (TIMES | DIV)  right=expression # TimesOrDivision
-   |  left=expression (PLUS | MINUS) right=expression # PlusOrMinus
+   |  left=expression (EQ | GT | LT) right=expression # BinaryOperation
+   |  left=expression (AND | OR) right=expression # BinaryOperation
+   |  left=expression IN right=expression # BinaryOperation
+   |  left=expression POW right=expression # BinaryOperation
+   |  left=expression (TIMES | DIV)  right=expression # BinaryOperation
+   |  left=expression (PLUS | MINUS) right=expression # BinaryOperation
    |  prefix=(PLUS | MINUS)? atom # Unary
    |  LPAREN expression RPAREN # ParenthesisExpression
    ;
