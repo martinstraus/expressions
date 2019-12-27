@@ -22,7 +22,7 @@ expression
 
 atom
    : functionName=IDENTIFIER LPAREN parameters+=expression (COMMA parameters+=expression)* RPAREN #FunctionCall
-   | LBRACKET (expression (COMMA expression)*)? RBRACKET #Set
+   | LBRACE (expression (COMMA expression)*)? RBRACE #Set
    | name=IDENTIFIER #ValueLiteral
    | NUMBER #NumberLiteral
    | STRING #StringLiteral
@@ -65,6 +65,8 @@ POINT: '.';
 POW: '^';
 LBRACKET: '[';
 RBRACKET: ']';
+LBRACE: '{';
+RBRACE: '}';
 COMMA: ',';
 fragment DIGIT: '0' .. '9';
 fragment VALID_ID_START: ('a' .. 'z') | ('A' .. 'Z') | '_';
