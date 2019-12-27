@@ -9,14 +9,14 @@ function
    : DEF name=IDENTIFIER LPAREN parameters+=IDENTIFIER (COMMA parameters+=IDENTIFIER)* RPAREN ASSIGN expression SEMICOLON;
 
 expression
-   :  NOT expression # Not
+   :  NOT expression # UnaryOperation
    |  left=expression (EQ | GT | LT) right=expression # BinaryOperation
    |  left=expression (AND | OR) right=expression # BinaryOperation
    |  left=expression IN right=expression # BinaryOperation
    |  left=expression POW right=expression # BinaryOperation
    |  left=expression (TIMES | DIV)  right=expression # BinaryOperation
    |  left=expression (PLUS | MINUS) right=expression # BinaryOperation
-   |  prefix=(PLUS | MINUS)? atom # Unary
+   |  prefix=(PLUS | MINUS)? atom # UnaryOperation
    |  LPAREN expression RPAREN # ParenthesisExpression
    ;
 

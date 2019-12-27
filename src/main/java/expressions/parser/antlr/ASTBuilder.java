@@ -117,15 +117,12 @@ public class ASTBuilder extends FunctionBaseListener {
     }
 
     @Override
-    public void exitUnary(FunctionParser.UnaryContext ctx) {
-        if (ctx.prefix != null && ctx.prefix.getType() == FunctionLexer.MINUS) {
+    public void exitUnaryOperation(FunctionParser.UnaryOperationContext ctx) {
+        if (ctx.NOT() != null) {
+            stack.push(new Not(stack.pop()));
+        } else if (ctx.prefix != null && ctx.prefix.getType() == FunctionLexer.MINUS) {
             stack.push(new Negate(stack.pop()));
         }
-    }
-
-    @Override
-    public void exitNot(FunctionParser.NotContext ctx) {
-        stack.push(new Not(stack.pop()));
     }
 
     @Override
