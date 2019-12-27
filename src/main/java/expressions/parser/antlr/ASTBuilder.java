@@ -109,29 +109,27 @@ public class ASTBuilder extends FunctionBaseListener {
     }
 
     @Override
-    public void exitLiteral(FunctionParser.LiteralContext ctx) {
-        stack.push(interpretLiteral(ctx));
+    public void exitValueLiteral(FunctionParser.ValueLiteralContext ctx) {
+        stack.push(new Variable(Types.UNKNOWN, ctx.name.getText()));
     }
 
-    private Expression interpretLiteral(FunctionParser.LiteralContext ctx) {
-        if (ctx.NUMBER() != null) {
-            return new Literal<BigDecimal>(Types.NUMBER, new BigDecimal(ctx.NUMBER().getText()));
-        } else if (ctx.STRING() != null) {
-            return new Literal<String>(Types.STRING, removeQuotations(ctx.STRING().getText()));
-        } else if (ctx.dateUnit() != null) {
-            return new Literal<Unit>(Types.DATE_UNIT, ctx.dateUnit().unit);
-        } else {
-            throw new IllegalStateException("Unsupported literal.");
-        }
+    @Override
+    public void exitNumberLiteral(FunctionParser.NumberLiteralContext ctx) {
+        stack.push(new Literal<>(Types.NUMBER, new BigDecimal(ctx.NUMBER().getText())));
+    }
+
+    @Override
+    public void exitStringLiteral(FunctionParser.StringLiteralContext ctx) {
+        stack.push(new Literal<>(Types.STRING, removeQuotations(ctx.STRING().getText())));
+    }
+
+    @Override
+    public void exitDateLiteral(FunctionParser.DateLiteralContext ctx) {
+        stack.push(new Literal<>(Types.DATE_UNIT, ctx.dateUnit().unit));
     }
 
     private String removeQuotations(String text) {
         return text.substring(1, text.length() - 1);
-    }
-
-    @Override
-    public void exitValue(FunctionParser.ValueContext ctx) {
-        stack.push(new Variable(Types.UNKNOWN, ctx.VARIABLE().getText()));
     }
 
     @Override
