@@ -23,6 +23,7 @@ expression
 atom
    : functionName=IDENTIFIER LPAREN parameters+=expression (COMMA parameters+=expression)* RPAREN #FunctionCall
    | LBRACE (expression (COMMA expression)*)? RBRACE #Set
+   | LBRACKET entries+=mapEntry (COMMA entries+=mapEntry)* RBRACKET #Map
    | name=IDENTIFIER #ValueLiteral
    | NUMBER #NumberLiteral
    | STRING #StringLiteral
@@ -37,6 +38,8 @@ dateUnit
     | MONTHS {$unit=Units.MONTHS;} 
     | YEARS  {$unit=Units.YEARS;}
     ;
+
+mapEntry: key=expression ASSIGN value=expression;
 
 DEF: 'def';
 FUNCTION: 'function';

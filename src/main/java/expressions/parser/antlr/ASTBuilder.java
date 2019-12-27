@@ -5,23 +5,8 @@
  */
 package expressions.parser.antlr;
 
-import expressions.ast.ArithmeticExpression;
-import expressions.ast.BooleanComparison;
-import expressions.ast.BooleanExpression;
-import expressions.ast.Equals;
-import expressions.ast.Expression;
-import expressions.ast.File;
-import expressions.ast.FunctionCall;
-import expressions.ast.FunctionDefinition;
-import expressions.ast.SimpleFunctionDefinition;
-import expressions.ast.In;
-import expressions.ast.Literal;
-import expressions.ast.Negate;
-import expressions.ast.Not;
-import expressions.ast.ParameterDefinition;
-import expressions.ast.Set;
-import expressions.ast.Types;
-import expressions.ast.Variable;
+import expressions.ast.*;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -148,6 +133,26 @@ public class ASTBuilder extends FunctionBaseListener {
     @Override
     public void exitFile(FunctionParser.FileContext ctx) {
         file = new File(functions, stack.pop());
+    }
+
+    @Override
+    public void exitMap(FunctionParser.MapContext ctx) {
+        stack.push(new Map(mapEntries(ctx)));
+    }
+
+    private List<Map.Entry> mapEntries(FunctionParser.MapContext ctx) {
+        List<Map.Entry>entries = new ArrayList<>(ctx.entries.size());
+        for (int i = 0; i < ctx.entries.size(); i++) {
+            Expression value = stack.pop();
+            Expression key = stack.pop();
+            entries.add(new Map.Entry(key,value));  // The order is not important.
+        }
+        return entries;
+    }
+
+    @Override
+    public void exitMapEntry(FunctionParser.MapEntryContext ctx) {
+
     }
 
     public File currentFile() {

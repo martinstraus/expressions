@@ -84,17 +84,17 @@ public class SimpleEvaluatorTest {
                         map("result", new BigDecimal(-2))
                 ),
                 Arguments.of(
-                        "a in [1,2,3]",
+                        "a in {1,2,3}",
                         map("a", new BigDecimal(1)),
                         map("result", true)
                 ),
                 Arguments.of(
-                        "a in [1,2,3]",
+                        "a in {1,2,3}",
                         map("a", new BigDecimal(4)),
                         map("result", false)
                 ),
                 Arguments.of(
-                        "a in []",
+                        "a in {}",
                         map("a", new BigDecimal(4)),
                         map("result", false)
                 ),
@@ -144,12 +144,12 @@ public class SimpleEvaluatorTest {
                         map("result", true)
                 ),
                 Arguments.of(
-                        "a in [\"abc\", \"def\"]",
+                        "a in {\"abc\", \"def\"}",
                         map("a", "abc"),
                         map("result", true)
                 ),
                 Arguments.of(
-                        "a in [\"abc\", \"def\"]",
+                        "a in {\"abc\", \"def\"}",
                         map("a", "x"),
                         map("result", false)
                 ),
@@ -207,6 +207,11 @@ public class SimpleEvaluatorTest {
                         "def f(x)<-x+1; def g(x)<-f(x)+2; g(a)",
                         map("a", 1),
                         map("result", new BigDecimal(4))
+                ),
+                Arguments.of(
+                        "[\"a\"<-a]",
+                        map("a", 1),
+                        map("result", map("a",new BigDecimal(1)))
                 )
         );
     }

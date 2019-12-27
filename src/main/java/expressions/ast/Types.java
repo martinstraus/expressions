@@ -63,6 +63,7 @@ public class Types {
     public static final Type STRING = new DefaultType("string");
     public static final Type DATE = new DefaultType("date");
     public static final Type DATE_UNIT = new DefaultType("date_unit");
+    public static final Type MAP = new DefaultType("map");
     public static final Type UNKNOWN = new DefaultType("unknown");
 
     private static Map<Class, Type> TYPES_BY_CLASS = new HashMap<>();
@@ -74,6 +75,7 @@ public class Types {
         TYPES_BY_CLASS.put(Set.class, SET);
         TYPES_BY_CLASS.put(String.class, STRING);
         TYPES_BY_CLASS.put(LocalDate.class, DATE);
+        TYPES_BY_CLASS.put(Map.class, MAP);
     }
 
     public static boolean ofType(Type type, Expression... expressions) {
