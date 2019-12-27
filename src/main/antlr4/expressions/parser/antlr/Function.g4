@@ -17,7 +17,7 @@ expression
    |  left=expression (TIMES | DIV)  right=expression # BinaryOperation
    |  left=expression (PLUS | MINUS) right=expression # BinaryOperation
    |  prefix=(PLUS | MINUS)? atom # UnaryOperation
-   |  LPAREN expression RPAREN # ParenthesisExpression
+   |  LPAREN expression RPAREN # NestedExpression
    ;
 
 DEF: 'def';
