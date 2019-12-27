@@ -130,7 +130,7 @@ public class ASTBuilder extends FunctionBaseListener {
     }
 
     @Override
-    public void exitVariable(FunctionParser.VariableContext ctx) {
+    public void exitValue(FunctionParser.ValueContext ctx) {
         stack.push(new Variable(Types.UNKNOWN, ctx.VARIABLE().getText()));
     }
 

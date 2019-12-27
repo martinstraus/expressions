@@ -17,8 +17,8 @@ expression
    |  expression (TIMES | DIV)  expression # TimesOrDivision
    |  expression (PLUS | MINUS) expression # PlusOrMinus
    |  LBRACKET (expression (COMMA expression)*)? RBRACKET # Set
-   |  prefix=(PLUS | MINUS)? atom # Unary
    |  functionName=VARIABLE LPAREN parameters+=expression (COMMA parameters+=expression)* RPAREN # FunctionCall
+   |  prefix=(PLUS | MINUS)? atom # Unary
    |  LPAREN expression RPAREN # ParenthesisExpression
    ;
 
@@ -44,11 +44,11 @@ MONTHS: 'months';
 YEARS: 'years';
 
 atom
-   : variable
+   : value
    | literal
    ;
 
-variable
+value
    : VARIABLE
    ;
 
