@@ -20,27 +20,6 @@ expression
    |  LPAREN expression RPAREN # NestedExpression
    ;
 
-DEF: 'def';
-FUNCTION: 'function';
-
-ASSIGN: '<-';
-
-SEMICOLON: ';';
-
-IN: 'in';
-
-NOT: 'not';
-
-AND: 'and';
-
-OR: 'or';
-
-DAYS: 'days';
-
-MONTHS: 'months';
-
-YEARS: 'years';
-
 atom
    : functionName=IDENTIFIER LPAREN parameters+=expression (COMMA parameters+=expression)* RPAREN #FunctionCall
    | LBRACKET (expression (COMMA expression)*)? RBRACKET #Set
@@ -59,106 +38,38 @@ dateUnit
     | YEARS  {$unit=Units.YEARS;}
     ;
 
-fragment VALID_ID_START
-   : ('a' .. 'z') | ('A' .. 'Z') | '_'
-   ;
-
-
-fragment VALID_ID_CHAR
-   : VALID_ID_START | ('0' .. '9')
-   ;
-
-IDENTIFIER
-   : VALID_ID_START VALID_ID_CHAR*
-   ;
-
-NUMBER
-   : ('0' .. '9')+ ('.' ('0' .. '9')+)?
-   ;
-
+DEF: 'def';
+FUNCTION: 'function';
+IN: 'in';
+NOT: 'not';
+AND: 'and';
+OR: 'or';
+DAYS: 'days';
+MONTHS: 'months';
+YEARS: 'years';
+IDENTIFIER: VALID_ID_START VALID_ID_CHAR*;
+NUMBER: ('0' .. '9')+ ('.' ('0' .. '9')+)?;
 STRING: '"' (.|ESC)*? '"';
+ASSIGN: '<-';
+SEMICOLON: ';';
+LPAREN: '(';
+RPAREN: ')';
+PLUS: '+';
+MINUS: '-';
+TIMES: '*';
+DIV: '/';
+GT: '>';
+LT: '<';
+EQ: '=';
+POINT: '.';
+POW: '^';
+LBRACKET: '[';
+RBRACKET: ']';
+COMMA: ',';
+fragment VALID_ID_START: ('a' .. 'z') | ('A' .. 'Z') | '_';
+fragment VALID_ID_CHAR: VALID_ID_START | ('0' .. '9');
 fragment ESC: '\\"' | '\\\\';
-
-fragment UNSIGNED_INTEGER
-   : ('0' .. '9')+
-   ;
-
-fragment E
-   : 'E' | 'e'
-   ;
-
-
-fragment SIGN
-   : ('+' | '-')
-   ;
-
-
-LPAREN
-   : '('
-   ;
-
-
-RPAREN
-   : ')'
-   ;
-
-
-PLUS
-   : '+'
-   ;
-
-
-MINUS
-   : '-'
-   ;
-
-
-TIMES
-   : '*'
-   ;
-
-
-DIV
-   : '/'
-   ;
-
-
-GT
-   : '>'
-   ;
-
-
-LT
-   : '<'
-   ;
-
-
-EQ
-   : '='
-   ;
-
-
-POINT
-   : '.'
-   ;
-
-
-POW
-   : '^'
-   ;
-
-LBRACKET
-   : '['
-   ;
-
-RBRACKET
-   : ']'
-   ;
-
-COMMA
-   : ','
-   ;
-
-WS
-   : [ \r\n\t] + -> skip
-   ;
+fragment UNSIGNED_INTEGER: ('0' .. '9')+;
+fragment E: 'E' | 'e';
+fragment SIGN: ('+' | '-');
+WS: [ \r\n\t] + -> skip;
