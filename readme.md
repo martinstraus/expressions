@@ -19,6 +19,8 @@ Each program is composed of a set of functions, and then the expression.
 * string: `"this is a string"`
 * number: `100.23`
 * date: `date("2019-01-01")`
+* set: `{1,2,3,4}`
+* map: `["a"<-1, "b"<-2]`
 
 ### Operators
 
