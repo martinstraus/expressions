@@ -151,9 +151,12 @@ public class ASTBuilder extends FunctionBaseListener {
     }
 
     @Override
-    public void exitMapEntry(FunctionParser.MapEntryContext ctx) {
-
+    public void exitMapReference(FunctionParser.MapReferenceContext ctx) {
+        Expression key = stack.pop();
+        Expression<java.util.Map> value = stack.pop();
+        stack.push(new MapReference(value, key));
     }
+
 
     public File currentFile() {
         return file;
