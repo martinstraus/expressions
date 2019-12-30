@@ -16,10 +16,12 @@ import java.util.List;
 public class File {
 
     private final List<FunctionDefinition> functions;
+    private final List<Statement> statements;
     private final Expression expression;
 
-    public File(List<FunctionDefinition> functions, Expression expression) {
+    public File(List<FunctionDefinition> functions, List<Statement> statements, Expression expression) {
         this.functions = functions;
+        this.statements = statements;
         this.expression = expression;
     }
     
@@ -27,8 +29,9 @@ public class File {
         return Collections.unmodifiableList(functions);
     }
 
-    public Object evaluate(SymbolsTable SymbolsTable) {
-        return expression.evaluate(SymbolsTable);
+    public Object evaluate(SymbolsTable symbolsTable) {
+        statements.forEach((statement) -> statement.execute(symbolsTable));
+        return expression.evaluate(symbolsTable);
     }
 
 }

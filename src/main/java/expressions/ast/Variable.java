@@ -8,6 +8,8 @@ package expressions.ast;
 import expressions.evaluator.EvaluationException;
 import expressions.evaluator.SymbolsTable;
 
+import java.util.Objects;
+
 /**
  *
  * @author martinstraus
@@ -37,5 +39,19 @@ public class Variable<T> implements Expression<T> {
 
     public String name() {
         return name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Variable<?> variable = (Variable<?>) o;
+        return type.equals(variable.type) &&
+                name.equals(variable.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, name);
     }
 }

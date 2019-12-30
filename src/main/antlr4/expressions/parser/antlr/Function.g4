@@ -3,10 +3,10 @@ grammar Function;
 import  expressions.evaluator.date.Unit;
 import  expressions.evaluator.date.Units;
 }
-file : function* expression EOF;
+file : function* statements+=defineValue* expression EOF;
 
 function
-   : DEF name=IDENTIFIER LPAREN parameters+=IDENTIFIER (COMMA parameters+=IDENTIFIER)* RPAREN ASSIGN expression SEMICOLON;
+   : DEF name=IDENTIFIER LPAREN parameters+=IDENTIFIER (COMMA parameters+=IDENTIFIER)* RPAREN ASSIGN statements+=defineValue* expression SEMICOLON;
 
 expression
    :  NOT expression # UnaryOperation
@@ -41,6 +41,8 @@ dateUnit
     ;
 
 mapEntry: key=expression ASSIGN value=expression;
+
+defineValue: DEF name=IDENTIFIER ASSIGN expression;
 
 DEF: 'def';
 FUNCTION: 'function';

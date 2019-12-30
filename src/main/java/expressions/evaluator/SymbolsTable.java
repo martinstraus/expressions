@@ -52,6 +52,10 @@ public class SymbolsTable {
         values.put(value.name(), value);
     }
 
+    public void put(String name, Object value) {
+        values.put(name, value);
+    }
+
     public void putValues(Map<String, Object> values) {
         this.values.putAll(values);
     }

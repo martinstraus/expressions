@@ -222,6 +222,11 @@ public class SimpleEvaluatorTest {
                     "x[\"a\"][\"b\"]",
                     map("x", map("a",map("b", new BigDecimal(1)))),
                     map("result", new BigDecimal(1))
+            ),
+            Arguments.of(
+                    "def a<-2; a",
+                    EMPTY_MAP,
+                    map("result", new BigDecimal(2))
             )
         );
     }

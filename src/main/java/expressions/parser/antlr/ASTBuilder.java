@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Stack;
 import java.util.function.BiFunction;
 import static java.util.stream.Collectors.toList;
-import expressions.evaluator.date.Unit;
+import static java.util.Collections.EMPTY_LIST;
 
 /**
  *
@@ -29,12 +29,14 @@ public class ASTBuilder extends FunctionBaseListener {
     private static final BiFunction<BigDecimal, BigDecimal, BigDecimal> BIG_DECIMAL_POWER = (a, b) -> a.pow(b.intValue());
 
     private final Stack<Expression> stack;
+    private final List<Statement> statements;
     private final List<FunctionDefinition> functions;
     private File file;
 
     public ASTBuilder() {
         this.stack = new Stack<>();
         this.functions = new ArrayList<>();
+        this.statements = new ArrayList<>();
     }
 
     @Override
@@ -132,7 +134,9 @@ public class ASTBuilder extends FunctionBaseListener {
 
     @Override
     public void exitFile(FunctionParser.FileContext ctx) {
-        file = new File(functions, stack.pop());
+        file = new File(new ArrayList<>(functions), new ArrayList<>(statements), stack.pop());
+        functions.clear();
+        statements.clear();
     }
 
     @Override
@@ -157,6 +161,10 @@ public class ASTBuilder extends FunctionBaseListener {
         stack.push(new MapReference(value, key));
     }
 
+    @Override
+    public void exitDefineValue(FunctionParser.DefineValueContext ctx) {
+        statements.add(new DefineValue<>(ctx.name.getText(), stack.pop()));
+    }
 
     public File currentFile() {
         return file;
