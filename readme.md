@@ -86,7 +86,7 @@ You can use operators, values, and function calls to create expressions. Here ar
 #### String functions
 
 * `length(value)`: returns the length of a string.
-* `lowercase(value)`: converts a string to lowecase.
+* `lowercase(value)`: converts a string to lowercase.
 * `uppercase(value)`: converts a string to uppercase.
 * `matches(value, regexp)`: determines if a string matches a regular expression.
 * `split(value, regexp)`: splits a string with a regular expression.
