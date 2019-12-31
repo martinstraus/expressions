@@ -20,7 +20,13 @@ Each program is composed of a set of functions, and then the expression.
 * number: `100.23`
 * date: `date("2019-01-01")`
 * set: `{1,2,3,4}`
+* array: `[1,2,3,4]`
 * map: `["a"<-1, "b"<-2]`
+
+Arrays indexes start at `0`. In order to reference values on arrays or maps, you out the key or the index between `[]`:
+
+    def valueFromMap <- aMap["a"]
+    def valueFromArray <- anArray[0] 
 
 ### Operators
 
@@ -40,6 +46,7 @@ You define a value with like this:
     def aDate <- date('2019-01-01')
     def aSet <- {1,2,3}
     def aMap <- ["a"<-1, "b"<-2]
+    def anArray <- [1,2,3,4]
 
 ### Defining functions
 
