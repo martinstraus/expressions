@@ -31,12 +31,29 @@ Each program is composed of a set of functions, and then the expression.
 
 ### Values
 
-When you run a program, you can pass a set of _immutable_ values of any supported data type. Each value has
-an identifier. You can't reference this values from inside the functions. You _must_ pass them as parameters.
+Values are immutable. You can define them in the program, or pass them as parameters. Values
+defined in the program cannot be referenced from any function; there's no such thing as global value.
+You define a value with like this:
+
+    def aText <- "abc";
+    def aNumber <- 1234;
+    def aDate <- date('2019-01-01')
+    def aSet <- {1,2,3}
+    def aMap <- ["a"<-1, "b"<-2]
 
 ### Defining functions
 
-The syntax is as follows: `def functionName(param1, param2, ... paramN) <- expression;`
+A function has a name, an optional list of parameters, statements, and a
+final return expression. If your function is simple, and has no statements, you can use this simplified form:
+ 
+    def f(x) <- x+1;
+    
+If you need to define values, you must use the extended form, using braces:
+
+    def g(x,y) <- {
+        def z = x+y;
+        x+1
+    }
 
 ### Expressions
 
@@ -81,8 +98,4 @@ The library provides:
     context.put("b", 2);
     Map<String, Object>> result = new SimpleEvaluator("a+b",context);
     System.out.println(result.get("result"));
-
-
-
-    
 
