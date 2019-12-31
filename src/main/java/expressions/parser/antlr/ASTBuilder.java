@@ -129,7 +129,8 @@ public class ASTBuilder extends FunctionBaseListener {
     public void exitFunction(FunctionParser.FunctionContext ctx) {
         String functionName = ctx.name.getText();
         List<ParameterDefinition> parameters = ctx.parameters.stream().map((p) -> new ParameterDefinition(p.getText())).collect(toList());
-        functions.add(new SimpleFunctionDefinition(functionName, parameters, stack.pop()));
+        functions.add(new SimpleFunctionDefinition(functionName, parameters, new ArrayList<>(statements), stack.pop()));
+        statements.clear();
     }
 
     @Override

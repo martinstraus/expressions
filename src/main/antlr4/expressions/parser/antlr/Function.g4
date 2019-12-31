@@ -6,7 +6,10 @@ import  expressions.evaluator.date.Units;
 file : function* statements+=defineValue* expression EOF;
 
 function
-   : DEF name=IDENTIFIER LPAREN parameters+=IDENTIFIER (COMMA parameters+=IDENTIFIER)* RPAREN ASSIGN statements+=defineValue* expression SEMICOLON;
+   : DEF name=IDENTIFIER
+       LPAREN parameters+=IDENTIFIER (COMMA parameters+=IDENTIFIER)* RPAREN ASSIGN
+       (result=expression SEMICOLON  | LBRACE (statements+=defineValue)* result=expression RBRACE)
+   ;
 
 expression
    :  NOT expression # UnaryOperation

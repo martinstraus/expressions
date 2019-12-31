@@ -227,6 +227,11 @@ public class SimpleEvaluatorTest {
                     "def a<-2; a",
                     EMPTY_MAP,
                     map("result", new BigDecimal(2))
+            ),
+            Arguments.of(
+                    "def f(x) <- { def y <- x+2; y} f(z)",
+                    map("z", new BigDecimal(1)),
+                    map("result", new BigDecimal(3))
             )
         );
     }
