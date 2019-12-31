@@ -50,14 +50,14 @@ public class ASTBuilder extends FunctionBaseListener {
         } else if (ctx.LT() != null) {
             stack.add(new BooleanComparison((l, r) -> l.compareTo(r) < 0, left, right));
         } else if (ctx.AND() != null) {
-            stack.push(new BooleanExpression<Boolean>((Boolean a, Boolean b) ->a && b, left, right));
+            stack.push(new BooleanExpression<Boolean>((Boolean a, Boolean b) -> a && b, left, right));
         } else if (ctx.OR() != null) {
-            stack.push(new BooleanExpression<Boolean>((Boolean a, Boolean b) ->a || b, left, right));
+            stack.push(new BooleanExpression<Boolean>((Boolean a, Boolean b) -> a || b, left, right));
         } else if (ctx.IN() != null) {
             stack.push(new In(left, right));
         } else if (ctx.POW() != null) {
             stack.push(new ArithmeticExpression(BIG_DECIMAL_POWER, left, right));
-        }else if (ctx.DIV() != null) {
+        } else if (ctx.DIV() != null) {
             stack.push(new ArithmeticExpression(BIG_DECIMAL_DIVIDE, left, right));
         } else if (ctx.TIMES() != null) {
             stack.push(new ArithmeticExpression(BIG_DECIMAL_MULTIPLY, left, right));
@@ -146,25 +146,38 @@ public class ASTBuilder extends FunctionBaseListener {
     }
 
     private List<Map.Entry> mapEntries(FunctionParser.MapContext ctx) {
-        List<Map.Entry>entries = new ArrayList<>(ctx.entries.size());
+        List<Map.Entry> entries = new ArrayList<>(ctx.entries.size());
         for (int i = 0; i < ctx.entries.size(); i++) {
             Expression value = stack.pop();
             Expression key = stack.pop();
-            entries.add(new Map.Entry(key,value));  // The order is not important.
+            entries.add(new Map.Entry(key, value));  // The order is not important.
         }
         return entries;
     }
 
     @Override
-    public void exitMapReference(FunctionParser.MapReferenceContext ctx) {
+    public void exitIndexedReference(FunctionParser.IndexedReferenceContext ctx) {
         Expression key = stack.pop();
         Expression<java.util.Map> value = stack.pop();
-        stack.push(new MapReference(value, key));
+        stack.push(new IndexedReference(value, key));
     }
 
     @Override
     public void exitDefineValue(FunctionParser.DefineValueContext ctx) {
         statements.add(new DefineValue<>(ctx.name.getText(), stack.pop()));
+    }
+
+    @Override
+    public void exitArray(FunctionParser.ArrayContext ctx) {
+        stack.push(new Array(values(ctx)));
+    }
+
+    private List<Expression> values(FunctionParser.ArrayContext ctx) {
+        List<Expression> values = new ArrayList<>();
+        for (int i = 0; i < ctx.values.size(); i++) {
+            values.add(0, stack.pop());
+        }
+        return values;
     }
 
     public File currentFile() {

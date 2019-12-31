@@ -19,7 +19,7 @@ expression
    |  left=expression POW right=expression # BinaryOperation
    |  left=expression (TIMES | DIV)  right=expression # BinaryOperation
    |  left=expression (PLUS | MINUS) right=expression # BinaryOperation
-   |  value=expression LBRACKET key=expression RBRACKET #MapReference
+   |  value=expression LBRACKET key=expression RBRACKET #IndexedReference
    |  prefix=(PLUS | MINUS)? atom # UnaryOperation
    |  LPAREN expression RPAREN # NestedExpression
    ;
@@ -28,6 +28,7 @@ atom
    : functionName=IDENTIFIER LPAREN parameters+=expression (COMMA parameters+=expression)* RPAREN #FunctionCall
    | LBRACE (expression (COMMA expression)*)? RBRACE #Set
    | LBRACKET entries+=mapEntry (COMMA entries+=mapEntry)* RBRACKET #Map
+   | LBRACKET (values+=expression (COMMA values+=expression)*)? RBRACKET #Array
    | name=IDENTIFIER #ValueLiteral
    | NUMBER #NumberLiteral
    | STRING #StringLiteral

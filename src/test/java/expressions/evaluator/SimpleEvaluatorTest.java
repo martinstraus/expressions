@@ -5,13 +5,10 @@
  */
 package expressions.evaluator;
 
-import expressions.evaluator.EvaluationException;
-import expressions.evaluator.SimpleEvaluator;
 import java.math.BigDecimal;
 import static java.util.Arrays.asList;
 import static java.util.Collections.EMPTY_MAP;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
@@ -214,24 +211,34 @@ public class SimpleEvaluatorTest {
                 map("result", map("a", new BigDecimal(1)))
             ),
             Arguments.of(
-                    "x[\"a\"]",
-                    map("x", map("a",new BigDecimal(1))),
-                    map("result", new BigDecimal(1))
+                "x[\"a\"]",
+                map("x", map("a", new BigDecimal(1))),
+                map("result", new BigDecimal(1))
             ),
             Arguments.of(
-                    "x[\"a\"][\"b\"]",
-                    map("x", map("a",map("b", new BigDecimal(1)))),
-                    map("result", new BigDecimal(1))
+                "x[\"a\"][\"b\"]",
+                map("x", map("a", map("b", new BigDecimal(1)))),
+                map("result", new BigDecimal(1))
             ),
             Arguments.of(
-                    "def a<-2; a",
-                    EMPTY_MAP,
-                    map("result", new BigDecimal(2))
+                "def a<-2; a",
+                EMPTY_MAP,
+                map("result", new BigDecimal(2))
             ),
             Arguments.of(
-                    "def f(x) <- { def y <- x+2; y} f(z)",
-                    map("z", new BigDecimal(1)),
-                    map("result", new BigDecimal(3))
+                "def f(x) <- { def y <- x+2; y} f(z)",
+                map("z", new BigDecimal(1)),
+                map("result", new BigDecimal(3))
+            )
+        );
+    }
+
+    private static List<Arguments> arrayCases() {
+        return asList(
+            Arguments.of(
+                "[a,2,3]",
+                map("a", new BigDecimal(1)),
+                map("result", asList(new BigDecimal(1), new BigDecimal(2), new BigDecimal(3)))
             )
         );
     }
@@ -257,7 +264,7 @@ public class SimpleEvaluatorTest {
     }
 
     @ParameterizedTest
-    @MethodSource("testExpressions")
+    @MethodSource({"testExpressions", "arrayCases"})
     public void evaluateReturnsExpectedResult(String expression, Map<String, Object> context, Map<String, Object> expectedResult) {
         System.out.printf(
             "Expression \"%s\" for context %s should have result %s.\n",

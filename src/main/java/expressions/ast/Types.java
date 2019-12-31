@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import static java.util.Arrays.asList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -64,6 +65,7 @@ public class Types {
     public static final Type DATE = new DefaultType("date");
     public static final Type DATE_UNIT = new DefaultType("date_unit");
     public static final Type MAP = new DefaultType("map");
+    public static final Type ARRAY = new DefaultType("array");
     public static final Type UNKNOWN = new DefaultType("unknown");
 
     private static Map<Class, Type> TYPES_BY_CLASS = new HashMap<>();
@@ -76,6 +78,7 @@ public class Types {
         TYPES_BY_CLASS.put(String.class, STRING);
         TYPES_BY_CLASS.put(LocalDate.class, DATE);
         TYPES_BY_CLASS.put(Map.class, MAP);
+        TYPES_BY_CLASS.put(List.class, ARRAY);
     }
 
     public static boolean ofType(Type type, Expression... expressions) {
