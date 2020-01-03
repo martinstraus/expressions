@@ -5,7 +5,7 @@
  */
 package expressions.parser.antlr;
 
-import expressions.ast.File;
+import expressions.ast.Program;
 import expressions.parser.Parser;
 import java.io.IOException;
 import java.io.StringReader;
@@ -22,29 +22,29 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 public class AntlrParser implements Parser {
 
     @Override
-    public File parse(String expression) {
+    public Program parseProgram(String expression) {
         try {
-            return parse(CharStreams.fromReader(new StringReader(expression)));
+            return parseProgram(CharStreams.fromReader(new StringReader(expression)));
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
     }
 
     @Override
-    public File parse(Path path) {
+    public Program parseProgram(Path path) {
         try {
-            return parse(CharStreams.fromPath(path));
+            return parseProgram(CharStreams.fromPath(path));
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
     }
 
     @Override
-    public File parse(CharStream charStream) {
+    public Program parseProgram(CharStream charStream) {
         FunctionParser parser = new FunctionParser(new CommonTokenStream(new FunctionLexer(charStream)));
         ASTBuilder extractor = new ASTBuilder();
         ParseTreeWalker.DEFAULT.walk(extractor, parser.file());
-        return extractor.currentFile();
+        return extractor.program();
     }
 
 }

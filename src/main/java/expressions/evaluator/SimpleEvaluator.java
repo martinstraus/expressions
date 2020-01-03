@@ -5,7 +5,7 @@
  */
 package expressions.evaluator;
 
-import expressions.ast.File;
+import expressions.ast.Program;
 import expressions.evaluator.array.Size;
 import expressions.evaluator.date.Add;
 import expressions.evaluator.date.Date;
@@ -47,15 +47,15 @@ public class SimpleEvaluator implements Evaluator {
 
     @Override
     public Map<String, Object> evaluate(String expression, Map<String, Object> context) {
-        return evaluate(new AntlrParser().parse(expression), context);
+        return evaluate(new AntlrParser().parseProgram(expression), context);
     }
 
     @Override
     public Map<String, Object> evaluate(Path path, Map<String, Object> context) {
-        return evaluate(new AntlrParser().parse(path), context);
+        return evaluate(new AntlrParser().parseProgram(path), context);
     }
 
-    public Map<String, Object> evaluate(File file, Map<String, Object> context) {
+    public Map<String, Object> evaluate(Program file, Map<String, Object> context) {
         SymbolsTable symbolsTable = symbolsTableTemplate.push();
         symbolsTable.putValues(withNumbersTransformedToBigDecimal(context));
         symbolsTable.add(file.functions());

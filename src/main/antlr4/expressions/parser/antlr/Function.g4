@@ -3,7 +3,8 @@ grammar Function;
 import  expressions.evaluator.date.Unit;
 import  expressions.evaluator.date.Units;
 }
-file : function* statements+=defineValue* expression EOF;
+
+program : function* statements+=defineValue* expression EOF;
 
 function
    : DEF name=IDENTIFIER

@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Stack;
 import java.util.function.BiFunction;
 import static java.util.stream.Collectors.toList;
-import static java.util.Collections.EMPTY_LIST;
 
 /**
  *
@@ -31,7 +30,7 @@ public class ASTBuilder extends FunctionBaseListener {
     private final Stack<Expression> stack;
     private final List<Statement> statements;
     private final List<FunctionDefinition> functions;
-    private File file;
+    private Program program;
 
     public ASTBuilder() {
         this.stack = new Stack<>();
@@ -135,7 +134,7 @@ public class ASTBuilder extends FunctionBaseListener {
 
     @Override
     public void exitFile(FunctionParser.FileContext ctx) {
-        file = new File(new ArrayList<>(functions), new ArrayList<>(statements), stack.pop());
+        program = new Program(new ArrayList<>(functions), new ArrayList<>(statements), stack.pop());
         functions.clear();
         statements.clear();
     }
@@ -180,8 +179,8 @@ public class ASTBuilder extends FunctionBaseListener {
         return values;
     }
 
-    public File currentFile() {
-        return file;
+    public Program program() {
+        return program;
     }
 
 }

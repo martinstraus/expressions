@@ -5,7 +5,7 @@
  */
 package expressions.parser;
 
-import expressions.ast.File;
+import expressions.ast.Program;
 import java.nio.file.Path;
 import org.antlr.v4.runtime.CharStream;
 
@@ -15,9 +15,9 @@ import org.antlr.v4.runtime.CharStream;
  */
 public interface Parser {
 
-    File parse(String expression);
+    Program parseProgram(String expression);
 
-    File parse(CharStream charStream);
+    Program parseProgram(CharStream charStream);
 
-    File parse(Path path);
+    Program parseProgram(Path path);
 }

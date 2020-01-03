@@ -13,13 +13,13 @@ import java.util.List;
  *
  * @author martinstraus
  */
-public class File {
+public class Program {
 
     private final List<FunctionDefinition> functions;
     private final List<Statement> statements;
     private final Expression expression;
 
-    public File(List<FunctionDefinition> functions, List<Statement> statements, Expression expression) {
+    public Program(List<FunctionDefinition> functions, List<Statement> statements, Expression expression) {
         this.functions = functions;
         this.statements = statements;
         this.expression = expression;
