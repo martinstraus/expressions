@@ -91,6 +91,10 @@ You can use operators, values, and function calls to create expressions. Here ar
 * `matches(value, regexp)`: determines if a string matches a regular expression.
 * `split(value, regexp)`: splits a string with a regular expression.
 
+#### Collection functions
+
+* `size(collection)`: `collection` can be any expression that evaluates to a `set`, an `array`, or a `map`.
+
 ## Usage
 
 The library provides:

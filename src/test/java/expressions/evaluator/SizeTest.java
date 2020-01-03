@@ -19,7 +19,7 @@ import org.junit.jupiter.params.provider.MethodSource;
  *
  * @author martinstraus
  */
-public class LengthTest {
+public class SizeTest {
 
     public static List<Arguments> values() {
         return asList(

@@ -38,7 +38,7 @@ public abstract class UnaryFunction<T> implements FunctionDefinition<T> {
     protected <T> T valueOrException(SymbolsTable symbolsTable, Class<T> expectedType) {
         Optional value = symbolsTable.value("value");
         if (!value.isPresent() || !(value.get() instanceof String)) {
-            throw new EvaluationException("'uppercase' expects 1 parameter of type string.");
+            throw new EvaluationException(String.format("\"%s\" expects 1 parameter of type string.", name));
         }
         return (T) value.get();
     }

@@ -239,6 +239,16 @@ public class SimpleEvaluatorTest {
                 "[a,2,3]",
                 map("a", new BigDecimal(1)),
                 map("result", asList(new BigDecimal(1), new BigDecimal(2), new BigDecimal(3)))
+            ),
+            Arguments.of(
+                    "size([1,2,3])",
+                    EMPTY_MAP,
+                    map("result", new BigDecimal(3))
+            ),
+            Arguments.of(
+                    "size([])",
+                    EMPTY_MAP,
+                    map("result", new BigDecimal(0))
             )
         );
     }
