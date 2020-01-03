@@ -50,7 +50,6 @@ mapEntry: key=expression ASSIGN value=expression;
 defineValue: DEF name=IDENTIFIER ASSIGN expression;
 
 DEF: 'def';
-FUNCTION: 'function';
 IN: 'in';
 NOT: 'not';
 AND: 'and';
