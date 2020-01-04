@@ -43,7 +43,7 @@ public class AntlrParser implements Parser {
     public Program parseProgram(CharStream charStream) {
         FunctionParser parser = new FunctionParser(new CommonTokenStream(new FunctionLexer(charStream)));
         ASTBuilder extractor = new ASTBuilder();
-        ParseTreeWalker.DEFAULT.walk(extractor, parser.file());
+        ParseTreeWalker.DEFAULT.walk(extractor, parser.program());
         return extractor.program();
     }
 

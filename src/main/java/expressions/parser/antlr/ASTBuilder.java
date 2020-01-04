@@ -133,7 +133,7 @@ public class ASTBuilder extends FunctionBaseListener {
     }
 
     @Override
-    public void exitFile(FunctionParser.FileContext ctx) {
+    public void exitProgram(FunctionParser.ProgramContext ctx) {
         program = new Program(new ArrayList<>(functions), new ArrayList<>(statements), stack.pop());
         functions.clear();
         statements.clear();
