@@ -26,4 +26,15 @@ public class Maps {
         map.put(key2, value2);
         return map;
     }
+
+    public static Map<String, Object> of(Object... values) {
+        if (values.length % 2 != 0) {
+            throw new IllegalArgumentException("Only pair number of arguments supported.");
+        }
+        Map<String, Object> map = new HashMap<>();
+        for (int i = 0; i < values.length; i += 2) {
+            map.put((String) values[i], values[i + 1]);
+        }
+        return map;
+    }
 }

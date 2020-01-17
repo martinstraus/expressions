@@ -5,6 +5,7 @@
  */
 package expressions.evaluator;
 
+import expressions.Maps;
 import java.math.BigDecimal;
 import static java.util.Arrays.asList;
 import static java.util.Collections.EMPTY_MAP;
@@ -229,6 +230,11 @@ public class SimpleEvaluatorTest {
                 "def f(x) <- { def y <- x+2; y} f(z)",
                 map("z", new BigDecimal(1)),
                 map("result", new BigDecimal(3))
+            ),
+            Arguments.of(
+                "a > 1 and b < 2 and c > 3",
+                Maps.of("a", new BigDecimal(2), "b", new BigDecimal(1), "c", new BigDecimal(4)),
+                map("result", true)
             )
         );
     }
