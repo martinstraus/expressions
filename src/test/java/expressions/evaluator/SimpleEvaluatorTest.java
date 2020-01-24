@@ -5,7 +5,9 @@
  */
 package expressions.evaluator;
 
+import expressions.TestObject;
 import java.math.BigDecimal;
+import static java.math.BigDecimal.ONE;
 import static java.util.Arrays.asList;
 import static java.util.Collections.EMPTY_MAP;
 import java.util.HashMap;
@@ -252,6 +254,20 @@ public class SimpleEvaluatorTest {
             )
         );
     }
+    private static List<Arguments> dotNotationCases() {
+        return asList(
+                Arguments.of(
+                        "a.value",
+                        map("a", new TestObject(ONE)),
+                        map("result", ONE)
+                ),
+                Arguments.of(
+                        "a.nested.nested.value",
+                        map("a", new TestObject(new TestObject(new TestObject(new BigDecimal(2))))),
+                        map("result", new BigDecimal(2))
+                )
+        );
+    }
 
     private static List<Arguments> evaluationExceptionExpressions() {
         return asList(
@@ -274,7 +290,7 @@ public class SimpleEvaluatorTest {
     }
 
     @ParameterizedTest
-    @MethodSource({"testExpressions", "arrayCases"})
+    @MethodSource({"testExpressions", "arrayCases", "dotNotationCases"})
     public void evaluateReturnsExpectedResult(String expression, Map<String, Object> context, Map<String, Object> expectedResult) {
         System.out.printf(
             "Expression \"%s\" for context %s should have result %s.\n",

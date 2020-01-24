@@ -8,7 +8,7 @@ package expressions.ast;
 import expressions.evaluator.EvaluationException;
 import expressions.evaluator.SymbolsTable;
 
-import java.util.Objects;
+import java.util.*;
 
 /**
  *

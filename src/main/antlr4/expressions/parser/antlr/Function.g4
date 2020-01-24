@@ -21,6 +21,7 @@ expression
    |  left=expression (TIMES | DIV)  right=expression # BinaryOperation
    |  left=expression (PLUS | MINUS) right=expression # BinaryOperation
    |  value=expression LBRACKET key=expression RBRACKET #IndexedReference
+   |  value=expression (POINT properties+=IDENTIFIER)+ #PropertyReference
    |  prefix=(PLUS | MINUS)? atom # UnaryOperation
    |  LPAREN expression RPAREN # NestedExpression
    ;

@@ -3,6 +3,8 @@ package expressions.evaluator;
 import expressions.evaluator.numbers.Random;
 import expressions.ast.Types;
 import expressions.ast.Variable;
+
+import static java.util.Collections.EMPTY_LIST;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;

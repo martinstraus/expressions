@@ -9,11 +9,13 @@ import expressions.ast.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import static java.util.Collections.EMPTY_LIST;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Stack;
 import java.util.function.BiFunction;
 import static java.util.stream.Collectors.toList;
+import org.antlr.v4.runtime.Token;
 
 /**
  *
@@ -177,6 +179,15 @@ public class ASTBuilder extends FunctionBaseListener {
             values.add(0, stack.pop());
         }
         return values;
+    }
+
+    @Override
+    public void exitPropertyReference(FunctionParser.PropertyReferenceContext ctx) {
+        stack.push(new PropertyReference(stack.pop(), properties(ctx)));
+    }
+
+    private List<String> properties(FunctionParser.PropertyReferenceContext ctx) {
+        return ctx.properties.stream().map(Token::getText).collect(toList());
     }
 
     public Program program() {
