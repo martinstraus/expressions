@@ -1,12 +1,15 @@
 package expressions.parser.antlr;
 
+import static expressions.Collections.foldList;
+import static expressions.Collections.foldSet;
 import expressions.ast.*;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.BiFunction;
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
+import org.antlr.v4.runtime.RuleContext;
 import org.antlr.v4.runtime.Token;
 
 /**
@@ -78,8 +81,7 @@ public class ASTBuilder extends FunctionBaseVisitor<Object> {
 
     @Override
     public Object visitSet(FunctionParser.SetContext ctx) {
-        java.util.Set<Expression> values = ctx.expression().stream().map((e) -> (Expression) e.accept(this)).collect(toSet());
-        return new Set(values);
+        return new Set(foldExpressionsSet(ctx.expression()));
     }
 
     @Override
@@ -98,23 +100,22 @@ public class ASTBuilder extends FunctionBaseVisitor<Object> {
 
     @Override
     public Object visitFunctionCall(FunctionParser.FunctionCallContext ctx) {
-        List<Expression> parameters = ctx.parameters.stream().map((p) -> (Expression) p.accept(this)).collect(toList());
-        return new FunctionCall(ctx.functionName.getText(), parameters);
+        return new FunctionCall(ctx.functionName.getText(), foldExpressionsList(ctx.parameters));
     }
 
     @Override
     public Object visitFunction(FunctionParser.FunctionContext ctx) {
         String functionName = ctx.name.getText();
-        List<ParameterDefinition> parameters = ctx.parameters.stream().map((p) -> new ParameterDefinition(p.getText())).collect(toList());
-        List<Statement> statements = ctx.statements.stream().map((s) -> (Statement) s.accept(this)).collect(toList());
+        List<ParameterDefinition> parameters = foldList(ctx.parameters, p -> new ParameterDefinition(p.getText()));
+        List<Statement> statements = foldList(ctx.statements, (s) -> (Statement) s.accept(this));
         Expression result = (Expression) ctx.expression().accept(this);
         return new SimpleFunctionDefinition<>(functionName, parameters, statements, result);
     }
 
     @Override
     public Object visitProgram(FunctionParser.ProgramContext ctx) {
-        List<FunctionDefinition> functions = ctx.function().stream().map((f) -> (FunctionDefinition) f.accept(this)).collect(toList());
-        List<Statement> statements = ctx.statements.stream().map((s) -> (Statement) s.accept(this)).collect(toList());
+        List<FunctionDefinition> functions = foldList(ctx.function(), (f) -> (FunctionDefinition) f.accept(this));
+        List<Statement> statements = foldList(ctx.statements, (s) -> (Statement) s.accept(this));
         Expression expression = (Expression) ctx.expression().accept(this);
         return new Program(functions, statements, expression);
     }
@@ -153,7 +154,7 @@ public class ASTBuilder extends FunctionBaseVisitor<Object> {
     }
 
     private List<Expression> values(FunctionParser.ArrayContext ctx) {
-        return ctx.expression().stream().map((v) -> (Expression) v.accept(this)).collect(toList());
+        return foldExpressionsList(ctx.expression());
     }
 
     @Override
@@ -167,6 +168,18 @@ public class ASTBuilder extends FunctionBaseVisitor<Object> {
     }
 
     private List<String> properties(FunctionParser.PropertyReferenceContext ctx) {
-        return ctx.properties.stream().map(Token::getText).collect(toList());
+        return foldList(ctx.properties, Token::getText);
+    }
+
+    private <T extends RuleContext> java.util.Set<Expression> foldExpressionsSet(Collection<T> collection) {
+        return foldSet(collection, this::acceptExpression);
+    }
+
+    private <T extends RuleContext> java.util.List<Expression> foldExpressionsList(Collection<T> collection) {
+        return foldList(collection, this::acceptExpression);
+    }
+
+    private Expression acceptExpression(RuleContext context) {
+        return (Expression) context.accept(this);
     }
 }
