@@ -13,7 +13,6 @@ import java.nio.file.Path;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 /**
  *
@@ -41,10 +40,11 @@ public class AntlrParser implements Parser {
 
     @Override
     public Program parseProgram(CharStream charStream) {
-        FunctionParser parser = new FunctionParser(new CommonTokenStream(new FunctionLexer(charStream)));
-        ASTBuilder extractor = new ASTBuilder();
-        ParseTreeWalker.DEFAULT.walk(extractor, parser.program());
-        return extractor.program();
+        return (Program) parser(charStream).program().accept(new ASTBuilder());
+    }
+
+    private FunctionParser parser(CharStream charStream) {
+        return new FunctionParser(new CommonTokenStream(new FunctionLexer(charStream)));
     }
 
 }

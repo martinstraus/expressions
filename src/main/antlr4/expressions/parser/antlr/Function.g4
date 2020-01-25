@@ -13,7 +13,7 @@ function
    ;
 
 expression
-   :  NOT expression # UnaryOperation
+   :  NOT notValue=expression # UnaryOperation
    |  left=expression (EQ | GT | LT) right=expression # BinaryOperation
    |  left=expression (AND | OR) right=expression # BinaryOperation
    |  left=expression IN right=expression # BinaryOperation
@@ -22,8 +22,8 @@ expression
    |  left=expression (PLUS | MINUS) right=expression # BinaryOperation
    |  value=expression LBRACKET key=expression RBRACKET #IndexedReference
    |  value=expression (POINT properties+=IDENTIFIER)+ #PropertyReference
-   |  prefix=(PLUS | MINUS)? atom # UnaryOperation
-   |  LPAREN expression RPAREN # NestedExpression
+   |  prefix=(PLUS | MINUS)? atomValue=atom # UnaryOperation
+   |  LPAREN nestedValue=expression RPAREN # NestedExpression
    ;
 
 atom

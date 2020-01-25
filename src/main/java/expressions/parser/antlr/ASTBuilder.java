@@ -1,27 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package expressions.parser.antlr;
 
 import expressions.ast.*;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import static java.util.Collections.EMPTY_LIST;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Stack;
 import java.util.function.BiFunction;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 import org.antlr.v4.runtime.Token;
 
 /**
  *
  * @author martinstraus
  */
-public class ASTBuilder extends FunctionBaseListener {
+public class ASTBuilder extends FunctionBaseVisitor<Object> {
 
     private static final BiFunction<BigDecimal, BigDecimal, BigDecimal> BIG_DECIMAL_ADD = (a, b) -> a.add(b);
     private static final BiFunction<BigDecimal, BigDecimal, BigDecimal> BIG_DECIMAL_SUBTRACT = (a, b) -> a.subtract(b);
@@ -29,66 +21,55 @@ public class ASTBuilder extends FunctionBaseListener {
     private static final BiFunction<BigDecimal, BigDecimal, BigDecimal> BIG_DECIMAL_DIVIDE = (a, b) -> a.divide(b);
     private static final BiFunction<BigDecimal, BigDecimal, BigDecimal> BIG_DECIMAL_POWER = (a, b) -> a.pow(b.intValue());
 
-    private final Stack<Expression> stack;
-    private final List<Statement> statements;
-    private final List<FunctionDefinition> functions;
-    private Program program;
-
-    public ASTBuilder() {
-        this.stack = new Stack<>();
-        this.functions = new ArrayList<>();
-        this.statements = new ArrayList<>();
-    }
-
     @Override
-    public void exitBinaryOperation(FunctionParser.BinaryOperationContext ctx) {
-        Expression right = stack.pop();
-        Expression left = stack.pop();
+    public Object visitBinaryOperation(FunctionParser.BinaryOperationContext ctx) {
+        Expression left = (Expression) ctx.left.accept(this);
+        Expression right = (Expression) ctx.right.accept(this);
         if (ctx.EQ() != null) {
-            stack.add(new BooleanExpression(new Equals(), left, right));
+            return new BooleanExpression(new Equals(), left, right);
         } else if (ctx.GT() != null) {
-            stack.add(new BooleanComparison((l, r) -> l.compareTo(r) > 0, left, right));
+            return new BooleanComparison((l, r) -> l.compareTo(r) > 0, left, right);
         } else if (ctx.LT() != null) {
-            stack.add(new BooleanComparison((l, r) -> l.compareTo(r) < 0, left, right));
+            return new BooleanComparison((l, r) -> l.compareTo(r) < 0, left, right);
         } else if (ctx.AND() != null) {
-            stack.push(new BooleanExpression<Boolean>((Boolean a, Boolean b) -> a && b, left, right));
+            return new BooleanExpression<Boolean>((Boolean a, Boolean b) -> a && b, left, right);
         } else if (ctx.OR() != null) {
-            stack.push(new BooleanExpression<Boolean>((Boolean a, Boolean b) -> a || b, left, right));
+            return new BooleanExpression<Boolean>((Boolean a, Boolean b) -> a || b, left, right);
         } else if (ctx.IN() != null) {
-            stack.push(new In(left, right));
+            return new In(left, right);
         } else if (ctx.POW() != null) {
-            stack.push(new ArithmeticExpression(BIG_DECIMAL_POWER, left, right));
+            return new ArithmeticExpression(BIG_DECIMAL_POWER, left, right);
         } else if (ctx.DIV() != null) {
-            stack.push(new ArithmeticExpression(BIG_DECIMAL_DIVIDE, left, right));
+            return new ArithmeticExpression(BIG_DECIMAL_DIVIDE, left, right);
         } else if (ctx.TIMES() != null) {
-            stack.push(new ArithmeticExpression(BIG_DECIMAL_MULTIPLY, left, right));
+            return new ArithmeticExpression(BIG_DECIMAL_MULTIPLY, left, right);
         } else if (ctx.PLUS() != null) {
-            stack.push(new ArithmeticExpression(BIG_DECIMAL_ADD, left, right));
+            return new ArithmeticExpression(BIG_DECIMAL_ADD, left, right);
         } else if (ctx.MINUS() != null) {
-            stack.push(new ArithmeticExpression(BIG_DECIMAL_SUBTRACT, left, right));
+            return new ArithmeticExpression(BIG_DECIMAL_SUBTRACT, left, right);
         } else {
             throw new IllegalStateException("No relational operator.");
         }
     }
 
     @Override
-    public void exitValueLiteral(FunctionParser.ValueLiteralContext ctx) {
-        stack.push(new Variable(Types.UNKNOWN, ctx.name.getText()));
+    public Object visitValueLiteral(FunctionParser.ValueLiteralContext ctx) {
+        return new Variable(Types.UNKNOWN, ctx.name.getText());
     }
 
     @Override
-    public void exitNumberLiteral(FunctionParser.NumberLiteralContext ctx) {
-        stack.push(new Literal<>(Types.NUMBER, new BigDecimal(ctx.NUMBER().getText())));
+    public Object visitNumberLiteral(FunctionParser.NumberLiteralContext ctx) {
+        return new Literal<>(Types.NUMBER, new BigDecimal(ctx.NUMBER().getText()));
     }
 
     @Override
-    public void exitStringLiteral(FunctionParser.StringLiteralContext ctx) {
-        stack.push(new Literal<>(Types.STRING, removeQuotations(ctx.STRING().getText())));
+    public Object visitStringLiteral(FunctionParser.StringLiteralContext ctx) {
+        return new Literal<>(Types.STRING, removeQuotations(ctx.STRING().getText()));
     }
 
     @Override
-    public void exitDateLiteral(FunctionParser.DateLiteralContext ctx) {
-        stack.push(new Literal<>(Types.DATE_UNIT, ctx.dateUnit().unit));
+    public Object visitDateLiteral(FunctionParser.DateLiteralContext ctx) {
+        return new Literal<>(Types.DATE_UNIT, ctx.dateUnit().unit);
     }
 
     private String removeQuotations(String text) {
@@ -96,102 +77,96 @@ public class ASTBuilder extends FunctionBaseListener {
     }
 
     @Override
-    public void exitSet(FunctionParser.SetContext ctx) {
-        java.util.Set<Expression> set = new HashSet<>();
-        for (int i = 0; i < ctx.expression().size(); i++) {
-            set.add(stack.pop());
-        }
-        stack.push(new Set(set));
+    public Object visitSet(FunctionParser.SetContext ctx) {
+        java.util.Set<Expression> values = ctx.expression().stream().map((e) -> (Expression) e.accept(this)).collect(toSet());
+        return new Set(values);
     }
 
     @Override
-    public void exitUnaryOperation(FunctionParser.UnaryOperationContext ctx) {
+    public Object visitUnaryOperation(FunctionParser.UnaryOperationContext ctx) {
         if (ctx.NOT() != null) {
-            stack.push(new Not(stack.pop()));
-        } else if (ctx.prefix != null && ctx.prefix.getType() == FunctionLexer.MINUS) {
-            stack.push(new Negate(stack.pop()));
+            return new Not((Expression) ctx.notValue.accept(this));
+        } else if (ctx.atomValue != null) {
+            Expression value = (Expression) ctx.atomValue.accept(this);
+            return (ctx.prefix != null && ctx.prefix.getType() == FunctionLexer.MINUS)
+                ? new Negate(value)
+                : value;
+        } else {
+            throw new IllegalStateException("Cannot infer unary operation.");
         }
     }
 
     @Override
-    public void exitFunctionCall(FunctionParser.FunctionCallContext ctx) {
-        stack.push(new FunctionCall(ctx.functionName.getText(), pop(ctx.parameters.size())));
-    }
-
-    private List<Expression> pop(int count) {
-        List<Expression> list = new ArrayList(count);
-        for (int i = 0; i < count; i++) {
-            list.add(0, stack.pop()); // We add in index 0 to reverse the order of the popped elements.
-        }
-        return list;
+    public Object visitFunctionCall(FunctionParser.FunctionCallContext ctx) {
+        List<Expression> parameters = ctx.parameters.stream().map((p) -> (Expression) p.accept(this)).collect(toList());
+        return new FunctionCall(ctx.functionName.getText(), parameters);
     }
 
     @Override
-    public void exitFunction(FunctionParser.FunctionContext ctx) {
+    public Object visitFunction(FunctionParser.FunctionContext ctx) {
         String functionName = ctx.name.getText();
         List<ParameterDefinition> parameters = ctx.parameters.stream().map((p) -> new ParameterDefinition(p.getText())).collect(toList());
-        functions.add(new SimpleFunctionDefinition(functionName, parameters, new ArrayList<>(statements), stack.pop()));
-        statements.clear();
+        List<Statement> statements = ctx.statements.stream().map((s) -> (Statement) s.accept(this)).collect(toList());
+        Expression result = (Expression) ctx.expression().accept(this);
+        return new SimpleFunctionDefinition<>(functionName, parameters, statements, result);
     }
 
     @Override
-    public void exitProgram(FunctionParser.ProgramContext ctx) {
-        program = new Program(new ArrayList<>(functions), new ArrayList<>(statements), stack.pop());
-        functions.clear();
-        statements.clear();
+    public Object visitProgram(FunctionParser.ProgramContext ctx) {
+        List<FunctionDefinition> functions = ctx.function().stream().map((f) -> (FunctionDefinition) f.accept(this)).collect(toList());
+        List<Statement> statements = ctx.statements.stream().map((s) -> (Statement) s.accept(this)).collect(toList());
+        Expression expression = (Expression) ctx.expression().accept(this);
+        return new Program(functions, statements, expression);
     }
 
     @Override
-    public void exitMap(FunctionParser.MapContext ctx) {
-        stack.push(new Map(mapEntries(ctx)));
+    public Object visitMap(FunctionParser.MapContext ctx) {
+        return new Map(mapEntries(ctx));
     }
 
     private List<Map.Entry> mapEntries(FunctionParser.MapContext ctx) {
-        List<Map.Entry> entries = new ArrayList<>(ctx.entries.size());
-        for (int i = 0; i < ctx.entries.size(); i++) {
-            Expression value = stack.pop();
-            Expression key = stack.pop();
-            entries.add(new Map.Entry(key, value));  // The order is not important.
-        }
-        return entries;
+        return ctx.entries.stream().map(this::mapEntry).collect(toList());
+    }
+
+    private Map.Entry mapEntry(FunctionParser.MapEntryContext entry) {
+        return new Map.Entry(
+            (Expression) entry.key.accept(this),
+            (Expression) entry.value.accept(this)
+        );
     }
 
     @Override
-    public void exitIndexedReference(FunctionParser.IndexedReferenceContext ctx) {
-        Expression key = stack.pop();
-        Expression<java.util.Map> value = stack.pop();
-        stack.push(new IndexedReference(value, key));
+    public Object visitIndexedReference(FunctionParser.IndexedReferenceContext ctx) {
+        Expression value = (Expression) ctx.value.accept(this);
+        Expression key = (Expression) ctx.key.accept(this);
+        return new IndexedReference(value, key);
     }
 
     @Override
-    public void exitDefineValue(FunctionParser.DefineValueContext ctx) {
-        statements.add(new DefineValue<>(ctx.name.getText(), stack.pop()));
+    public Object visitDefineValue(FunctionParser.DefineValueContext ctx) {
+        return new DefineValue(ctx.name.getText(), (Expression) ctx.expression().accept(this));
     }
 
     @Override
-    public void exitArray(FunctionParser.ArrayContext ctx) {
-        stack.push(new Array(values(ctx)));
+    public Object visitArray(FunctionParser.ArrayContext ctx) {
+        return new Array(values(ctx));
     }
 
     private List<Expression> values(FunctionParser.ArrayContext ctx) {
-        List<Expression> values = new ArrayList<>();
-        for (int i = 0; i < ctx.values.size(); i++) {
-            values.add(0, stack.pop());
-        }
-        return values;
+        return ctx.expression().stream().map((v) -> (Expression) v.accept(this)).collect(toList());
     }
 
     @Override
-    public void exitPropertyReference(FunctionParser.PropertyReferenceContext ctx) {
-        stack.push(new PropertyReference(stack.pop(), properties(ctx)));
+    public Object visitPropertyReference(FunctionParser.PropertyReferenceContext ctx) {
+        return new PropertyReference((Expression) ctx.expression().accept(this), properties(ctx));
+    }
+
+    @Override
+    public Object visitNestedExpression(FunctionParser.NestedExpressionContext ctx) {
+        return ctx.expression().accept(this);
     }
 
     private List<String> properties(FunctionParser.PropertyReferenceContext ctx) {
         return ctx.properties.stream().map(Token::getText).collect(toList());
     }
-
-    public Program program() {
-        return program;
-    }
-
 }
