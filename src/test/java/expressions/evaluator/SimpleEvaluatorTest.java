@@ -249,29 +249,35 @@ public class SimpleEvaluatorTest {
                 map("result", asList(new BigDecimal(1), new BigDecimal(2), new BigDecimal(3)))
             ),
             Arguments.of(
-                    "size([1,2,3])",
-                    EMPTY_MAP,
-                    map("result", new BigDecimal(3))
+                "size([1,2,3])",
+                EMPTY_MAP,
+                map("result", new BigDecimal(3))
             ),
             Arguments.of(
-                    "size([])",
-                    EMPTY_MAP,
-                    map("result", new BigDecimal(0))
+                "size([])",
+                EMPTY_MAP,
+                map("result", new BigDecimal(0))
             )
         );
     }
+
     private static List<Arguments> dotNotationCases() {
         return asList(
-                Arguments.of(
-                        "a.value",
-                        map("a", new TestObject(ONE)),
-                        map("result", ONE)
-                ),
-                Arguments.of(
-                        "a.nested.nested.value",
-                        map("a", new TestObject(new TestObject(new TestObject(new BigDecimal(2))))),
-                        map("result", new BigDecimal(2))
-                )
+            Arguments.of(
+                "a.value",
+                map("a", new TestObject(ONE)),
+                map("result", ONE)
+            ),
+            Arguments.of(
+                "a.nested.nested.value",
+                map("a", new TestObject(new TestObject(new TestObject(new BigDecimal(2))))),
+                map("result", new BigDecimal(2))
+            ),
+            Arguments.of(
+                "a.aa",
+                map("a", map("aa", new BigDecimal(1))),
+                map("result", new BigDecimal(1))
+            )
         );
     }
 
