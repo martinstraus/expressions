@@ -1,5 +1,6 @@
 package expressions.parser.antlr;
 
+import expressions.evaluator.collections.In;
 import static expressions.Collections.foldList;
 import static expressions.Collections.foldSet;
 import expressions.ast.*;
@@ -38,8 +39,6 @@ public class ASTBuilder extends FunctionBaseVisitor<Object> {
             return new BooleanExpression<Boolean>((Boolean a, Boolean b) -> a && b, left, right);
         } else if (ctx.OR() != null) {
             return new BooleanExpression<Boolean>((Boolean a, Boolean b) -> a || b, left, right);
-        } else if (ctx.IN() != null) {
-            return new In(left, right);
         } else if (ctx.POW() != null) {
             return new ArithmeticExpression(BIG_DECIMAL_POWER, left, right);
         } else if (ctx.DIV() != null) {

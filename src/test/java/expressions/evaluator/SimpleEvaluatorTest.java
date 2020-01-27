@@ -84,21 +84,6 @@ public class SimpleEvaluatorTest {
                 map("result", new BigDecimal(-2))
             ),
             Arguments.of(
-                "a in {1,2,3}",
-                map("a", new BigDecimal(1)),
-                map("result", true)
-            ),
-            Arguments.of(
-                "a in {1,2,3}",
-                map("a", new BigDecimal(4)),
-                map("result", false)
-            ),
-            Arguments.of(
-                "a in {}",
-                map("a", new BigDecimal(4)),
-                map("result", false)
-            ),
-            Arguments.of(
                 "not (a > b)",
                 map("a", new BigDecimal(4), "b", new BigDecimal(8)),
                 map("result", true)
@@ -144,16 +129,6 @@ public class SimpleEvaluatorTest {
                 map("result", true)
             ),
             Arguments.of(
-                "a in {\"abc\", \"def\"}",
-                map("a", "abc"),
-                map("result", true)
-            ),
-            Arguments.of(
-                "a in {\"abc\", \"def\"}",
-                map("a", "x"),
-                map("result", false)
-            ),
-            Arguments.of(
                 "def f(x) <- x+1; f(a)",
                 map("a", new BigDecimal(2)),
                 map("result", new BigDecimal(3))
@@ -172,11 +147,6 @@ public class SimpleEvaluatorTest {
                 "split(text, regexp)",
                 map("text", "a b c", "regexp", " "),
                 map("result", asList("a", "b", "c"))
-            ),
-            Arguments.of(
-                "tag in split(tags, \",\")",
-                map("tags", "tag1,tag2,tag3", "tag", "tag2"),
-                map("result", true)
             ),
             Arguments.of(
                 "lowercase(a) = \"abc\"",
@@ -281,6 +251,46 @@ public class SimpleEvaluatorTest {
         );
     }
 
+    private static List<Arguments> inCases() {
+        return asList(
+            Arguments.of(
+                "in(a, {1,2,3})",
+                map("a", new BigDecimal(1)),
+                map("result", true)
+            ),
+            Arguments.of(
+                "in (a, {1,2,3})",
+                map("a", new BigDecimal(4)),
+                map("result", false)
+            ),
+            Arguments.of(
+                "in(a, {})",
+                map("a", new BigDecimal(4)),
+                map("result", false)
+            ),
+            Arguments.of(
+                "in(a, [1])",
+                map("a", ONE),
+                map("result", true)
+            ),
+            Arguments.of(
+                "in(a, {\"abc\", \"def\"})",
+                map("a", "abc"),
+                map("result", true)
+            ),
+            Arguments.of(
+                "in(a, {\"abc\", \"def\"})",
+                map("a", "x"),
+                map("result", false)
+            ),
+            Arguments.of(
+                "in(tag, split(tags, \",\"))",
+                map("tags", "tag1,tag2,tag3", "tag", "tag2"),
+                map("result", true)
+            )
+        );
+    }
+
     private static List<Arguments> evaluationExceptionExpressions() {
         return asList(
             Arguments.of("a>b", map("a", new BigDecimal(1), "b", "b")),
@@ -302,7 +312,7 @@ public class SimpleEvaluatorTest {
     }
 
     @ParameterizedTest
-    @MethodSource({"testExpressions", "arrayCases", "dotNotationCases"})
+    @MethodSource({"testExpressions", "arrayCases", "dotNotationCases", "inCases"})
     public void evaluateReturnsExpectedResult(String expression, Map<String, Object> context, Map<String, Object> expectedResult) {
         System.out.printf(
             "Expression \"%s\" for context %s should have result %s.\n",

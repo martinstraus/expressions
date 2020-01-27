@@ -16,7 +16,6 @@ expression
    :  NOT notValue=expression # UnaryOperation
    |  left=expression (EQ | GT | LT) right=expression # BinaryOperation
    |  left=expression (AND | OR) right=expression # BinaryOperation
-   |  left=expression IN right=expression # BinaryOperation
    |  left=expression POW right=expression # BinaryOperation
    |  left=expression (TIMES | DIV)  right=expression # BinaryOperation
    |  left=expression (PLUS | MINUS) right=expression # BinaryOperation
@@ -51,7 +50,6 @@ mapEntry: key=expression ASSIGN value=expression;
 defineValue: DEF name=IDENTIFIER ASSIGN expression;
 
 DEF: 'def';
-IN: 'in';
 NOT: 'not';
 AND: 'and';
 OR: 'or';

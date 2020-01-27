@@ -7,6 +7,7 @@ package expressions.evaluator;
 
 import expressions.ast.Program;
 import expressions.evaluator.array.Size;
+import expressions.evaluator.collections.In;
 import expressions.evaluator.date.Add;
 import expressions.evaluator.date.Date;
 import expressions.evaluator.date.Period;
@@ -43,6 +44,7 @@ public class SimpleEvaluator implements Evaluator {
         symbolsTableTemplate.put(new Add());
         symbolsTableTemplate.put(new Subtract());
         symbolsTableTemplate.put(new Size());
+        symbolsTableTemplate.put(new In());
     }
 
     @Override
