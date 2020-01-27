@@ -92,8 +92,9 @@ You can use operators, values, and function calls to create expressions. Here ar
 * `split(value, regexp)`: splits a string with a regular expression.
 
 #### Collection functions
-
-* `size(collection)`: `collection` can be any expression that evaluates to a `set`, an `array`, or a `map`.
+This functions apply to `set`s and `array`s.
+* `size(collection)`: the size of the `collection`; it also supports `map`s.
+* `in(value, collection)`: returns `true` if `value` exists in the `collection`.
 
 ## Usage
 
