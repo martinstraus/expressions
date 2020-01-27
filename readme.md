@@ -33,7 +33,6 @@ Arrays indexes start at `0`. In order to reference values on arrays or maps, you
 * boolean operators: `and`, `or`, `not`.
 * comparation operators: `>`, `<`, `=`.
 * arithmentic operators: `^` (exponentiation) `/`, `*`, `+`, `-`.
-* collection operators: `in`.
 
 ### Values
 
