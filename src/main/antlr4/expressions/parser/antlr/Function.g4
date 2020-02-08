@@ -26,6 +26,9 @@ expression
    ;
 
 atom
+   locals [
+        boolean booleanValue=false;
+   ]
    : functionName=IDENTIFIER LPAREN parameters+=expression (COMMA parameters+=expression)* RPAREN #FunctionCall
    | LBRACE (expression (COMMA expression)*)? RBRACE #Set
    | LBRACKET entries+=mapEntry (COMMA entries+=mapEntry)* RBRACKET #Map
@@ -33,6 +36,7 @@ atom
    | name=IDENTIFIER #ValueLiteral
    | NUMBER #NumberLiteral
    | STRING #StringLiteral
+   | (TRUE {$booleanValue=true;} | FALSE {$booleanValue=false;}) #BooleanLiteral
    | dateUnit #DateLiteral
    ;
 
@@ -49,6 +53,8 @@ mapEntry: key=expression ASSIGN value=expression;
 
 defineValue: DEF name=IDENTIFIER ASSIGN expression;
 
+TRUE: 'true';
+FALSE: 'false';
 DEF: 'def';
 NOT: 'not';
 AND: 'and';

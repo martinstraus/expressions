@@ -166,6 +166,11 @@ public class ASTBuilder extends FunctionBaseVisitor<Object> {
         return ctx.expression().accept(this);
     }
 
+    @Override
+    public Object visitBooleanLiteral(FunctionParser.BooleanLiteralContext ctx) {
+        return new Literal<>(Types.BOOLEAN, ctx.booleanValue);
+    }
+    
     private List<String> properties(FunctionParser.PropertyReferenceContext ctx) {
         return foldList(ctx.properties, Token::getText);
     }

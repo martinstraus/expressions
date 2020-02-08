@@ -291,6 +291,13 @@ public class SimpleEvaluatorTest {
         );
     }
 
+    private static List<Arguments> booleanLiteralCases() {
+        return asList(
+            Arguments.of("true", EMPTY_MAP, map("result", true)),
+            Arguments.of("false", EMPTY_MAP, map("result", false))
+        );
+    }
+
     private static List<Arguments> evaluationExceptionExpressions() {
         return asList(
             Arguments.of("a>b", map("a", new BigDecimal(1), "b", "b")),
@@ -312,7 +319,7 @@ public class SimpleEvaluatorTest {
     }
 
     @ParameterizedTest
-    @MethodSource({"testExpressions", "arrayCases", "dotNotationCases", "inCases"})
+    @MethodSource({"testExpressions", "arrayCases", "dotNotationCases", "inCases", "booleanLiteralCases"})
     public void evaluateReturnsExpectedResult(String expression, Map<String, Object> context, Map<String, Object> expectedResult) {
         System.out.printf(
             "Expression \"%s\" for context %s should have result %s.\n",

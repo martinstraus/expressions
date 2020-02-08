@@ -16,6 +16,7 @@ Each program is composed of a set of functions, and then the expression.
 
 ### Data types
 
+* boolean: `true`, `false`
 * string: `"this is a string"`
 * number: `100.23`
 * date: `date("2019-01-01")`
