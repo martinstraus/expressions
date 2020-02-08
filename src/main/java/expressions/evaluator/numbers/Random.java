@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  *
- * @author martinstraus
+ * @author Martín Gaspar Straus <martinstraus@gmail.com>
  */
 public class Random implements FunctionDefinition<BigDecimal> {
 

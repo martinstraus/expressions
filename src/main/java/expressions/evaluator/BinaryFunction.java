@@ -14,7 +14,7 @@ import java.util.Optional;
 
 /**
  *
- * @author martinstraus
+ * @author Martín Gaspar Straus <martinstraus@gmail.com>
  */
 public abstract class BinaryFunction<T> implements FunctionDefinition<T> {
 

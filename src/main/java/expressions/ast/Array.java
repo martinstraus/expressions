@@ -7,7 +7,7 @@ import static java.util.stream.Collectors.toList;
 
 /**
  *
- * @author martinstraus
+ * @author Martín Gaspar Straus <martinstraus@gmail.com>
  */
 public class Array implements Expression<java.util.List> {
 

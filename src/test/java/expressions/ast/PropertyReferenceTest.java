@@ -11,7 +11,7 @@ import static org.mockito.Mockito.*;
 
 /**
  *
- * @author martinstraus
+ * @author Martín Gaspar Straus <martinstraus@gmail.com>
  */
 public class PropertyReferenceTest {
 

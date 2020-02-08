@@ -1,6 +1,5 @@
 package expressions.parser.antlr;
 
-import expressions.evaluator.collections.In;
 import static expressions.Collections.foldList;
 import static expressions.Collections.foldSet;
 import expressions.ast.*;
@@ -15,7 +14,7 @@ import org.antlr.v4.runtime.Token;
 
 /**
  *
- * @author martinstraus
+ * @author Martín Gaspar Straus <martinstraus@gmail.com>
  */
 public class ASTBuilder extends FunctionBaseVisitor<Object> {
 

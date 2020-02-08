@@ -4,7 +4,7 @@ import java.util.function.BiFunction;
 
 /**
  *
- * @author martinstraus
+ * @author Martín Gaspar Straus <martinstraus@gmail.com>
  */
 public class Equals implements BiFunction<Object, Object, Boolean> {
 

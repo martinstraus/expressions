@@ -7,7 +7,7 @@ package expressions.evaluator;
 
 /**
  *
- * @author martinstraus
+ * @author Martín Gaspar Straus <martinstraus@gmail.com>
  */
 public class EvaluationException extends RuntimeException {
 

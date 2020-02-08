@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package expressions.evaluator;
 
 import expressions.Maps;
@@ -17,7 +12,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  *
- * @author martinstraus
+ * @author Martín Gaspar Straus <martinstraus@gmail.com>
  */
 public class SizeTest {
 

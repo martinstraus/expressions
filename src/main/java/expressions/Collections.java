@@ -9,7 +9,7 @@ import static java.util.stream.Collectors.toSet;
 
 /**
  *
- * @author martinstraus
+ * @author Martín Gaspar Straus <martinstraus@gmail.com>
  */
 public class Collections {
 

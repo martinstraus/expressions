@@ -1,14 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package expressions.ast;
 
 import expressions.evaluator.SymbolsTable;
 import java.math.BigDecimal;
 import static java.util.Arrays.asList;
-import java.util.Collections;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -17,7 +11,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  *
- * @author martinstraus
+ * @author Martín Gaspar Straus <martinstraus@gmail.com>
  */
 public class NegateTest {
 

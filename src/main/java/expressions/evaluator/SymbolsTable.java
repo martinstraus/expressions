@@ -11,7 +11,7 @@ import java.util.Optional;
 /**
  * A symbols table holds information for the current context.
  *
- * @author martinstraus
+ * @author Martín Gaspar Straus <martinstraus@gmail.com>
  */
 public class SymbolsTable {
 

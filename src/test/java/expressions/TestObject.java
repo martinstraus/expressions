@@ -2,7 +2,7 @@ package expressions;
 
 /**
  *
- * @author martinstraus
+ * @author Martín Gaspar Straus <martinstraus@gmail.com>
  */
 public class TestObject<T> {
 

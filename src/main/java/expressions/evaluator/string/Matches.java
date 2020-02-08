@@ -10,7 +10,7 @@ import expressions.evaluator.SymbolsTable;
 
 /**
  *
- * @author martinstraus
+ * @author Martín Gaspar Straus <martinstraus@gmail.com>
  */
 public class Matches extends BinaryFunction<Boolean> {
 

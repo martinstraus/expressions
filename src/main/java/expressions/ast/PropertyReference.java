@@ -15,7 +15,7 @@ import java.util.Optional;
 
 /**
  *
- * @author martinstraus
+ * @author Martín Gaspar Straus <martinstraus@gmail.com>
  */
 public class PropertyReference<T> implements Expression<T> {
 

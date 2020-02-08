@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 
 /**
  *
- * @author martinstraus
+ * @author Martín Gaspar Straus <martinstraus@gmail.com>
  */
 public class Length extends UnaryFunction<BigDecimal> {
 

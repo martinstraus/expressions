@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package expressions.parser.antlr;
 
 import expressions.ast.Program;
@@ -16,7 +11,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 
 /**
  *
- * @author martinstraus
+ * @author Martín Gaspar Straus <martinstraus@gmail.com>
  */
 public class AntlrParser implements Parser {
 

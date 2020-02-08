@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 
 /**
  *
- * @author martinstraus
+ * @author Martín Gaspar Straus <martinstraus@gmail.com>
  */
 public class SimpleEvaluator implements Evaluator {
 
