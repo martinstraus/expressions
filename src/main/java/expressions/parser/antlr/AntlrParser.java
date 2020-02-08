@@ -38,8 +38,8 @@ public class AntlrParser implements Parser {
         return (Program) parser(charStream).program().accept(new ASTBuilder());
     }
 
-    private FunctionParser parser(CharStream charStream) {
-        return new FunctionParser(new CommonTokenStream(new FunctionLexer(charStream)));
+    private LanguageParser parser(CharStream charStream) {
+        return new LanguageParser(new CommonTokenStream(new LanguageLexer(charStream)));
     }
 
 }
